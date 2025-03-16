@@ -24,8 +24,8 @@ export default function Banner() {
           <ArrowRight className="transition-transform duration-200 group-hover:translate-x-1" />
         </Button>
       </div>
-      <div className="w-1/2">
-        <Image src="/banner.jpg" width="600" height="600" alt="Banner Image" />
+      <div className="md:w-1/2">
+        <Image src="/banner.jpg" width="600" height="600" className="w-full" alt="Banner Image" />
       </div>
     </div>
   );
