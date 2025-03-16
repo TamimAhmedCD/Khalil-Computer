@@ -145,7 +145,7 @@ const MobileNavItem = ({ title, href, items }) => {
 const Navbar = () => {
   return (
     <nav className="py-6">
-      <div className="container mx-auto px-5 lg:px-15 md:px-8 flex justify-between gap-5 items-center">
+      <div className="flex justify-between gap-5 items-center">
         <div>
           <Link href="/">
             <Image

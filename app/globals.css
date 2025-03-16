@@ -9,6 +9,8 @@
 
 @theme inline {
   --color-primary-600: #583CEA;
+  --color-primary-700: #463BB7;
+  --color-primary-950: #181838;
   --font-hind-siliguri: 'Hind Siliguri', sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
