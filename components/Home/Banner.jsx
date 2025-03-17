@@ -11,7 +11,7 @@ export default function Banner() {
           আপনার স্বপ্ন বাস্তব করবে{" "}
           <span className="text-primary-600">আমদের প্রশিক্ষণ</span>
         </h1>
-        <p className="text-gray-600 leading-7 my-5">
+        <p className="text-gray-600 leading-7 my-5 text-justify">
           ডিজিটাল দক্ষতা শিখে ক্যারিয়ারের নতুন দিগন্ত উন্মোচন করুন! আমাদের সাথে
           গ্রাফিক ডিজাইন, ফ্রিল্যান্সিং, ওয়েব ডিজাইন ও ডিজিটাল মার্কেটিং শিখুন
           এবং আপনার সাফল্যের যাত্রা শুরু করুন।

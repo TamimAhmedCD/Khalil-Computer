@@ -52,7 +52,7 @@ export default function WhyChooseUsSection() {
           {/* Image Side (Left on desktop) */}
 
           {/* Image */}
-          <div className="w-1/2">
+          <div className="md:w-1/2">
             <Image
               src="/whyChooseUs.jpg"
               alt="Why Choose Us"
@@ -63,7 +63,7 @@ export default function WhyChooseUsSection() {
           </div>
 
           {/* Content Side (Right on desktop) */}
-          <div className="w-1/2">
+          <div className="md:w-1/2">
             <div className="mb-6">
               <h3 className="text-2xl font-medium text-primary-600 flex items-center gap-2 mb-6 font-hind-siliguri">
                 <span>আমাদের সুবিধাসমূহ</span>
@@ -105,13 +105,13 @@ export default function WhyChooseUsSection() {
             </div>
 
             <div className="mt-8">
-            <Button
-          className="bg-primary-600 hover:bg-primary-700 transition-all duration-200 flex items-center gap-2 group"
-          size="lg"
-        >
-          আজই ভর্তি হন
-          <ArrowRight className="transition-transform duration-200 group-hover:translate-x-1" />
-        </Button>
+              <Button
+                className="bg-primary-600 hover:bg-primary-700 transition-all duration-200 flex items-center gap-2 group"
+                size="lg"
+              >
+                আজই ভর্তি হন
+                <ArrowRight className="transition-transform duration-200 group-hover:translate-x-1" />
+              </Button>
             </div>
           </div>
         </div>
