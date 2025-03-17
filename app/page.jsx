@@ -1,3 +1,4 @@
+import WhyChooseUsSection from "@/components/Home/WhyChooseUs";
 import Banner from "./../components/Home/Banner";
 import Slogan from './../components/Home/Slogan';
 export const metadata = {
@@ -12,6 +13,9 @@ export default function Home() {
       </header>
       <section>
         <Slogan />
+        <section>
+          <WhyChooseUsSection />
+        </section>
       </section>
     </div>
   );
