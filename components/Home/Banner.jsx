@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 
 export default function Banner() {
   return (
-    <div className="flex flex-col md:flex-row gap-6 items-center my-10">
+    <div className="flex flex-col md:flex-row gap-6 items-center my-3 md:my-10">
       <div className="md:w-1/2">
         <h1 className="font-hind-siliguri text-4xl md:text-4xl lg:text-6xl lg:leading-20 font-semibold text-primary-950">
           আপনার স্বপ্ন বাস্তব করবে{" "}
@@ -24,8 +24,14 @@ export default function Banner() {
           <ArrowRight className="transition-transform duration-200 group-hover:translate-x-1" />
         </Button>
       </div>
-      <div className="md:w-1/2">
-        <Image src="/banner.jpg" width="600" height="600" className="w-full" alt="Banner Image" />
+      <div className="md:w-1/2 mt-5 md:mt-0">
+        <Image
+          src="/banner.jpg"
+          width="600"
+          height="600"
+          className="w-full"
+          alt="Banner Image"
+        />
       </div>
     </div>
   );
