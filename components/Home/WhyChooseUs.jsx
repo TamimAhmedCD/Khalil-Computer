@@ -52,28 +52,28 @@ export default function WhyChooseUsSection() {
           {/* Image Side (Left on desktop) */}
 
           {/* Image */}
-          <div className="md:w-1/2">
+          <div className="lg:w-1/2">
             <Image
               src="/whyChooseUs.jpg"
               alt="Why Choose Us"
               width={400}
               height={400}
-              className="w-full"
+              className="w-full h-full object-cover"
             />
           </div>
 
           {/* Content Side (Right on desktop) */}
-          <div className="md:w-1/2">
+          <div className="lg:w-1/2">
             <div className="mb-6">
               <h3 className="text-2xl font-medium text-primary-600 flex items-center gap-2 mb-6 font-hind-siliguri">
-                <span>আমাদের সুবিধাসমূহ</span>
+                আমাদের সুবিধাসমূহ
               </h3>
 
               <ul className="space-y-4">
                 {benefits.map((benefit, index) => (
                   <li
                     key={index}
-                    className="flex items-start gap-3 p-2 transition-colors duration-200 rounded-md"
+                    className="flex items-start gap-3 md:p-2 p-1 transition-colors duration-200 rounded-md"
                   >
                     <div className="w-5 h-5 rounded-sm bg-primary-600 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <svg
