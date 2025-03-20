@@ -41,7 +41,7 @@ export default function WhyChooseUsSection() {
     <section className="py-16">
       {/* Section heading */}
       <div className="mb-12 text-center">
-        <h2 className="text-3xl font-bold text-primary-950">
+        <h2 className="text-3xl font-bold text-primary-950 font-hind-siliguri">
           কেন আমাদের বেছে নিবেন?
         </h2>
         <div className="mt-2 w-16 h-1 bg-primary-600 mx-auto"></div>
