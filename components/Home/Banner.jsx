@@ -26,7 +26,7 @@ export default function Banner() {
       </div>
       <div className="md:w-1/2 mt-5 md:mt-0">
         <Image
-          src="/banner.jpg"
+          src="/banner.png"
           width="600"
           height="600"
           className="w-full"

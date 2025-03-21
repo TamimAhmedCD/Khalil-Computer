@@ -1,6 +1,7 @@
 import WhyChooseUsSection from "@/components/Home/WhyChooseUs";
 import Banner from "./../components/Home/Banner";
 import Slogan from "./../components/Home/Slogan";
+import Courses from "@/components/Home/OurCourses/Courses";
 export const metadata = {
   title: "Home - Khalil Computer",
   description:
@@ -12,12 +13,9 @@ export default function Home() {
       <header>
         <Banner />
       </header>
-      <section>
-        <Slogan />
-        <section>
-          <WhyChooseUsSection />
-        </section>
-      </section>
+      <Slogan />
+      <WhyChooseUsSection />
+      <Courses />
     </div>
   );
 }

@@ -40,8 +40,8 @@ export default function WhyChooseUsSection() {
     <section className="py-16">
       {/* Section heading */}
       <div className="mb-12 text-center">
-        <h2 className="text-3xl font-bold text-primary-950 font-hind-siliguri">
-          কেন আমাদের বেছে নিবেন?
+        <h2 className="text-3xl md:text-4xl font-bold text-primary-950 font-hind-siliguri">
+          <span className="text-primary-600">কেন আমাদের</span> বেছে নিবেন?
         </h2>
         <div className="mt-2 w-16 h-1 bg-primary-600 mx-auto"></div>
       </div>
