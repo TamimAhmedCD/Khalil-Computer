@@ -1,5 +1,6 @@
 import React from "react";
 import CourseCard from "./CourseCard";
+import { Button } from "@/components/ui/button";
 
 export default function Courses() {
   return (
@@ -14,7 +15,19 @@ export default function Courses() {
           ও ফ্রিল্যান্সিংয়ে সফলতা এনে দেবে।
         </p>
       </div>
-      <CourseCard />
+      {/* Card & Card Content */}
+      <div className="mt-8">
+        <CourseCard />
+      </div>
+      {/* Button */}
+      <div className="flex justify-center">
+        <Button
+          className="text-base mt-10 hover:text-white text-primary-600 border-primary-600 hover:bg-primary-600 rounded-full p-6"
+          variant="outline"
+        >
+          সকল কোর্স
+        </Button>
+      </div>
     </section>
   );
 }
