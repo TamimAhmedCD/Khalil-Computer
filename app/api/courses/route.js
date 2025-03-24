@@ -16,3 +16,22 @@ export async function GET() {
     );
   }
 }
+
+export async function POST(req) {
+    try {
+      const course = await req.json();
+      const client = await clientPromise;
+      const db = client.db("khalil_computer")
+  
+      const result = await db.collection("courses").insertOne(course);
+      return NextResponse.json({
+        message: "Course created",
+        course: {...course, _id: result.insertedId},
+      });
+    } catch (error) {
+      return NextResponse.json(
+        { error: "Failed to create course" },
+        { status: 500 }
+      );
+    }
+  }
