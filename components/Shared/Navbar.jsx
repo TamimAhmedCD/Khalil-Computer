@@ -166,6 +166,7 @@ const Navbar = () => {
           </div>
 
           <div>
+            {" "}
             <Button
               variant="outline"
               className="text-base hover:text-primary-600 text-primary-600 border-primary-600"

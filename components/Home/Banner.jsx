@@ -7,7 +7,7 @@ export default function Banner() {
   return (
     <div className="flex flex-col md:flex-row gap-6 items-center my-3 md:my-10">
       <div className="md:w-1/2">
-        <h1 className="font-hind-siliguri text-4xl md:text-4xl lg:text-6xl lg:leading-20 font-semibold text-primary-950">
+        <h1 className="font-hind-siliguri text-4xl md:text-4xl lg:text-5xl lg:leading-16 font-semibold text-primary-950">
           আপনার স্বপ্ন বাস্তব করবে{" "}
           <span className="text-primary-600">আমদের প্রশিক্ষণ</span>
         </h1>
