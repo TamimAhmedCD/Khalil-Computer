@@ -43,7 +43,7 @@ export default function WhyChooseUsSection() {
   ]
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16">
       {/* Section heading */}
       <div className="mb-12 text-center">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 font-hind-siliguri">
@@ -52,12 +52,12 @@ export default function WhyChooseUsSection() {
         <div className="mt-2 w-16 h-1 bg-primary-600 mx-auto"></div>
       </div>
 
-      <div className="container mx-auto px-4">
+      <div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {benefits.map((benefit, index) => (
             <div
               key={index}
-              className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col items-center text-center"
+              className="bg-white p-6 rounded-lg border hover:shadow-md transition-all duration-200 flex flex-col items-center text-center"
             >
               <div className="mb-4 flex items-center justify-center">{benefit.icon}</div>
               <h3 className="text-xl font-bold mb-3 font-hind-siliguri">{benefit.title}</h3>
