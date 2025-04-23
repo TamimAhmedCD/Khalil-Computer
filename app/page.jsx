@@ -7,7 +7,7 @@ export const metadata = {
   description:
     "Welcome to Khalil Computer, your premier destination for professional training in graphic design, freelancing web design, and digital marketing. Learn from experts and gain the skills you need to succeed in the digital world.",
 };
-export default function Home() {
+export default async function Home() {
   return (
     <div>
       <header>

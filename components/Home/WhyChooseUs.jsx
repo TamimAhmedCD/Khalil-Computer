@@ -1,27 +1,40 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import { ArrowRight, CheckCircle, BookOpen, Zap, Briefcase, Award, DollarSign, LifeBuoy } from "lucide-react"
+"use client";
+import { Button } from "@/components/ui/button";
+import {
+  ArrowRight,
+  CheckCircle,
+  BookOpen,
+  Zap,
+  Briefcase,
+  Award,
+  DollarSign,
+  LifeBuoy,
+} from "lucide-react";
 
 export default function WhyChooseUsSection() {
   const benefits = [
     {
       title: "প্রাক্টিক্যাল প্রশিক্ষণ:",
-      description: "বাস্তব প্রজেক্টের মাধ্যমে হাতে-কলমে শেখার সুযোগ। আমরা থিওরি নয়, বরং প্র্যাকটিক্যাল প্রজেক্ট ভিত্তিক শিক্ষা দিয়ে থাকি।",
+      description:
+        "বাস্তব প্রজেক্টের মাধ্যমে হাতে-কলমে শেখার সুযোগ। আমরা থিওরি নয়, বরং প্র্যাকটিক্যাল প্রজেক্ট ভিত্তিক শিক্ষা দিয়ে থাকি।",
       icon: <CheckCircle className="w-10 h-10 text-blue-400" />,
     },
     {
       title: "এক্সপার্ট মেন্টর:",
-      description: "অভিজ্ঞ ইন্ডাস্ট্রি এক্সপার্টদের গাইডেন্স ও সহায়তা। আমাদের মেন্টররা বিভিন্ন আন্তর্জাতিক কোম্পানিতে কর্মরত।",
+      description:
+        "অভিজ্ঞ ইন্ডাস্ট্রি এক্সপার্টদের গাইডেন্স ও সহায়তা। আমাদের মেন্টররা বিভিন্ন আন্তর্জাতিক কোম্পানিতে কর্মরত।",
       icon: <BookOpen className="w-10 h-10 text-blue-500" />,
     },
     {
       title: "আপডেটেড কোর্স মডিউল:",
-      description: "আধুনিক ট্রেন্ড ও মার্কেট ডিমান্ড অনুযায়ী সাজানো কোর্স। আমরা আমাদের কোর্স কন্টেন্ট নিয়মিত আপডেট করি।",
+      description:
+        "আধুনিক ট্রেন্ড ও মার্কেট ডিমান্ড অনুযায়ী সাজানো কোর্স। আমরা আমাদের কোর্স কন্টেন্ট নিয়মিত আপডেট করি।",
       icon: <Zap className="w-10 h-10 text-purple-400" />,
     },
     {
       title: "ফ্রিল্যান্সিং ও ক্যারিয়ার সাপোর্ট:",
-      description: "কাজ পাওয়ার গাইডলাইন ও ক্যারিয়ার কনসালটেশন। ফ্রিল্যান্সিং মার্কেটপ্লেসে কীভাবে সফল হবেন তার টিপস।",
+      description:
+        "কাজ পাওয়ার গাইডলাইন ও ক্যারিয়ার কনসালটেশন। ফ্রিল্যান্সিং মার্কেটপ্লেসে কীভাবে সফল হবেন তার টিপস।",
       icon: <Briefcase className="w-10 h-10 text-teal-400" />,
     },
     {
@@ -37,10 +50,11 @@ export default function WhyChooseUsSection() {
     // },
     {
       title: "লাইফটাইম সাপোর্ট:",
-      description: "শেখার পরও সমস্যা হলে আমাদের কাছে সাহায্য পাবেন। আমাদের সাপোর্ট শুধু কোর্স চলাকালীন সময়ের জন্য নয়, বরং আজীবনের জন্য।",
+      description:
+        "শেখার পরও সমস্যা হলে আমাদের কাছে সাহায্য পাবেন। আমাদের সাপোর্ট শুধু কোর্স চলাকালীন সময়ের জন্য নয়, বরং আজীবনের জন্য।",
       icon: <LifeBuoy className="w-10 h-10 text-pink-400" />,
     },
-  ]
+  ];
 
   return (
     <section className="py-16">
@@ -59,24 +73,19 @@ export default function WhyChooseUsSection() {
               key={index}
               className="bg-white p-6 rounded-lg border hover:shadow-md transition-all duration-200 flex flex-col items-center text-center"
             >
-              <div className="mb-4 flex items-center justify-center">{benefit.icon}</div>
-              <h3 className="text-xl font-bold mb-3 font-hind-siliguri">{benefit.title}</h3>
-              <p className="text-gray-600 font-hind-siliguri">{benefit.description}</p>
+              <div className="mb-4 flex items-center justify-center">
+                {benefit.icon}
+              </div>
+              <h3 className="text-xl font-bold mb-3 font-hind-siliguri">
+                {benefit.title}
+              </h3>
+              <p className="text-gray-600 font-hind-siliguri">
+                {benefit.description}
+              </p>
             </div>
           ))}
         </div>
-
-        <div className="mt-12 text-center">
-          <Button
-            className="bg-primary-600 hover:bg-primary-700 transition-all duration-200 flex items-center gap-2 group"
-            size="lg"
-          >
-            আজই ভর্তি হন
-            <ArrowRight className="transition-transform duration-200 group-hover:translate-x-1" />
-          </Button>
-        </div>
       </div>
     </section>
-  )
+  );
 }
-

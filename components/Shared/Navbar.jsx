@@ -12,7 +12,7 @@ import { Button } from "../ui/button";
 const navItems = [
   {
     title: "সকল কোর্স",
-    href: "/course",
+    href: "/courses",
   },
   {
     title: "ব্লগ",

@@ -1,8 +1,8 @@
-import React from "react";
+import Link from "next/link";
 import CourseCard from "./CourseCard";
 import { Button } from "@/components/ui/button";
 
-export default function Courses() {
+export default async function Courses() {
   return (
     <section>
       {/* Heading */}
@@ -21,12 +21,14 @@ export default function Courses() {
       </div>
       {/* Button */}
       <div className="flex justify-center">
-        <Button
-          className="text-base mt-10 hover:text-white text-primary-600 border-primary-600 hover:bg-primary-600 rounded-full p-6"
-          variant="outline"
-        >
-          সকল কোর্স
-        </Button>
+        <Link href="/courses">
+          <Button
+            className="text-base mt-10 hover:text-white text-primary-600 border-primary-600 hover:bg-primary-600 rounded-full p-6"
+            variant="outline"
+          >
+            সকল কোর্স
+          </Button>
+        </Link>
       </div>
     </section>
   );
