@@ -17,6 +17,8 @@ import { Calendar } from "./ui/calendar"
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group"
 import { Select, SelectItem, SelectTrigger, SelectValue, SelectContent } from "./ui/select"
 import { Textarea } from "./ui/textarea"
+import { useState } from "react"
+import { CongratsModal } from "./CongratsModal"
 
 const formSchema = z.object({
     studentName: z.string().min(2, {
@@ -67,6 +69,9 @@ const formSchema = z.object({
 })
 
 export function RegistrationForm() {
+    const [showSuccessModal, setShowSuccessModal] = useState(false)
+    const [submittedName, setSubmittedName] = useState("")
+
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -86,7 +91,8 @@ export function RegistrationForm() {
 
     function onSubmit(values) {
         console.log(values)
-        alert("ফর্ম সফলভাবে জমা হয়েছে!")
+        setSubmittedName(values.studentName)
+        setShowSuccessModal(true)
     }
 
     return (
@@ -506,6 +512,11 @@ export function RegistrationForm() {
                     </div>
                 </CardFooter>
             </Card>
+            <CongratsModal
+                isOpen={showSuccessModal}
+                onClose={() => setShowSuccessModal(false)}
+                studentName={submittedName}
+            />
         </div>
     )
 }
