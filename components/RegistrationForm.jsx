@@ -122,7 +122,7 @@ export function RegistrationForm() {
                 </AlertDescription>
             </Alert>
 
-            <Card className="border-none shadow-lg rounded-xl overflow-hidden">
+            <Card className="border rounded-xl overflow-hidden border-primary-200">
                 <CardContent className="p-6 pt-8">
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
