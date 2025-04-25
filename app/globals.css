@@ -8,6 +8,11 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --color-primary-500: #9583F2;
+  --color-primary-400: #B3A6F5;
+  --color-primary-300: #D1CAF9;
+  --color-primary-200: #E1DCFB;
+  --color-primary-100: #F5F3FE;
   --color-primary-600: #583CEA;
   --color-primary-700: #463BB7;
   --color-primary-950: #181838;

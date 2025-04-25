@@ -150,11 +150,14 @@ const Navbar = () => {
           <Link href="/">
             <Image
               src="/logo.png"
-              width={145}
-              height={145}
+              width={130}
+              height={160}
               alt="Khalil Computer Logo"
-              title="Khalil Computer Logo"
+              title="Khalil Computer"
+              priority
+              className="w-32 lg:w-36 h-auto"
             />
+
           </Link>
         </div>
 
