@@ -160,7 +160,7 @@ export function Footer() {
                         <span>
                             <span className="mr-1">দ্বারা নির্মিত</span>
                             <Heart size={14} className="inline text-red-500 mx-1" />
-                            <a href="https://portfolio-tamim.vercel.app" className="font-medium text-primary-600">Tamim Ahmed</a>
+                            <a href="https://portfolio-tamim.vercel.app" target="_blank" className="font-medium text-primary-600">Tamim Ahmed</a>
                         </span>
                     </div>
                     <div className="flex gap-4 text-sm text-gray-600">

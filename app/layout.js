@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${hindSiliguri.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${hindSiliguri.variable} antialiased font-hind-siliguri`}
       >
         <div className="container mx-auto px-5 md:px-10 lg:px-20">
           <Navbar />

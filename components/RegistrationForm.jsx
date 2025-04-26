@@ -410,13 +410,29 @@ export function RegistrationForm() {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel className="text-primary-700 font-medium">সর্বোচ্চ শিক্ষাগত যোগ্যতা *</FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        placeholder="শিক্ষাগত যোগ্যতা লিখুন"
-                                                        {...field}
-                                                        className="border-primary-200 focus-visible:ring-primary-200 rounded-lg"
-                                                    />
-                                                </FormControl>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                    <FormControl>
+                                                        <SelectTrigger className="w-full border-primary-200 focus:ring-primary-500 rounded-lg">
+                                                            <SelectValue placeholder="শিক্ষাগত যোগ্যতা লিখুন" />
+                                                        </SelectTrigger>
+                                                    </FormControl>
+                                                    <SelectContent className="rounded-lg">
+                                                        <SelectItem value="ষষ্ঠ শ্রেণী">ষষ্ঠ শ্রেণী</SelectItem>
+                                                        <SelectItem value="সপ্তম শ্রেণী">সপ্তম শ্রেণী</SelectItem>
+                                                        <SelectItem value="অষ্টম শ্রেণী">অষ্টম শ্রেণী</SelectItem>
+                                                        <SelectItem value="নবম শ্রেণী">নবম শ্রেণী</SelectItem>
+                                                        <SelectItem value="দশম শ্রেণী">দশম শ্রেণী</SelectItem>
+                                                        <SelectItem value="এসএসসি পাস">এসএসসি পাস</SelectItem>
+                                                        <SelectItem value="একাদশ শ্রেণী">একাদশ শ্রেণী</SelectItem>
+                                                        <SelectItem value="দ্বাদশ শ্রেণী">দ্বাদশ শ্রেণী</SelectItem>
+                                                        <SelectItem value="এইচএসসি পাস">এইচএসসি পাস</SelectItem>
+                                                        <SelectItem value="অনার্স ১ম বর্ষ">অনার্স ১ম বর্ষ</SelectItem>
+                                                        <SelectItem value="অনার্স ২য় বর্ষ">অনার্স ২য় বর্ষ</SelectItem>
+                                                        <SelectItem value="অনার্স ৩য় বর্ষ">অনার্স ৩য় বর্ষ</SelectItem>
+                                                        <SelectItem value="অনার্স ৪র্থ বর্ষ">অনার্স ৪র্থ বর্ষ</SelectItem>
+
+                                                    </SelectContent>
+                                                </Select>
                                                 <FormMessage className="text-red-500" />
                                             </FormItem>
                                         )}
@@ -428,13 +444,19 @@ export function RegistrationForm() {
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel className="text-primary-700 font-medium">পেশা *</FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        placeholder="আপনার পেশা লিখুন"
-                                                        {...field}
-                                                        className="border-primary-200 focus-visible:ring-primary-200 rounded-lg"
-                                                    />
-                                                </FormControl>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                    <FormControl>
+                                                        <SelectTrigger className="w-full border-primary-200 focus:ring-primary-500 rounded-lg">
+                                                            <SelectValue placeholder="আপনার পেশা নির্বাচন করুন" />
+                                                        </SelectTrigger>
+                                                    </FormControl>
+                                                    <SelectContent className="rounded-lg">
+                                                        <SelectItem value="ছাত্র/ছাত্রী">ছাত্র/ছাত্রী</SelectItem>
+                                                        <SelectItem value="ব্যাসিক কম্পিউটার">ব্যবসায়ী</SelectItem>
+                                                        <SelectItem value="চাকুরীজীবী">চাকরিজীবী</SelectItem>
+                                                        <SelectItem value="গৃহিণী">গৃহিণী</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
                                                 <FormMessage className="text-red-500" />
                                             </FormItem>
                                         )}
@@ -457,6 +479,7 @@ export function RegistrationForm() {
                                                     <SelectContent className="rounded-lg">
                                                         <SelectItem value="গ্রাফিক্স ডিজাইন">গ্রাফিক্স ডিজাইন</SelectItem>
                                                         <SelectItem value="ব্যাসিক কম্পিউটার">ব্যাসিক কম্পিউটার</SelectItem>
+                                                        <SelectItem value="ওয়েব ডিজাইন এন্ড ডেভেলপমেন্ট">ওয়েব ডিজাইন এন্ড ডেভেলপমেন্ট</SelectItem>
                                                     </SelectContent>
                                                 </Select>
                                                 <FormMessage className="text-red-500" />

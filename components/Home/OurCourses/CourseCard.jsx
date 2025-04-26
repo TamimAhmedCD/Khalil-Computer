@@ -98,7 +98,7 @@ export default function CourseCard() {
         ))}
       </CarouselContent>
       <CarouselPrevious />
-      <CarouselNext />
+      <CarouselNext className="hidden md:block" />
     </Carousel>
   );
 }
