@@ -106,7 +106,9 @@ export function RegistrationForm() {
 
     function onSubmit(data) {
         setFormValues(data)
-        submitForm(data)
+        submitForm(data).then(() => {
+            form.reset()
+        })
     }
 
     function handleRetry() {
@@ -484,7 +486,7 @@ export function RegistrationForm() {
                                         )}
                                     />
 
-                                    <FormField
+                                    {/* <FormField
                                         control={form.control}
                                         name="bloodGroup"
                                         render={({ field }) => (
@@ -497,6 +499,33 @@ export function RegistrationForm() {
                                                         className="border-primary-200 focus-visible:ring-primary-200 rounded-lg"
                                                     />
                                                 </FormControl>
+                                                <FormMessage className="text-red-500" />
+                                            </FormItem>
+                                        )}
+                                    /> */}
+                                    <FormField
+                                        control={form.control}
+                                        name="bloodGroup"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel className="text-primary-700 font-medium">রক্তের গ্রুপ</FormLabel>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                    <FormControl>
+                                                        <SelectTrigger className="w-full border-primary-200 focus:ring-primary-500 rounded-lg">
+                                                            <SelectValue placeholder="আপনার রক্তের গ্রুপ নির্বাচন করুন" />
+                                                        </SelectTrigger>
+                                                    </FormControl>
+                                                    <SelectContent className="rounded-lg">
+                                                        <SelectItem value="এ পজিটিভ">এ পজিটিভ</SelectItem>
+                                                        <SelectItem value="এ নেগেটিভ">এ নেগেটিভ</SelectItem>
+                                                        <SelectItem value="বি পজিটিভ">বি পজিটিভ</SelectItem>
+                                                        <SelectItem value="বি নেগেটিভ">বি নেগেটিভ</SelectItem>
+                                                        <SelectItem value="এবি পজিটিভ">এবি পজিটিভ</SelectItem>
+                                                        <SelectItem value="এবি নেগেটিভ">এবি নেগেটিভ</SelectItem>
+                                                        <SelectItem value="ও পজিটিভ">ও পজিটিভ</SelectItem>
+                                                        <SelectItem value="ও নেগেটিভ">ও নেগেটিভ</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
                                                 <FormMessage className="text-red-500" />
                                             </FormItem>
                                         )}
