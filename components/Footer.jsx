@@ -137,7 +137,7 @@ export function Footer() {
                         </div>
                         <div className="ml-3">
                             <h4 className="text-xs font-medium text-gray-500">ইমেইল</h4>
-                            <p className="text-sm font-medium text-gray-800">info@training-center.com</p>
+                            <p className="text-sm font-medium text-gray-800">khalilcomputer@gmail.com</p>
                         </div>
                     </div>
                     <div className="flex items-center p-4 rounded-xl bg-white shadow-sm">

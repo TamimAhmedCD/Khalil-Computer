@@ -31,9 +31,6 @@ const formSchema = z.object({
     currentAddress: z.string().min(5, {
         message: "বর্তমান ঠিকানা অবশ্যই দিতে হবে",
     }),
-    permanentAddress: z.string().min(5, {
-        message: "স্থায়ী ঠিকানা অবশ্যই দিতে হবে",
-    }),
     studentMobile: z.string().min(11, {
         message: "সঠিক মোবাইল নম্বর দিন",
     }),
@@ -320,7 +317,7 @@ export function RegistrationForm() {
                                         name="permanentAddress"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel className="text-primary-700 font-medium">স্থায়ী ঠিকানা *</FormLabel>
+                                                <FormLabel className="text-primary-700 font-medium">স্থায়ী ঠিকানা </FormLabel>
                                                 <FormControl>
                                                     <Textarea
                                                         placeholder="স্থায়ী ঠিকানা লিখুন"
@@ -379,7 +376,7 @@ export function RegistrationForm() {
                                     name="email"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-primary-700 font-medium">শিক্ষার্থীর ইমেইল ঠিকানা</FormLabel>
+                                            <FormLabel className="text-primary-700 font-medium">শিক্ষার্থীর ইমেইল </FormLabel>
                                             <FormControl>
                                                 <Input
                                                     type="email"
@@ -522,7 +519,7 @@ export function RegistrationForm() {
                 </CardContent>
                 <CardFooter className="flex flex-col items-center justify-center border-t bg-primary-50 p-6 text-center text-sm">
                     <div className="bg-white p-3 rounded-lg shadow-sm border border-primary-100 w-full max-w-md">
-                        <p className="text-primary-700">📞 আপনার কোনো প্রশ্ন বা প্রয়োজনে যোগাযোগ করতে পারেন: 01715409109</p>
+                        <p className="text-primary-700">📞 আপনার কোনো জিজ্ঞাসায় যোগাযোগ করতে পারেন: 01715409109</p>
                     </div>
                 </CardFooter>
             </Card>
