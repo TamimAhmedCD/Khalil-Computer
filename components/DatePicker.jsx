@@ -144,7 +144,7 @@ export function HierarchicalDatePicker({ form, name, label, placeholder = "рждрж
             name={name}
             render={({ field }) => (
                 <FormItem className="flex flex-col">
-                    <FormLabel className="text-primary-700 font-medium">{label}</FormLabel>
+                    <FormLabel className="text-primary-700 font-medium font-hind-siliguri">{label}</FormLabel>
                     <Popover open={open} onOpenChange={setOpen}>
                         <PopoverTrigger asChild>
                             <FormControl>

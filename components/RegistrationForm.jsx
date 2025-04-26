@@ -37,9 +37,6 @@ const formSchema = z.object({
     studentMobile: z.string().min(11, {
         message: "সঠিক মোবাইল নম্বর দিন",
     }),
-    guardianMobile: z.string().min(11, {
-        message: "সঠিক মোবাইল নম্বর দিন",
-    }),
     education: z.string().min(2, {
         message: "শিক্ষাগত যোগ্যতা অবশ্যই দিতে হবে",
     }),
@@ -123,7 +120,7 @@ export function RegistrationForm() {
     }
 
     return (
-        <div className="space-y-8 mt-5">
+        <div className="space-y-8 mt-5 font-hind-siliguri">
             <Card className="border-none bg-primary-100/5s overflow-hidden relative">
                 <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary-400 to-primary-600"></div>
                 <CardHeader className="space-y-1 pb-6">
@@ -133,7 +130,7 @@ export function RegistrationForm() {
                         </div>
                     </div>
                     <CardTitle className="text-3xl font-bold tracking-tight text-center text-primary-700">
-                        প্রশিক্ষণার্থী নিবন্ধন ফর্ম
+                        ভর্তির জন্য আবেদন করুন
                     </CardTitle>
                     <CardDescription className="text-base text-center">
                         অনুগ্রহ করে নিচের ফর্মটি সঠিকভাবে পূরণ করুন। সকল তথ্য অবশ্যই সত্য ও সঠিক প্রদান করতে হবে।
@@ -362,7 +359,7 @@ export function RegistrationForm() {
                                         name="guardianMobile"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel className="text-primary-700 font-medium">অভিভাবকের মোবাইল নম্বর *</FormLabel>
+                                                <FormLabel className="text-primary-700 font-medium">অভিভাবকের মোবাইল নম্বর </FormLabel>
                                                 <FormControl>
                                                     <Input
                                                         placeholder="০১XXXXXXXXX"
@@ -472,7 +469,7 @@ export function RegistrationForm() {
                                         name="bloodGroup"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel className="text-primary-700 font-medium">রক্তের গ্রুপ *</FormLabel>
+                                                <FormLabel className="text-primary-700 font-medium">রক্তের গ্রুপ</FormLabel>
                                                 <FormControl>
                                                     <Input
                                                         placeholder="আপনার রক্তের গ্রুপ লিখুন"
@@ -502,7 +499,7 @@ export function RegistrationForm() {
                 </CardContent>
                 <CardFooter className="flex flex-col items-center justify-center border-t bg-primary-50 p-6 text-center text-sm">
                     <div className="bg-white p-3 rounded-lg shadow-sm border border-primary-100 w-full max-w-md">
-                        <p className="text-primary-700">ফর্ম সম্পর্কে কোন প্রশ্ন থাকলে যোগাযোগ করুন: ০১৭১৫৪০৯১০৯</p>
+                        <p className="text-primary-700">📞 আপনার কোনো প্রশ্ন বা প্রয়োজনে যোগাযোগ করতে পারেন: 01715409109</p>
                     </div>
                 </CardFooter>
             </Card>

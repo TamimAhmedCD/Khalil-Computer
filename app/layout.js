@@ -2,6 +2,8 @@ import { Geist, Geist_Mono, Hind_Siliguri } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Shared/Navbar";
 import { Separator } from "@/components/ui/separator";
+import { Footer } from "@/components/Footer";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,18 +33,17 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${hindSiliguri.variable} antialiased`}
       >
-
         <div className="container mx-auto px-5 md:px-10 lg:px-20">
           <Navbar />
         </div>
 
-
         <Separator className="w-full" />
-
 
         <div className="container mx-auto px-5 md:px-10 lg:px-20">
           {children}
         </div>
+        <Footer />
+        <Toaster />
       </body>
     </html>
   );
