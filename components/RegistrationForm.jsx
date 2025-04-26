@@ -3,22 +3,20 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { format } from "date-fns"
-import { CalendarIcon, ChevronRightIcon, InfoIcon, Pencil, BookOpen, Home } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { ChevronRightIcon, InfoIcon, Pencil, BookOpen, Home } from "lucide-react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card"
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
 import { Separator } from "./ui/separator"
-import { Button } from "./ui/button"
 import { Input } from "./ui/input"
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
-import { Calendar } from "./ui/calendar"
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group"
 import { Select, SelectItem, SelectTrigger, SelectValue, SelectContent } from "./ui/select"
 import { Textarea } from "./ui/textarea"
 import { useState } from "react"
 import { CongratsModal } from "./CongratsModal"
+import axios from "axios"
+import { ErrorModal } from "./ErrorModal"
+import { HierarchicalDatePicker } from "./DatePicker"
 
 const formSchema = z.object({
     studentName: z.string().min(2, {
@@ -42,9 +40,6 @@ const formSchema = z.object({
     guardianMobile: z.string().min(11, {
         message: "সঠিক মোবাইল নম্বর দিন",
     }),
-    email: z.string().email({
-        message: "সঠিক ইমেইল ঠিকানা দিন",
-    }),
     education: z.string().min(2, {
         message: "শিক্ষাগত যোগ্যতা অবশ্যই দিতে হবে",
     }),
@@ -63,14 +58,15 @@ const formSchema = z.object({
     gender: z.string({
         required_error: "লিঙ্গ নির্বাচন করুন",
     }),
-    bloodGroup: z.string().min(1, {
-        message: "রক্তের গ্রুপ অবশ্যই দিতে হবে",
-    }),
 })
 
 export function RegistrationForm() {
     const [showSuccessModal, setShowSuccessModal] = useState(false)
+    const [showErrorModal, setShowErrorModal] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("")
+    const [formValues, setFormValues] = useState(null)
     const [submittedName, setSubmittedName] = useState("")
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -89,10 +85,41 @@ export function RegistrationForm() {
         },
     })
 
-    function onSubmit(values) {
-        console.log(values)
-        setSubmittedName(values.studentName)
-        setShowSuccessModal(true)
+    async function submitForm(data) {
+        setIsSubmitting(true)
+
+        try {
+            const postStudentData = await axios.post("/api/registered-students", data)
+            const studentData = await postStudentData.data
+            if (studentData.message) {
+                setSubmittedName(data.studentName)
+                setShowSuccessModal(true)
+                // await axios.post("/api/send-email", data)
+            } else {
+                console.log("Registration Failed", studentData.message);
+                setErrorMessage(studentData.message || "নিবন্ধন সম্পন্ন করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।")
+                setShowErrorModal(true)
+            }
+        } catch (error) {
+            console.error("Error submitting form:", error)
+            setErrorMessage("সার্ভারের সাথে যোগাযোগ করা যায়নি। আপনার ইন্টারনেট সংযোগ চেক করুন।")
+            setShowErrorModal(true)
+        }
+        finally {
+            setIsSubmitting(false)
+        }
+    }
+
+    function onSubmit(data) {
+        setFormValues(data)
+        submitForm(data)
+    }
+
+    function handleRetry() {
+        if (formValues) {
+            submitForm(formValues)
+        }
+        setShowErrorModal(false)
     }
 
     return (
@@ -160,41 +187,7 @@ export function RegistrationForm() {
                                         )}
                                     />
 
-                                    <FormField
-                                        control={form.control}
-                                        name="birthDate"
-                                        render={({ field }) => (
-                                            <FormItem className="flex flex-col">
-                                                <FormLabel className="text-primary-700 font-medium">জন্ম তারিখ *</FormLabel>
-                                                <Popover>
-                                                    <PopoverTrigger asChild>
-                                                        <FormControl>
-                                                            <Button
-                                                                variant={"outline"}
-                                                                className={cn(
-                                                                    "w-full pl-3 text-left font-normal border-primary-200 rounded-lg",
-                                                                    !field.value && "text-muted-foreground",
-                                                                )}
-                                                            >
-                                                                {field.value ? format(field.value, "PPP") : <span>তারিখ নির্বাচন করুন</span>}
-                                                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                                            </Button>
-                                                        </FormControl>
-                                                    </PopoverTrigger>
-                                                    <PopoverContent className="w-auto p-0" align="start">
-                                                        <Calendar
-                                                            mode="single"
-                                                            selected={field.value}
-                                                            onSelect={field.onChange}
-                                                            initialFocus
-                                                            className="rounded-lg border-primary-200"
-                                                        />
-                                                    </PopoverContent>
-                                                </Popover>
-                                                <FormMessage className="text-red-500" />
-                                            </FormItem>
-                                        )}
-                                    />
+                                    <HierarchicalDatePicker form={form} name="birthDate" label="জন্ম তারিখ *" placeholder="তারিখ নির্বাচন করুন" />
                                 </div>
 
                                 <div className="grid gap-6 md:grid-cols-2">
@@ -389,7 +382,7 @@ export function RegistrationForm() {
                                     name="email"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-primary-700 font-medium">শিক্ষার্থীর ইমেইল ঠিকানা *</FormLabel>
+                                            <FormLabel className="text-primary-700 font-medium">শিক্ষার্থীর ইমেইল ঠিকানা</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     type="email"
@@ -497,9 +490,10 @@ export function RegistrationForm() {
                             <div className="flex justify-center pt-6">
                                 <button
                                     type="submit"
-                                    className="bg-primary-600 hover:bg-primary-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition-all duration-300 hover:scale-105 flex items-center gap-2 cursor-pointer"
+                                    disabled={isSubmitting}
+                                    className="bg-primary-600 hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-70 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition-all duration-300 hover:scale-105 flex items-center gap-2 cursor-pointer"
                                 >
-                                    জমা দিন
+                                    {isSubmitting ? "অপেক্ষা করুন..." : "জমা দিন"}
                                     <ChevronRightIcon className="transition-transform duration-200 group-hover:translate-x-1" />
                                 </button>
                             </div>
@@ -516,6 +510,12 @@ export function RegistrationForm() {
                 isOpen={showSuccessModal}
                 onClose={() => setShowSuccessModal(false)}
                 studentName={submittedName}
+            />
+            <ErrorModal
+                isOpen={showErrorModal}
+                onClose={() => setShowErrorModal(false)}
+                onRetry={handleRetry}
+                errorMessage={errorMessage}
             />
         </div>
     )
