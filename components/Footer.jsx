@@ -41,7 +41,7 @@ export function Footer() {
     ]
 
     return (
-        <footer className="pt-20 pb-8 relative overflow-hidden bg-primary-100/80 mt-10 font-hind-siliguri">
+        <footer className="pt-20 pb-8 relative overflow-hidden bg-primary-100/80 mt-10 md:mt-20 font-hind-siliguri">
             <div className="container mx-auto px-5 md:px-10 lg:px-20">
                 {/* Top section with logo and newsletter - redesigned for minimal elegance */}
                 <div className="mb-16 relative">

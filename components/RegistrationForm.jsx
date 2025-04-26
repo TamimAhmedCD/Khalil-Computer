@@ -91,7 +91,7 @@ export function RegistrationForm() {
             if (studentData.message) {
                 setSubmittedName(data.studentName)
                 setShowSuccessModal(true)
-                // await axios.post("/api/send-email", data)
+                await axios.post("/api/send-email", data)
             } else {
                 console.log("Registration Failed", studentData.message);
                 setErrorMessage(studentData.message || "নিবন্ধন সম্পন্ন করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।")
