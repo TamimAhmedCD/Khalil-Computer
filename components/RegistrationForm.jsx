@@ -85,10 +85,10 @@ export function RegistrationForm() {
         try {
             const postStudentData = await axios.post("/api/registered-students", data)
             const studentData = await postStudentData.data
-            if (studentData.message) {
+            const sendEmail = await axios.post("/api/mail", data)
+            if (studentData.message && sendEmail.data.message) {
                 setSubmittedName(data.studentName)
                 setShowSuccessModal(true)
-                await axios.post("/api/send-email", data)
             } else {
                 console.log("Registration Failed", studentData.message);
                 setErrorMessage(studentData.message || "নিবন্ধন সম্পন্ন করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।")
