@@ -15,16 +15,17 @@ export async function POST(request) {
     const courseName = studentData.course?.trim();
 
     if (courseName === "গ্রাফিক্স ডিজাইন") {
-      prefix = "GP";
+      prefix = "GD";
     } else if (courseName === "ব্যাসিক কম্পিউটার") {
       prefix = "BC";
     } else if (courseName === "ওয়েব ডিজাইন এন্ড ডেভেলপমেন্ট") {
       prefix = "WDD";
     }
 
-    // Count students already registered for this prefix
+    // Count students already registered for this course
     const prefixCount = await studentsCollection.countDocuments({
-      studentId: { $regex: `^${prefix} ` },
+      course: courseName, // match course also
+      studentId: { $regex: `^${prefix}-` }, // match ID format
     });
 
     // Generate serial number
