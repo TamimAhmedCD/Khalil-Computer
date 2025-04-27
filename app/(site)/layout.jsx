@@ -1,17 +1,12 @@
-import { Geist, Geist_Mono, Hind_Siliguri } from "next/font/google";
-import "./globals.css";
+import { Hind_Siliguri, Montserrat } from "next/font/google";
+import "../globals.css";
 import Navbar from "@/components/Shared/Navbar";
 import { Separator } from "@/components/ui/separator";
 import { Footer } from "@/components/Footer";
 import { Toaster } from "@/components/ui/sonner";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
   subsets: ["latin"],
 });
 
@@ -31,7 +26,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${hindSiliguri.variable} antialiased font-hind-siliguri`}
+        className={` ${hindSiliguri.variable} ${montserrat}  antialiased font-hind-siliguri`}
       >
         <div className="container mx-auto px-5 md:px-10 lg:px-20">
           <Navbar />

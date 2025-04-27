@@ -1,7 +1,7 @@
 import WhyChooseUsSection from "@/components/Home/WhyChooseUs";
-import Banner from "./../components/Home/Banner";
-import Slogan from "./../components/Home/Slogan";
 import Courses from "@/components/Home/OurCourses/Courses";
+import Banner from "@/components/Home/Banner";
+import Slogan from "@/components/Home/Slogan";
 export const metadata = {
   title: "Home - Khalil Computer",
   description:
