@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
@@ -13,6 +11,7 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Separator } from "@/components/ui/separator"
 import { SocialLoginButtons } from "./SocialLoginButton"
+import { toast } from "sonner"
 
 const loginFormSchema = z.object({
     email: z.string().email({
@@ -29,7 +28,7 @@ export function LoginForm({ onSwitchMode }) {
     const [showPassword, setShowPassword] = useState(false)
     const router = useRouter()
 
-    const form = useForm ({
+    const form = useForm({
         resolver: zodResolver(loginFormSchema),
         defaultValues: {
             email: "",
@@ -39,22 +38,31 @@ export function LoginForm({ onSwitchMode }) {
     })
 
     async function onSubmit(data) {
-        setIsLoading(true)
+        setIsLoading(true);
 
         try {
-            // Simulate API call
-            console.log("Login data:", data)
-            await new Promise((resolve) => setTimeout(resolve, 1500))
+            console.log("Login data:", data);
+            // Simulate the API call, replace with actual authentication logic
+            // const response = await signIn('credentials', {
+            //     redirect: false,
+            //     email: data.email,
+            //     password: data.password,
+            // });
 
-            // Redirect to dashboard on success
-            router.push("/dashboard")
+            // if (response?.ok) {
+            //     toast.success("লগইন সফলভাবে সম্পন্ন হয়েছে!");
+            //     router.push("/dashboard");
+            // } else if (response?.status === 401) {
+            //     toast.error("ইমেইল বা পাসওয়ার্ড সঠিক নয়।");
+            // } else {
+            //     toast.error("অজানা ত্রুটি, আবার চেষ্টা করুন।");
+            // }
+
         } catch (error) {
-            console.error("Login error:", error)
-            form.setError("root", {
-                message: "লগইন করতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।",
-            })
+            console.error("Login error:", error);
+            toast.error("লগইন করতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।");
         } finally {
-            setIsLoading(false)
+            setIsLoading(false);
         }
     }
 

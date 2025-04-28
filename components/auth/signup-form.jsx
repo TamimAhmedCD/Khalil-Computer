@@ -62,7 +62,7 @@ export function SignupForm({ onSwitchMode }) {
 
         try {
             // Make the API request
-            const response = await axios.post('/api/auth/signup', data);
+            const response = await axios.post('/api/signup', data);
             console.log(response.data);
 
             // Check if the response status is successful (201 Created)
