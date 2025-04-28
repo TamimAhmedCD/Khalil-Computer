@@ -24,7 +24,8 @@ export async function POST(req) {
       message: "Course created successfully",
       result,
     });
-  } catch {
+  } catch (error) {
+    console.log("error creating course", error);
     return NextResponse.json(
       { error: "Failed to create course" },
       { status: 500 }
