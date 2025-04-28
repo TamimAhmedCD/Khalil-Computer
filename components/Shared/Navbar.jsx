@@ -170,12 +170,12 @@ const Navbar = () => {
 
           <div>
             {" "}
-            <Button
+            <Link href="/auth">            <Button
               variant="outline"
               className="text-base hover:text-primary-600 text-primary-600 border-primary-600"
             >
               লগ-ইন
-            </Button>
+            </Button></Link>
           </div>
           <Sheet>
             <SheetTrigger asChild className="md:hidden">
