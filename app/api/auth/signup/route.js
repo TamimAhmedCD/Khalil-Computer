@@ -58,7 +58,7 @@ export async function POST(request) {
     await userCollection.insertOne(newUser);
 
     return NextResponse.json(
-      { message: "ব্যবহারকারী তৈরি হয়েছে" },
+      { message: "আপনার অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে। স্বাগতম!" },
       { status: 201 }
     );
   } catch (error) {

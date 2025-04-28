@@ -13,6 +13,8 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Separator } from "@/components/ui/separator"
 import { SocialLoginButtons } from "./SocialLoginButton"
+import axios from "axios"
+import { toast } from "sonner"
 
 const signupFormSchema = z
     .object({
@@ -56,22 +58,38 @@ export function SignupForm({ onSwitchMode }) {
     })
 
     async function onSubmit(data) {
-        setIsLoading(true)
+        setIsLoading(true);
 
         try {
-            // Simulate API call
-            console.log("Signup data:", data)
-            await new Promise((resolve) => setTimeout(resolve, 1500))
+            // Make the API request
+            const response = await axios.post('/api/auth/signup', data);
+            console.log(response.data);
 
-            // Redirect to dashboard on success
-            router.push("/dashboard")
+            // Check if the response status is successful (201 Created)
+            if (response.status === 201) {
+                toast.success(response.data.message);  // Display success toast
+                router.push("/dashboard");  // Redirect to the dashboard
+            } else {
+                // For 400, 500 errors, or any other status
+                toast.error(response.data.message || 'একটি ত্রুটি ঘটেছে। দয়া করে আবার চেষ্টা করুন।');
+            }
         } catch (error) {
-            console.error("Signup error:", error)
+            console.error("Signup error:", error);
+
+            // Handle different types of errors
+            const errorMessage = error.response
+                ? error.response.data.message
+                : error.request
+                    ? 'সার্ভার থেকে কোন উত্তর পাওয়া যায়নি। দয়া করে আপনার ইন্টারনেট সংযোগ পরীক্ষা করুন বা পরে আবার চেষ্টা করুন।'
+                    : 'একটি অপ্রত্যাশিত ত্রুটি ঘটেছে। দয়া করে পরবর্তীতে আবার চেষ্টা করুন।';
+
+            toast.error(errorMessage);
+
             form.setError("root", {
-                message: "রেজিস্ট্রেশন করতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।",
-            })
+                message: errorMessage,
+            });
         } finally {
-            setIsLoading(false)
+            setIsLoading(false);  // Stop the loading spinner once the process is complete
         }
     }
 
