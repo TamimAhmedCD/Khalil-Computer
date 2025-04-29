@@ -1,21 +1,6 @@
-import { Hind_Siliguri, Montserrat } from "next/font/google";
-import "../globals.css";
 import Navbar from "@/components/Shared/Navbar";
 import { Separator } from "@/components/ui/separator";
 import { Footer } from "@/components/Footer";
-import { Toaster } from "@/components/ui/sonner";
-
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-});
-
-const hindSiliguri = Hind_Siliguri({
-  variable: "--font-hind-siliguri",
-  subsets: ["bengali"],
-  weight: ["300", "400", "500", "600", "700"],
-});
 
 export const metadata = {
   title: "Khalil Computer | Graphic Design, Freelancing & Digital Marketing Courses",
@@ -25,22 +10,18 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={` ${hindSiliguri.variable} ${montserrat}  antialiased font-hind-siliguri`}
-      >
-        <div className="container mx-auto px-5 md:px-10 lg:px-20">
-          <Navbar />
-        </div>
+    <>
+      <div className="container mx-auto px-5 md:px-10 lg:px-20">
+        <Navbar />
+      </div>
 
-        <Separator className="w-full" />
+      <Separator className="w-full" />
 
-        <div className="container mx-auto px-5 md:px-10 lg:px-20">
-          {children}
-        </div>
-        <Footer />
-        <Toaster />
-      </body>
-    </html>
+      <div className="container mx-auto px-5 md:px-10 lg:px-20">
+        {children}
+      </div>
+      <Footer />
+
+    </>
   );
 }

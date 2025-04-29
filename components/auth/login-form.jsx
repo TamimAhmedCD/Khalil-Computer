@@ -1,17 +1,21 @@
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { motion } from "framer-motion"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Eye, EyeOff, Loader2 } from "lucide-react"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Separator } from "@/components/ui/separator"
-import { SocialLoginButtons } from "./SocialLoginButton"
-import { toast } from "sonner"
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Separator } from "@/components/ui/separator";
+import { SocialLoginButtons } from "./SocialLoginButton";
+import { toast } from "sonner";
+import { loginAction } from "@/app/actions/login";
+import { useSession } from "next-auth/react";
 
 const loginFormSchema = z.object({
     email: z.string().email({
@@ -21,12 +25,13 @@ const loginFormSchema = z.object({
         message: "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে",
     }),
     rememberMe: z.boolean().optional(),
-})
+});
 
 export function LoginForm({ onSwitchMode }) {
-    const [isLoading, setIsLoading] = useState(false)
-    const [showPassword, setShowPassword] = useState(false)
-    const router = useRouter()
+    const [isLoading, setIsLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const router = useRouter();
+    const { data: session } = useSession()
 
     const form = useForm({
         resolver: zodResolver(loginFormSchema),
@@ -35,38 +40,34 @@ export function LoginForm({ onSwitchMode }) {
             password: "",
             rememberMe: false,
         },
-    })
+    });
 
-    async function onSubmit(data) {
-        setIsLoading(true);
+    const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
+    const onSubmit = async (data) => {
+        setIsLoading(true); // Set loading to true
         try {
-            console.log("Login data:", data);
-            // Simulate the API call, replace with actual authentication logic
-            // const response = await signIn('credentials', {
-            //     redirect: false,
-            //     email: data.email,
-            //     password: data.password,
-            // });
+            const result = await loginAction(data.email, data.password);
 
-            // if (response?.ok) {
-            //     toast.success("লগইন সফলভাবে সম্পন্ন হয়েছে!");
-            //     router.push("/dashboard");
-            // } else if (response?.status === 401) {
-            //     toast.error("ইমেইল বা পাসওয়ার্ড সঠিক নয়।");
-            // } else {
-            //     toast.error("অজানা ত্রুটি, আবার চেষ্টা করুন।");
-            // }
-
+            if (result.success && session?.user?.role === 'student') {
+                toast.success("লগইন সফলভাবে সম্পন্ন হয়েছে!");
+                setIsLoading(false); // Set loading false before navigation
+                router.push("/dashboard"); // Navigate after the toast
+            } else if (result.success && session?.user?.role === 'admin') {
+                toast.success("লগইন সফলভাবে সম্পন্ন হয়েছে!");
+                setIsLoading(false); // Set loading false before navigation
+                router.push("/admin/dashboard"); // Navigate after the toast
+            } else {
+                toast.error(result.error || "লগইন করতে ব্যর্থ হয়েছে");
+                setIsLoading(false); // Set loading false when error occurs
+            }
         } catch (error) {
             console.error("Login error:", error);
-            toast.error("লগইন করতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।");
-        } finally {
-            setIsLoading(false);
+            toast.error("লগইন প্রক্রিয়ায় সমস্যা হয়েছে");
+            setIsLoading(false); // Set loading false in case of error
         }
-    }
+    };
 
-    const togglePasswordVisibility = () => setShowPassword(!showPassword)
 
     return (
         <div className="space-y-6">
@@ -187,5 +188,5 @@ export function LoginForm({ onSwitchMode }) {
                 </Button>
             </div>
         </div>
-    )
+    );
 }

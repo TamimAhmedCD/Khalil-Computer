@@ -157,7 +157,6 @@ const Navbar = () => {
               priority
               className="w-32 lg:w-36 h-auto"
             />
-
           </Link>
         </div>
 
@@ -170,12 +169,15 @@ const Navbar = () => {
 
           <div>
             {" "}
-            <Link href="/auth">            <Button
-              variant="outline"
-              className="text-base hover:text-primary-600 text-primary-600 border-primary-600"
-            >
-              লগ-ইন
-            </Button></Link>
+            <Link href="/auth">
+              {" "}
+              <Button
+                variant="outline"
+                className="text-base hover:text-primary-600 text-primary-600 border-primary-600"
+              >
+                লগ-ইন
+              </Button>
+            </Link>
           </div>
           <Sheet>
             <SheetTrigger asChild className="md:hidden">
