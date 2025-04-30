@@ -31,7 +31,6 @@ export function LoginForm({ onSwitchMode }) {
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const router = useRouter();
-    const { data: session } = useSession()
 
     const form = useForm({
         resolver: zodResolver(loginFormSchema),
@@ -45,28 +44,37 @@ export function LoginForm({ onSwitchMode }) {
     const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
     const onSubmit = async (data) => {
-        setIsLoading(true); // Set loading to true
+        setIsLoading(true);
         try {
             const result = await loginAction(data.email, data.password);
 
-            if (result.success && session?.user?.role === 'student') {
+            if (result?.success) {
                 toast.success("লগইন সফলভাবে সম্পন্ন হয়েছে!");
-                setIsLoading(false); // Set loading false before navigation
-                router.push("/dashboard"); // Navigate after the toast
-            } else if (result.success && session?.user?.role === 'admin') {
-                toast.success("লগইন সফলভাবে সম্পন্ন হয়েছে!");
-                setIsLoading(false); // Set loading false before navigation
-                router.push("/admin/dashboard"); // Navigate after the toast
+
+                // Refresh session
+                router.refresh();
+
+                // Wait a moment for the session to update, then fetch it and route
+                setTimeout(async () => {
+                    const { data: session } = await useSession(); // Custom fetch or call /api/session
+                    if (session?.user?.role === "admin") {
+                        router.push("/admin/dashboard");
+                    } else if (session?.user?.role === "student") {
+                        router.push("/student/dashboard");
+                    } else {
+                        router.push("/");
+                    }
+                }, 200); // Delay helps ensure session updates
             } else {
                 toast.error(result.error || "লগইন করতে ব্যর্থ হয়েছে");
-                setIsLoading(false); // Set loading false when error occurs
             }
         } catch (error) {
-            console.error("Login error:", error);
             toast.error("লগইন প্রক্রিয়ায় সমস্যা হয়েছে");
-            setIsLoading(false); // Set loading false in case of error
+        } finally {
+            setIsLoading(false);
         }
     };
+
 
 
     return (
