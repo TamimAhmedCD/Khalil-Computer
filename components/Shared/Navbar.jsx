@@ -210,12 +210,17 @@ const Navbar = () => {
                   ))}
                 </div>
                 <div className="border-t pt-4">
-                  <Button
-                    className="w-full text-base hover:text-primary-600 text-primary-600 border-primary-600"
-                    variant="outline"
-                  >
-                    লগ-ইন
-                  </Button>
+                  {session?.user?.role === 'admin' ? <Link href="/admin/dashboard"><button className="bg-primary-600 hover:bg-transparent border border-primary-600 hover:text-primary-600 cursor-pointer transition-all duration-600 flex items-center gap-2 group py-2 px-4 rounded-md text-white">
+                    ড্যাশবোর্ড
+                  </button></Link> : <Link href="/student/dashboard">
+
+                    <Button
+                      variant="outline"
+                      className="text-base hover:text-primary-600 text-primary-600 border-primary-600"
+                    >
+                      লগ-ইন
+                    </Button>
+                  </Link>}
                 </div>
               </div>
             </SheetContent>

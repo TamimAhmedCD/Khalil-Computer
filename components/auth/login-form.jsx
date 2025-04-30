@@ -41,6 +41,7 @@ export function LoginForm({ onSwitchMode }) {
         },
     });
 
+    const { data: session } = useSession(); // Custom fetch or call /api/session
     const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
     const onSubmit = async (data) => {
@@ -56,7 +57,6 @@ export function LoginForm({ onSwitchMode }) {
 
                 // Wait a moment for the session to update, then fetch it and route
                 setTimeout(async () => {
-                    const { data: session } = await useSession(); // Custom fetch or call /api/session
                     if (session?.user?.role === "admin") {
                         router.push("/admin/dashboard");
                     } else if (session?.user?.role === "student") {
@@ -64,7 +64,7 @@ export function LoginForm({ onSwitchMode }) {
                     } else {
                         router.push("/");
                     }
-                }, 300); // Delay helps ensure session updates
+                }, 500); // Delay helps ensure session updates
             } else {
                 toast.error(result.error || "লগইন করতে ব্যর্থ হয়েছে");
             }
