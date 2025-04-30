@@ -1,0 +1,3 @@
+export const production = {"MONGODB_URI":"mongodb+srv://khalil-computer:8FgaCKj4EnICDuMv@cluster0.k9pcb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0","RESEND_API_KEY":"re_AxFc6tEY_KPwcxi4zXgHP6j6oVBKfdbku","AUTH_SECRET":"wXAeo0GncxSN4Pt1srnP6/hv82//f8GrnRYNDRSXgFY=","NEXT_PUBLIC_TINY_MCE":"e1y0yqn5lxw51oe3jwo9vdku6aowry1j3aezbi1xsdk4ho4a"};
+export const development = {"MONGODB_URI":"mongodb+srv://khalil-computer:8FgaCKj4EnICDuMv@cluster0.k9pcb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0","RESEND_API_KEY":"re_AxFc6tEY_KPwcxi4zXgHP6j6oVBKfdbku","AUTH_SECRET":"wXAeo0GncxSN4Pt1srnP6/hv82//f8GrnRYNDRSXgFY=","NEXT_PUBLIC_TINY_MCE":"e1y0yqn5lxw51oe3jwo9vdku6aowry1j3aezbi1xsdk4ho4a"};
+export const test = {};

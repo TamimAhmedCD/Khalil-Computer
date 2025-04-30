@@ -23,6 +23,8 @@ const hindSiliguri = Hind_Siliguri({
     weight: ["300", "400", "500", "600", "700"],
 });
 
+
+
 export default function RootLayout({ children }) {
     return (
         <html lang="bn">

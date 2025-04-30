@@ -50,8 +50,14 @@ const data = {
         },
         {
             title: "কোর্স ম্যানেজমেন্ট",
-            url: "/admin/manage-course",
+            url: "#",
             icon: Book,
+            items: [
+                {
+                    title: "অ্যাড কোর্স",
+                    url: '/admin/add-course'
+                }
+            ]
         },
         {
             title: "শিক্ষার্থীগণ",
