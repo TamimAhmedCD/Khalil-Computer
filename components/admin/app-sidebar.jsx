@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
-    ArrowUpCircleIcon,
     BarChartIcon,
+    Book,
     CameraIcon,
     ClipboardListIcon,
     DatabaseIcon,
@@ -13,18 +13,28 @@ import {
     FolderIcon,
     HelpCircleIcon,
     LayoutDashboardIcon,
-    ListIcon,
     SearchIcon,
     SettingsIcon,
+    Users,
     UsersIcon,
-} from "lucide-react"
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar"
+} from "lucide-react";
+import {
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarHeader,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
+} from "../ui/sidebar";
+import Image from "next/image";
+import Link from "next/link";
+import { NavMain } from "./nav-main";
 
 // import { NavDocuments } from "@/components/nav-documents"
 // import { NavMain } from "@/components/nav-main"
 // import { NavSecondary } from "@/components/nav-secondary"
 // import { NavUser } from "@/components/nav-user"
-
 
 const data = {
     user: {
@@ -34,19 +44,19 @@ const data = {
     },
     navMain: [
         {
-            title: "Dashboard",
-            url: "#",
+            title: "ড্যাশবোর্ড",
+            url: "dashboard",
             icon: LayoutDashboardIcon,
         },
         {
-            title: "Lifecycle",
-            url: "#",
-            icon: ListIcon,
+            title: "কোর্স ম্যানেজমেন্ট",
+            url: "manage-course",
+            icon: Book,
         },
         {
-            title: "Analytics",
-            url: "#",
-            icon: BarChartIcon,
+            title: "শিক্ষার্থীগণ",
+            url: "students",
+            icon: Users,
         },
         {
             title: "Projects",
@@ -141,34 +151,42 @@ const data = {
             icon: FileIcon,
         },
     ],
-}
+};
 
-export function AppSidebar({ ...props }) {
+export function AppSidebar() {
     return (
-        <Sidebar collapsible="offcanvas" {...props}>
+        <Sidebar collapsible="offcanvas">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton
-                            asChild
-                            className="data-[slot=sidebar-menu-button]:!p-1.5"
-                        >
-                            <a href="#">
-                                <ArrowUpCircleIcon className="h-5 w-5" />
-                                <span className="text-base font-semibold">Acme Inc.</span>
-                            </a>
+                        <SidebarMenuButton size="lg" asChild>
+                            <Link href="dashboard">
+                                <Image
+                                    src="/icon.png"
+                                    alt="Khalil Computer Icon"
+                                    width={24}
+                                    height={24}
+                                    priority
+                                    className="object-contain size-8"
+                                />
+
+                                <div className="flex flex-col gap-0.5 leading-none">
+                                    <span className="font-semibold text-primary-600">
+                                        খলিল কম্পিউটার
+                                    </span>
+                                    <span className="text-primary-500">অ্যাডমিন</span>
+                                </div>
+                            </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent>
-                {/* <NavMain items={data.navMain} />
-                <NavDocuments items={data.documents} />
-                <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
+                <NavMain items={data.navMain} />
+                {/* <NavDocuments items={data.documents} /> */}
+                {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
             </SidebarContent>
-            <SidebarFooter>
-                {/* <NavUser user={data.user} /> */}
-            </SidebarFooter>
+            <SidebarFooter>{/* <NavUser user={data.user} /> */}</SidebarFooter>
         </Sidebar>
-    )
+    );
 }

@@ -64,7 +64,7 @@ export function LoginForm({ onSwitchMode }) {
                     } else {
                         router.push("/");
                     }
-                }, 200); // Delay helps ensure session updates
+                }, 300); // Delay helps ensure session updates
             } else {
                 toast.error(result.error || "লগইন করতে ব্যর্থ হয়েছে");
             }

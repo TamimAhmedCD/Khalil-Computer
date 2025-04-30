@@ -44,7 +44,7 @@ export function SiteHeader() {
                     <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                     <Input
                         type="search"
-                        placeholder="ডকুমেন্ট অনুসন্ধান করুন..."
+                        placeholder="অনুসন্ধান করুন..."
                         className="w-64 rounded-md border-gray-200 bg-gray-50 pl-10 focus-visible:ring-primary-500 lg:w-80"
                     />
                 </div>
@@ -103,8 +103,8 @@ export function SiteHeader() {
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="icon" className="rounded-full" aria-label="User menu">
                             <Avatar className="h-8 w-8">
-                                <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
-                                <AvatarFallback>ড</AvatarFallback>
+                                <AvatarImage src={session?.user?.image} alt="User" />
+                                <AvatarFallback className="bg-primary-600 text-white">{session?.user?.name?.charAt(0)?.toUpperCase() || "A"}</AvatarFallback>
                             </Avatar>
                         </Button>
                     </DropdownMenuTrigger>
