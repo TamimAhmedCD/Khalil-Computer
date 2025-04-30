@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
+import { useSession } from "next-auth/react";
 
 const navItems = [
   {
@@ -142,7 +143,9 @@ const MobileNavItem = ({ title, href, items }) => {
   );
 };
 
+
 const Navbar = () => {
+  const { data: session } = useSession()
   return (
     <nav className="py-6">
       <div className="flex justify-between gap-5 items-center">
@@ -168,16 +171,18 @@ const Navbar = () => {
           </div>
 
           <div>
-            {" "}
-            <Link href="/auth">
-              {" "}
+
+            {session?.user?.role === 'admin' ? <Link href="/admin/dashboard"><button className="bg-primary-600 hover:bg-transparent border border-primary-600 hover:text-primary-600 cursor-pointer transition-all duration-600 flex items-center gap-2 group py-2 px-4 rounded-md text-white">
+              ড্যাশবোর্ড
+            </button></Link> : <Link href="/student/dashboard">
+
               <Button
                 variant="outline"
                 className="text-base hover:text-primary-600 text-primary-600 border-primary-600"
               >
                 লগ-ইন
               </Button>
-            </Link>
+            </Link>}
           </div>
           <Sheet>
             <SheetTrigger asChild className="md:hidden">
