@@ -10,5 +10,5 @@ export const metadata = {
 };
 
 export default function AdminDashboard() {
-  return <div className="m-6"><AdminWelcomeCard /></div>;
+  return <div className="m-6 md:m-8"><AdminWelcomeCard /></div>;
 }

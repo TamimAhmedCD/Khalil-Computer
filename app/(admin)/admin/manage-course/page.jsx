@@ -2,6 +2,6 @@ import React from 'react'
 
 export default function ManageCourse() {
   return (
-    <div>ManageCourse</div>
+    <div className='m-6 md:m-8'>ManageCourse</div>
   )
 }
