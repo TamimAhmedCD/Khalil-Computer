@@ -21,7 +21,7 @@ import { logoutAction } from "@/app/actions/logoutAction"
 
 export function SiteHeader() {
     const [showSearch, setShowSearch] = useState(false)
-    const {data: session} = useSession()
+    const { data: session } = useSession()
 
     return (
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4 md:px-6 lg:px-8">
@@ -129,7 +129,7 @@ export function SiteHeader() {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
                             <div className="flex" onClick={() => logoutAction()}><LogOut className="mr-2 h-4 w-4" />
-                            <span>লগআউট</span></div>
+                                <span>লগআউট</span></div>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

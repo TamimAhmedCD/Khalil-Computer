@@ -45,17 +45,17 @@ const data = {
     navMain: [
         {
             title: "ড্যাশবোর্ড",
-            url: "dashboard",
+            url: "/admin/dashboard",
             icon: LayoutDashboardIcon,
         },
         {
             title: "কোর্স ম্যানেজমেন্ট",
-            url: "manage-course",
+            url: "/admin/manage-course",
             icon: Book,
         },
         {
             title: "শিক্ষার্থীগণ",
-            url: "students",
+            url: "/admin/students",
             icon: Users,
         },
         {

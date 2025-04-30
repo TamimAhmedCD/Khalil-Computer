@@ -1,3 +1,4 @@
+import { AdminWelcomeCard } from "@/components/admin/welcome-card";
 import React from "react";
 
 // Metadata for SEO and browser tab
@@ -9,5 +10,5 @@ export const metadata = {
 };
 
 export default function AdminDashboard() {
-  return <div>Hey Admin</div>;
+  return <div className="m-6"><AdminWelcomeCard /></div>;
 }
