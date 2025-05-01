@@ -548,7 +548,7 @@ export function RegistrationForm() {
                 </CardContent>
                 <CardFooter className="flex flex-col items-center justify-center border-t bg-primary-50 p-6 text-center text-sm">
                     <div className="bg-white p-3 rounded-lg shadow-sm border border-primary-100 w-full max-w-md">
-                        <p className="text-primary-700">📞 আপনার কোনো জিজ্ঞাসায় যোগাযোগ করতে পারেন: 01715409109</p>
+                        <p className="text-primary-700">📞 আপনার যে কোন জিজ্ঞাসায় হেল্প-লাইন  নাম্বার: 01715409109</p>
                     </div>
                 </CardFooter>
             </Card>

@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  trustHost: true,
   images: {
     domains: [
       "techgeekbuzz.com",
