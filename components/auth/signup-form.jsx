@@ -46,7 +46,7 @@ export function SignupForm({ onSwitchMode }) {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const router = useRouter()
 
-    const form = useForm ({
+    const form = useForm({
         resolver: zodResolver(signupFormSchema),
         defaultValues: {
             name: "",
@@ -68,7 +68,7 @@ export function SignupForm({ onSwitchMode }) {
             // Check if the response status is successful (201 Created)
             if (response.status === 201) {
                 toast.success(response.data.message);  // Display success toast
-                router.push("/dashboard");  // Redirect to the dashboard
+                router.push("/auth");  // Redirect to the dashboard
             } else {
                 // For 400, 500 errors, or any other status
                 toast.error(response.data.message || 'একটি ত্রুটি ঘটেছে। দয়া করে আবার চেষ্টা করুন।');

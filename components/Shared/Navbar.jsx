@@ -172,17 +172,26 @@ const Navbar = () => {
 
           <div>
 
-            {session?.user?.role === 'admin' ? <Link href="/admin/dashboard"><button className="bg-primary-600 hover:bg-transparent border border-primary-600 hover:text-primary-600 cursor-pointer transition-all duration-600 flex items-center gap-2 group py-2 px-4 rounded-md text-white">
-              ড্যাশবোর্ড
-            </button></Link> : <Link href="/student/dashboard">
+            {session?.user?.role === 'admin' ? (
+              <Link href="/admin/dashboard">
+                <button className="bg-primary-600 hover:bg-transparent border border-primary-600 hover:text-primary-600 cursor-pointer transition-all duration-600 flex items-center gap-2 group py-2 px-4 rounded-md text-white">
+                  ড্যাশবোর্ড
+                </button>
+              </Link>
+            ) : session?.user?.role === 'student' ? (
+              <Link href="/student/dashboard">
+                <button className="bg-primary-600 hover:bg-transparent border border-primary-600 hover:text-primary-600 cursor-pointer transition-all duration-600 flex items-center gap-2 group py-2 px-4 rounded-md text-white">
+                  ড্যাশবোর্ড
+                </button>
+              </Link>
+            ) : (
+              <Link href="/auth">
+                <button className="bg-primary-600 hover:bg-transparent border border-primary-600 hover:text-primary-600 cursor-pointer transition-all duration-600 flex items-center gap-2 group py-2 px-4 rounded-md text-white">
+                  লগইন
+                </button>
+              </Link>
+            )}
 
-              <Button
-                variant="outline"
-                className="text-base hover:text-primary-600 text-primary-600 border-primary-600"
-              >
-                লগ-ইন
-              </Button>
-            </Link>}
           </div>
           <Sheet>
             <SheetTrigger asChild className="md:hidden">
@@ -210,17 +219,25 @@ const Navbar = () => {
                   ))}
                 </div>
                 <div className="border-t pt-4">
-                  {session?.user?.role === 'admin' ? <Link href="/admin/dashboard"><button className="bg-primary-600 hover:bg-transparent border border-primary-600 hover:text-primary-600 cursor-pointer transition-all duration-600 flex items-center gap-2 group py-2 px-4 rounded-md text-white">
-                    ড্যাশবোর্ড
-                  </button></Link> : <Link href="/student/dashboard">
-
-                    <Button
-                      variant="outline"
-                      className="text-base hover:text-primary-600 text-primary-600 border-primary-600"
-                    >
-                      লগ-ইন
-                    </Button>
-                  </Link>}
+                  {session?.user?.role === 'admin' ? (
+                    <Link href="/admin/dashboard">
+                      <button className="w-full justify-center bg-primary-600 hover:bg-transparent border border-primary-600 hover:text-primary-600 cursor-pointer transition-all duration-600 flex items-center gap-2 group py-2 px-4 rounded-md text-white">
+                        ড্যাশবোর্ড
+                      </button>
+                    </Link>
+                  ) : session?.user?.role === 'student' ? (
+                    <Link href="/student/dashboard">
+                      <button className="w-full justify-center bg-primary-600 hover:bg-transparent border border-primary-600 hover:text-primary-600 cursor-pointer transition-all duration-600 flex items-center gap-2 group py-2 px-4 rounded-md text-white">
+                        ড্যাশবোর্ড
+                      </button>
+                    </Link>
+                  ) : (
+                    <Link href="/auth">
+                      <button className="bg-primary-600 hover:bg-transparent border border-primary-600 hover:text-primary-600 cursor-pointer transition-all duration-600 flex items-center gap-2 group py-2 px-4 rounded-md text-white w-full justify-center">
+                        লগইন
+                      </button>
+                    </Link>
+                  )}
                 </div>
               </div>
             </SheetContent>

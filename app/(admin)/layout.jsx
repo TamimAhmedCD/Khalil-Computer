@@ -1,41 +1,60 @@
 "use client";
 
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { AppSidebar } from "@/components/admin/app-sidebar";
 import { SiteHeader } from "@/components/admin/site-header";
 import { DashboardLoader } from "@/components/loader/dashboarLoader";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { useSession } from "next-auth/react";
+import UnauthorizedPage from "../unauthorized/page";
+import NotFoundPage from "../not-found";
 
 export default function AdminLayout({ children }) {
   const { data: session, status } = useSession();
-  console.log(session);
+  const router = useRouter();
+
+  // Redirect if not admin (this is client-side fallback, middleware should also exist)
+  useEffect(() => {
+    if (status === "authenticated" && session?.user?.role !== "admin") {
+      router.push("/unauthorized"); // custom unauthorized page
+    }
+  }, [status, session, router]);
 
   if (status === "loading") {
     return <DashboardLoader />;
   }
 
-  if (session?.user?.role === "admin") {
+  if (!session) {
     return (
-      <SidebarProvider>
-        <AppSidebar variant="inset" />
-        <SidebarInset>
-          <SiteHeader />
-          <div className="flex flex-1 flex-col">
-            <div className="@container/main flex flex-1 flex-col gap-2">
-              {children}
-              {/* <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+      <NotFoundPage />
+    );
+  }
+
+  if (session.user.role !== "admin") {
+    return (
+      <UnauthorizedPage />
+    );
+  }
+
+  return (
+    <SidebarProvider>
+      <AppSidebar variant="inset" />
+      <SidebarInset>
+        <SiteHeader />
+        <div className="flex flex-1 flex-col">
+          <div className="@container/main flex flex-1 flex-col gap-2">
+            {children}
+            {/* <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
               <SectionCards />
               <div className="px-4 lg:px-6">
                 <ChartAreaInteractive />
               </div>
               <DataTable data={data} />
             </div> */}
-            </div>
           </div>
-        </SidebarInset>
-      </SidebarProvider>
-    );
-  }
-
-  return null;
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
+  );
 }

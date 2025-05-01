@@ -53,18 +53,7 @@ export function LoginForm({ onSwitchMode }) {
                 toast.success("লগইন সফলভাবে সম্পন্ন হয়েছে!");
 
                 // Refresh session
-                router.refresh();
-
-                // Wait a moment for the session to update, then fetch it and route
-                setTimeout(async () => {
-                    if (session?.user?.role === "admin") {
-                        router.push("/admin/dashboard");
-                    } else if (session?.user?.role === "student") {
-                        router.push("/student/dashboard");
-                    } else {
-                        router.push("/");
-                    }
-                }, 500); // Delay helps ensure session updates
+                router.push('/auth')
             } else {
                 toast.error(result.error || "লগইন করতে ব্যর্থ হয়েছে");
             }
