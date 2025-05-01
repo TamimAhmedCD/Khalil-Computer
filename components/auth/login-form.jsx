@@ -22,9 +22,8 @@ const loginFormSchema = z.object({
 export function LoginForm({ onSwitchMode }) {
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
-    const searchParams = useSearchParams();
-    const callbackUrl = searchParams.get("callbackUrl") || "/";
 
+    // Initialize form with validation schema
     const form = useForm({
         resolver: zodResolver(loginFormSchema),
         defaultValues: {
@@ -34,13 +33,20 @@ export function LoginForm({ onSwitchMode }) {
         },
     });
 
+    // Handle form submission
     const onSubmit = async (data) => {
         setIsLoading(true);
+
         try {
+            // Call the login action
             const result = await loginAction(data.email, data.password);
+
             if (result?.success) {
-                toast.success("লগইন সফল হয়েছে!");
-                router.push(callbackUrl);
+                // Wait for 300ms before showing the success toast
+                setTimeout(() => {
+                    toast.success("লগইন সফল হয়েছে!");
+                }, 500);
+                router.push('/auth')
             } else {
                 toast.error(result.error || "লগইন করতে ব্যর্থ হয়েছে");
             }
@@ -51,11 +57,15 @@ export function LoginForm({ onSwitchMode }) {
         }
     };
 
+
     return (
         <div className="space-y-6">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    {/* Reusable Login form fields */}
                     <LoginFormFields form={form} isLoading={isLoading} />
+
+                    {/* Submit Button */}
                     <Button
                         type="submit"
                         className="h-11 w-full bg-primary-600 text-white hover:bg-primary-700"
@@ -66,16 +76,23 @@ export function LoginForm({ onSwitchMode }) {
                 </form>
             </Form>
 
+            {/* Separator */}
             <div className="relative flex items-center justify-center">
                 <Separator className="absolute w-full" />
                 <span className="relative bg-white px-2 text-xs text-gray-500">অথবা</span>
             </div>
 
+            {/* Social login buttons */}
             <SocialLoginButtons />
 
+            {/* Registration link */}
             <div className="text-center text-sm">
                 <span className="text-gray-600">অ্যাকাউন্ট নেই? </span>
-                <Button variant="link" className="p-0 text-primary-600" onClick={onSwitchMode}>
+                <Button
+                    variant="link"
+                    className="p-0 text-primary-600"
+                    onClick={onSwitchMode} // Switch to registration page
+                >
                     রেজিস্ট্রেশন করুন
                 </Button>
             </div>
