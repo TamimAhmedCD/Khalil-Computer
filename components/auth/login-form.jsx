@@ -2,12 +2,18 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -15,12 +21,9 @@ import { Separator } from "@/components/ui/separator";
 import { SocialLoginButtons } from "./SocialLoginButton";
 import { toast } from "sonner";
 import { loginAction } from "@/app/actions/login";
-import { useSession } from "next-auth/react";
 
 const loginFormSchema = z.object({
-    email: z.string().email({
-        message: "সঠিক ইমেইল ঠিকানা দিন",
-    }),
+    email: z.string().email({ message: "সঠিক ইমেইল ঠিকানা দিন" }),
     password: z.string().min(6, {
         message: "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে",
     }),
@@ -41,19 +44,16 @@ export function LoginForm({ onSwitchMode }) {
         },
     });
 
-    const { data: session } = useSession(); // Custom fetch or call /api/session
     const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
     const onSubmit = async (data) => {
         setIsLoading(true);
         try {
             const result = await loginAction(data.email, data.password);
+            console.log(result);
 
             if (result?.success) {
-                toast.success("লগইন সফলভাবে সম্পন্ন হয়েছে!");
-
-                // Refresh session
-                router.push('/auth')
+                toast.success("লগইন সফল হয়েছে!");
             } else {
                 toast.error(result.error || "লগইন করতে ব্যর্থ হয়েছে");
             }
@@ -63,8 +63,6 @@ export function LoginForm({ onSwitchMode }) {
             setIsLoading(false);
         }
     };
-
-
 
     return (
         <div className="space-y-6">
@@ -140,20 +138,12 @@ export function LoginForm({ onSwitchMode }) {
                                         className="data-[state=checked]:bg-primary-600 data-[state=checked]:text-primary-foreground"
                                     />
                                 </FormControl>
-                                <FormLabel className="text-sm font-normal text-gray-600">আমাকে মনে রাখুন</FormLabel>
+                                <FormLabel className="text-sm font-normal text-gray-600">
+                                    আমাকে মনে রাখুন
+                                </FormLabel>
                             </FormItem>
                         )}
                     />
-
-                    {form.formState.errors.root && (
-                        <motion.div
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="rounded-md bg-red-50 p-3 text-sm text-red-600"
-                        >
-                            {form.formState.errors.root.message}
-                        </motion.div>
-                    )}
 
                     <Button
                         type="submit"
@@ -173,14 +163,20 @@ export function LoginForm({ onSwitchMode }) {
 
             <div className="relative flex items-center justify-center">
                 <Separator className="absolute w-full" />
-                <span className="relative bg-white px-2 text-xs text-gray-500">অথবা</span>
+                <span className="relative bg-white px-2 text-xs text-gray-500">
+                    অথবা
+                </span>
             </div>
 
             <SocialLoginButtons />
 
             <div className="text-center text-sm">
                 <span className="text-gray-600">অ্যাকাউন্ট নেই? </span>
-                <Button variant="link" className="h-auto p-0 text-primary-600 hover:text-primary-700" onClick={onSwitchMode}>
+                <Button
+                    variant="link"
+                    className="h-auto p-0 text-primary-600 hover:text-primary-700"
+                    onClick={onSwitchMode}
+                >
                     রেজিস্ট্রেশন করুন
                 </Button>
             </div>

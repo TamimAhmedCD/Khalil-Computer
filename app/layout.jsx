@@ -1,7 +1,6 @@
 import { Toaster } from "@/components/ui/sonner";
 import { Hind_Siliguri, Montserrat } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
-import { Analytics } from '@vercel/analytics/next';
 import "./globals.css";
 
 export const metadata = {
@@ -34,7 +33,6 @@ export default function RootLayout({ children }) {
                 <SessionProvider>{children}</SessionProvider>
 
                 <Toaster />
-                <Analytics />
             </body>
         </html>
     );

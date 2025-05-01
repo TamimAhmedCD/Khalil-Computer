@@ -15,6 +15,7 @@ export async function loginAction(email, password) {
       return { success: false, error: result.error };
     }
 
+    // Just return success, let client decide where to go
     return { success: true };
   } catch (error) {
     if (error instanceof AuthError) {
@@ -26,6 +27,10 @@ export async function loginAction(email, password) {
             : "লগইন করতে সমস্যা হয়েছে",
       };
     }
-    return { success: false, error: "অজানা ত্রুটি, আবার চেষ্টা করুন" };
+
+    return {
+      success: false,
+      error: "অজানা ত্রুটি, আবার চেষ্টা করুন",
+    };
   }
 }
