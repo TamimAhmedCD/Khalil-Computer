@@ -146,7 +146,6 @@ const MobileNavItem = ({ title, href, items }) => {
 
 const Navbar = () => {
   const { data: session } = useSession()
-  console.log(session);
   return (
     <nav className="py-6">
       <div className="flex justify-between gap-5 items-center">
