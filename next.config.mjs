@@ -6,6 +6,7 @@ const nextConfig = {
       "cdn.10minuteschool.com",
       "revolutionit.com.bd",
       "img.freepik.com",
+      "res.cloudinary.com",
     ],
   },
 };
