@@ -41,9 +41,9 @@ export default function CourseDetails() {
     <div className="p-4">
       <main className="flex-1">
         <div className="py-10">
-          <div className="flex justify-between items-center mb-6 gap-2">
+          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center mb-6 gap-2">
             <h1 className="text-3xl font-semibold text-primary-950">{course?.title}</h1>
-            {course?.tags.map((tag) => <Badge key={tag} variant="outline" className="py-2 border-primary-300 text-primary-600"> {tag} </Badge>)}
+            <div className="flex gap-2">{course?.tags.map((tag) => <Badge key={tag} variant="outline" className="py-2 border-primary-300 text-primary-600"> {tag}</Badge>)}</div>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left Column - Course Content */}
