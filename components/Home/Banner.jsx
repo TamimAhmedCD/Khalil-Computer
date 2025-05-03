@@ -16,12 +16,12 @@ export default function Banner() {
           এবং আপনার সাফল্যের যাত্রা শুরু করুন।
         </p>
         <div className="flex gap-3 font-hind-siliguri">
-          <button
-            className="hover:bg-primary-600 cursor-pointer text-primary-600 rounded-md border-primary-600 transition-all duration-600 flex items-center gap-2 group hover:text-white border px-4"
+          <a href="#courses"><button
+            className="hover:bg-primary-600 py-3 cursor-pointer text-primary-600 rounded-md border-primary-600 transition-all duration-600 flex items-center gap-2 group hover:text-white border px-4"
           >
             {/* <ArrowRight size={20} className="transition-transform duration-200 group-hover:translate-x-1" /> */}
             কোর্স সমূহ
-          </button>
+          </button></a>
           <Link href="registration-form"><button className="bg-primary-600 hover:bg-transparent border border-primary-600 hover:text-primary-600 cursor-pointer transition-all duration-600 flex items-center gap-2 group py-3 px-4 rounded-md text-white">
             ভর্তি হোন
           </button></Link>

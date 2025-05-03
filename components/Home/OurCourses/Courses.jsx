@@ -19,7 +19,7 @@ export default function Courses() {
   console.log(courses);
 
   return (
-    <section>
+    <section id="courses">
       {/* Heading */}
       <div className="text-center lg:w-2/4 mx-auto">
         <h1 className="font-hind-siliguri font-bold text-3xl md:text-4xl mb-4">

@@ -24,7 +24,7 @@ export async function loginAction(email, password) {
         error:
           error.type === "CredentialsSignin"
             ? "ইমেইল বা পাসওয়ার্ড সঠিক নয়"
-            : "লগইন করতে সমস্যা হয়েছে",
+            : "ইমেইল বা পাসওয়ার্ড সঠিক নয়",
       };
     }
 

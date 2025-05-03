@@ -46,8 +46,8 @@ export function LoginForm({ onSwitchMode }) {
                 setTimeout(() => {
                     toast.success("লগইন সফল হয়েছে!");
                 }, 500);
-                router.refresh()
                 router.push('/')
+                window.location.reload()
             } else {
                 toast.error(result.error || "লগইন করতে ব্যর্থ হয়েছে");
             }
