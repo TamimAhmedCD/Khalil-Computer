@@ -5,10 +5,12 @@ import { cn } from "@/lib/utils"
 function Input({
   className,
   type,
+  defaultValue,
   ...props
 }) {
   return (
     (<input
+      defaultValue={defaultValue}
       type={type}
       data-slot="input"
       className={cn(

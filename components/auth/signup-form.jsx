@@ -90,6 +90,7 @@ export function SignupForm({ onSwitchMode }) {
             });
         } finally {
             setIsLoading(false);  // Stop the loading spinner once the process is complete
+            onSwitchMode()
         }
     }
 

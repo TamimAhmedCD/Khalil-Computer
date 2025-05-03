@@ -2,6 +2,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { Hind_Siliguri, Montserrat } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import "./globals.css";
+import Providers from "@/provider/tenStackProvider";
 
 export const metadata = {
     title:
@@ -30,7 +31,7 @@ export default function RootLayout({ children }) {
             <body
                 className={` ${hindSiliguri.variable} ${montserrat.variable}  antialiased font-hind-siliguri`} cz-shortcut-listen="true"
             >
-                <SessionProvider>{children}</SessionProvider>
+                <Providers><SessionProvider>{children}</SessionProvider></Providers>
 
                 <Toaster />
             </body>

@@ -1,5 +1,7 @@
-import { courseData } from "@/Assets/assets";
+'use client'
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import parse from 'html-react-parser';
 import {
   Card,
   CardContent,
@@ -7,26 +9,48 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 
-export default function CourseDetails({ params }) {
-  const courseId = params.id;
-  const course = [courseData].find((course) => course.id === courseId);
+const fetchCourse = async (id) => {
+  const res = await axios.get(`/api/courses/${id}`);
+  return res.data;
+};
 
-  if (!course) {
-    return <div>কোর্স পাওয়া যায়নি</div>;
-  }
+export default function CourseDetails() {
+  const params = useParams();
+  const id = params?.id;
+
+  const {
+    data: course,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["course", id],
+    queryFn: () => fetchCourse(id),
+    enabled: !!id,
+  });
+
+  if (isLoading) return <p>লোড হচ্ছে...</p>;
+  if (isError) return <p>ত্রুটি: {(error).message}</p>;
 
   return (
-    <div className="flex">
+    <div className="p-4">
       <main className="flex-1">
         <div className="py-10">
+          <div className="flex justify-between items-center mb-6 gap-2">
+            <h1 className="text-3xl font-semibold text-primary-950">{course?.title}</h1>
+            {course?.tags.map((tag) => <Badge key={tag} variant="outline" className="py-2 border-primary-300 text-primary-600"> {tag} </Badge>)}
+          </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left Column - Course Content */}
             <div className="lg:col-span-2">
               <Image
-                src={course.thumbnail}
-                alt={course.title}
+                src={course?.courseThumbnail}
+                alt={course?.title}
                 width={750}
                 height={450}
                 className="rounded-lg mb-5"
@@ -39,7 +63,7 @@ export default function CourseDetails({ params }) {
                   </CardTitle>
                   <CardDescription>
                     <p className="text-gray-700 text-justify text-base">
-                      {course.about}
+                      {course?.description}
                     </p>
                   </CardDescription>
                 </CardHeader>
@@ -51,42 +75,7 @@ export default function CourseDetails({ params }) {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div>
-                    <h5 className="text-lg font-bold text-gray-800">
-                      কোর্সটি যাদের জন্য
-                    </h5>
-                    <ul className="list-disc ml-8 my-4 text-gray-700">
-                      {course.whoCanEnroll.map((item, i) => (
-                        <li className="py-1" key={i}>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h5 className="text-lg font-bold text-gray-800">
-                      কোর্সটি করে আপনি কী কী করতে পারবেন?
-                    </h5>
-                    <ul className="list-disc ml-8 my-4 text-gray-700">
-                      {course.whatYouCanDo.map((item, i) => (
-                        <li className="py-1" key={i}>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <h5 className="text-lg font-bold text-gray-800">
-                      কেন কোর্সটি করবেন?
-                    </h5>
-                    <ul className="list-disc ml-8 my-4 text-gray-700">
-                      {course.whatYouLearn.map((item, i) => (
-                        <li className="py-1" key={i}>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  <div className="prose">{parse(course?.fullDescription)}</div>
                 </CardContent>
               </Card>
             </div>
@@ -106,53 +95,23 @@ export default function CourseDetails({ params }) {
                   <h4 className="text-gray-500 mb-3">কোর্স ইনস্ট্রাক্টর</h4>
                   <div className="flex items-center gap-3">
                     <Image
-                      src={course.instructor.photo}
+                      src={course?.instructorPhoto}
                       alt="Instructor"
                       width={50}
                       height={50}
                       className="rounded-full"
                     />
                     <div>
-                      <h5 className="font-medium">{course.instructor.name}</h5>
+                      <h5 className="font-medium">{course?.instructorName}</h5>
                       <p className="text-sm text-gray-500">
-                        {course.instructor.title}
+                        {course?.instructorDesignation}
                       </p>
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <h4 className="font-medium mb-4">এই কোর্সে যা থাকছে</h4>
-                  <ul className="space-y-3">
-                    <li className="flex items-start gap-2">
-                      <span className="text-purple-500 mt-1">■</span>
-                      <span>কোর্সটি করতেছে ২.৫০ ঘন্টা</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-purple-500 mt-1">■</span>
-                      <span>সময় লাগবে ১০ ঘন্টা</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-purple-500 mt-1">■</span>
-                      <span>১৫টি ভিডিও ক্লাস</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-purple-500 mt-1">■</span>
-                      <span>ক্লাসরুমে প্যাকেজিং প্রজেক্ট</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-purple-500 mt-1">■</span>
-                      <span>প্র্যাকটিক্যাল ভাবে শেখানো</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-purple-500 mt-1">■</span>
-                      <span>সার্টিফিকেট প্রদান</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-purple-500 mt-1">■</span>
-                      <span>কোর্সের দেয়ার আজীবন</span>
-                    </li>
-                  </ul>
+                  <div className="prose">{parse(course?.whatInside)}</div>
                 </div>
               </div>
             </div>

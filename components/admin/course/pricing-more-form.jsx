@@ -7,10 +7,12 @@ import { Switch } from "@/components/ui/switch"
 import { motion } from "framer-motion"
 import { useEffect } from "react"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { useSession } from "next-auth/react"
 
 export function PricingMoreForm() {
     const { control, setValue, watch } = useFormContext()
     const isPaid = watch("isPaid")
+    const { data: session } = useSession()
 
     // Reset price to 0 when switching to free
     useEffect(() => {
@@ -137,7 +139,7 @@ export function PricingMoreForm() {
                     <FormItem>
                         <FormLabel>ইনস্ট্রাক্টরের নাম</FormLabel>
                         <FormControl>
-                            <Input placeholder="ইনস্ট্রাক্টরের নাম লিখুন" {...field} />
+                            <Input placeholder="ইনস্ট্রাক্টরের নাম লিখুন" {...field} defaultValue={session.user.name} />
                         </FormControl>
                         <FormMessage />
                     </FormItem>

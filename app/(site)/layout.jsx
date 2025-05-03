@@ -1,6 +1,7 @@
 import Navbar from "@/components/Shared/Navbar";
 import { Separator } from "@/components/ui/separator";
 import { Footer } from "@/components/Footer";
+import NotificationBanner from "@/components/Temp/NotificationBanner";
 
 export const metadata = {
   title: "Khalil Computer | Graphic Design, Freelancing & Digital Marketing Courses",
@@ -11,6 +12,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <>
+      <NotificationBanner />
       <div className="container mx-auto px-5 md:px-10 lg:px-20">
         <Navbar />
       </div>

@@ -7,19 +7,11 @@ import { AppSidebar } from "@/components/admin/app-sidebar";
 import { SiteHeader } from "@/components/admin/site-header";
 import { DashboardLoader } from "@/components/loader/dashboarLoader";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import UnauthorizedPage from "../unauthorized/page";
 import NotFoundPage from "../not-found";
 
 export default function AdminLayout({ children }) {
   const { data: session, status } = useSession();
   const router = useRouter();
-
-  // Redirect if not admin (this is client-side fallback, middleware should also exist)
-  useEffect(() => {
-    if (status === "authenticated" && session?.user?.role !== "admin") {
-      router.push("/unauthorized"); // custom unauthorized page
-    }
-  }, [status, session, router]);
 
   if (status === "loading") {
     return <DashboardLoader />;
@@ -33,7 +25,7 @@ export default function AdminLayout({ children }) {
 
   if (session.user.role !== "admin") {
     return (
-      <UnauthorizedPage />
+      router.push("/unauthorized")
     );
   }
 

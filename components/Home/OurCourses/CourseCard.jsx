@@ -50,8 +50,7 @@ import React from "react";
 //   },
 // ];
 
-export default function CourseCard() {
-  const courses = [courseData]
+export default function CourseCard({ courses }) {
   return (
     <Carousel
       opts={{
@@ -59,12 +58,12 @@ export default function CourseCard() {
       }}
     >
       <CarouselContent>
-        {courses.map((course) => (
-          <CarouselItem key={course.id} className="md:basis-1/2 lg:basis-1/3">
+        {courses?.map((course) => (
+          <CarouselItem key={course._id} className="md:basis-1/2 lg:basis-1/3">
             <Card>
               <CardHeader>
                 <Image
-                  src={course.thumbnail}
+                  src={course.courseThumbnail}
                   width={600}
                   height={300}
                   alt={course.title}
@@ -76,7 +75,7 @@ export default function CourseCard() {
               </CardHeader>
               <CardContent>
                 <p className="font-medium">
-                  <span className="text-gray-600">By</span> {course.instructor.name}
+                  <span className="text-gray-600">By</span> {course.instructorName}
                 </p>
               </CardContent>
               <Separator />
@@ -84,7 +83,7 @@ export default function CourseCard() {
                 <p className="font-bold">
                   <span className="font-hind-siliguri">৳</span> {course.price}
                 </p>
-                <Link href={`/courses/${course.id}`}>
+                <Link href={`/courses/${course._id}`}>
                   <Button
                     className="text-base hover:text-white text-primary-600 border-primary-600 hover:bg-primary-600"
                     variant="outline"

@@ -1,8 +1,23 @@
+'use client'
 import Link from "next/link";
 import CourseCard from "./CourseCard";
 import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
-export default async function Courses() {
+const fetchCourses = async () => {
+  const res = await axios.get('/api/courses');
+  return res.data;
+};
+
+export default function Courses() {
+
+  const { data: courses, isLoading, error } = useQuery({
+    queryKey: ['courses'],
+    queryFn: fetchCourses,
+  });
+  console.log(courses);
+
   return (
     <section>
       {/* Heading */}
@@ -17,7 +32,7 @@ export default async function Courses() {
       </div>
       {/* Card & Card Content */}
       <div className="mt-8">
-        <CourseCard />
+        <CourseCard courses={courses} />
       </div>
       {/* Button */}
       <div className="flex justify-center">

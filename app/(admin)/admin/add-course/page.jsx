@@ -26,7 +26,7 @@ const courseFormSchema = z.object({
 
     // Step 2: Course Overview
     fullDescription: z.string().min(50, { message: "বিস্তারিত বর্ণনা কমপক্ষে ৫০ অক্ষর হতে হবে" }),
-    courseImage: z.any().optional(),
+    courseThumbnail: z.any().optional(),
     whatInside: z.string().min(10, { message: "কোর্সের বিষয়বস্তু কমপক্ষে ১০ অক্ষর হতে হবে" }),
     courseImagePreview: z.string().min(1, { message: "কোর্সের ছবি আপলোড করুন" }),
 
@@ -52,7 +52,7 @@ const basicInfoSchema = courseFormSchema.pick({
 
 const courseOverviewSchema = courseFormSchema.pick({
     fullDescription: true,
-    courseImage: true,
+    courseThumbnail: true,
     whatInside: true,
     courseImagePreview: true,
 })
@@ -71,7 +71,7 @@ export default function AddCoursePage() {
             tags: [],
             fullDescription: "",
             whatInside: "",
-            courseImage: null,
+            courseThumbnail: null,
             courseImagePreview: "",
             isPaid: false,
             price: 0,
@@ -120,7 +120,7 @@ export default function AddCoursePage() {
                 const result = await courseOverviewSchema.safeParseAsync({
                     fullDescription: data.fullDescription,
                     whatInside: data.whatInside,
-                    courseImage: data.courseImage,
+                    courseThumbnail: data.courseThumbnail,
                     courseImagePreview: data.courseImagePreview,
                 })
 
@@ -168,16 +168,16 @@ export default function AddCoursePage() {
 
             // Upload image to Cloudinary if a file is selected
             let imageUrl = data.courseImagePreview
-            if (data.courseImage && typeof data.courseImage !== "string") {
-                imageUrl = await uploadToCloudinary(data.courseImage)
+            if (data.courseThumbnail && typeof data.courseThumbnail !== "string") {
+                imageUrl = await uploadToCloudinary(data.courseThumbnail)
             }
 
             // Prepare final payload
+            const { courseImagePreview, ...rest } = data
             const payload = {
-                ...data,
-                courseImage: imageUrl,
+                ...rest,
+                courseThumbnail: imageUrl,
             }
-
             // POST to your backend
             await axios.post("/api/courses", payload)
 

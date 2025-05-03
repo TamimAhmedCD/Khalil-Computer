@@ -18,7 +18,7 @@ export function CourseOverviewForm() {
     const handleImageUpload = (e) => {
         const file = e.target.files?.[0]
         if (file) {
-            setValue("courseImage", file)
+            setValue("courseThumbnail", file)
             const reader = new FileReader()
             reader.onload = (event) => {
                 setValue("courseImagePreview", event.target?.result)
@@ -48,7 +48,7 @@ export function CourseOverviewForm() {
 
         const file = e.dataTransfer.files?.[0]
         if (file && file.type.startsWith("image/")) {
-            setValue("courseImage", file)
+            setValue("courseThumbnail", file)
             const reader = new FileReader()
             reader.onload = (event) => {
                 const result = event.target?.result
@@ -59,7 +59,7 @@ export function CourseOverviewForm() {
     }
 
     const removeImage = () => {
-        setValue("courseImage", null)
+        setValue("courseThumbnail", null)
         setValue("courseImagePreview", "")
     }
 
@@ -150,7 +150,7 @@ export function CourseOverviewForm() {
                                 onDragOver={handleDragOver}
                                 onDragLeave={handleDragLeave}
                                 onDrop={handleDrop}
-                                onClick={() => document.getElementById("courseImage")?.click()}
+                                onClick={() => document.getElementById("courseThumbnail")?.click()}
                             >
                                 {courseImagePreview ? (
                                     <div className="relative">
@@ -182,7 +182,7 @@ export function CourseOverviewForm() {
                                 )}
                                 <input
                                     type="file"
-                                    id="courseImage"
+                                    id="courseThumbnail"
                                     accept="image/*"
                                     onChange={handleImageUpload}
                                     className="hidden"

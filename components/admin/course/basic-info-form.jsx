@@ -12,7 +12,7 @@ import { motion } from "framer-motion"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 
 const categories = [
-    { value: "programming", label: "প্রোগ্রামিং" },
+    { value: "IT & Computer Skills", label: "IT & Computer Skills" },
     { value: "design", label: "ডিজাইন" },
     { value: "business", label: "ব্যবসা" },
     { value: "marketing", label: "মার্কেটিং" },
