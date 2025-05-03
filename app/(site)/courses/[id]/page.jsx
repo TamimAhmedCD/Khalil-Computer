@@ -13,11 +13,14 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const fetchCourse = async (id) => {
   const res = await axios.get(`/api/courses/${id}`);
   return res.data;
 };
+
+
 
 export default function CourseDetails() {
   const params = useParams();
@@ -84,7 +87,7 @@ export default function CourseDetails() {
             <div className="lg:col-span-1">
               <div className="border rounded-lg p-6 sticky top-4">
                 <div className="mb-4">
-                  <h3 className="text-3xl font-bold">৳ {course.price}</h3>
+                  <h3 className="text-3xl font-bold text-primary-900">৳ {course.price}</h3>
                 </div>
 
                 <Button className="w-full bg-primary-600 hover:bg-primary-700 mb-6 py-6">
@@ -94,17 +97,14 @@ export default function CourseDetails() {
                 <div className="mb-6">
                   <h4 className="text-gray-500 mb-3">কোর্স ইনস্ট্রাক্টর</h4>
                   <div className="flex items-center gap-3">
-                    <Image
-                      src={course?.instructorPhoto}
-                      alt="Instructor"
-                      width={50}
-                      height={50}
-                      className="rounded-full"
-                    />
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={course?.instructorPhoto} alt="User" />
+                      <AvatarFallback className="bg-primary-600 text-white">{course?.instructorName?.charAt(0)?.toUpperCase() || "A"}</AvatarFallback>
+                    </Avatar>
                     <div>
                       <h5 className="font-medium">{course?.instructorName}</h5>
                       <p className="text-sm text-gray-500">
-                        {course?.instructorDesignation}
+                        {course?.instructorDesignation ? course.instructorDesignation : "IT Expert"}
                       </p>
                     </div>
                   </div>
