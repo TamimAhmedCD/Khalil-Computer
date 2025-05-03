@@ -91,7 +91,7 @@ export default function CourseDetails() {
                 </div>
 
                 <Button className="w-full bg-primary-600 hover:bg-primary-700 mb-6 py-6">
-                  কোর্সটি কিনুন
+                  ভর্তি হোন
                 </Button>
 
                 <div className="mb-6">
