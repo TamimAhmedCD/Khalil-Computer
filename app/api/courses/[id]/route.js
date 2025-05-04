@@ -12,7 +12,7 @@ export async function GET(req, { params }) {
 
   try {
     const db = await collection("courses");
-    const course = await db.findOne({ _id: new ObjectId(id) });
+    const course = await db.findOne({ _id: new ObjectId(id), published: true });
 
     if (!course) {
       return NextResponse.json({ error: "Course not found" }, { status: 404 });

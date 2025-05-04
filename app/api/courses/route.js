@@ -4,7 +4,9 @@ import { NextResponse } from "next/server";
 // 📌 GET: Fetch all courses
 export async function GET() {
   try {
-    const courses = await (await collection("courses")).find({}).toArray();
+    const courses = await (await collection("courses"))
+      .find({ published: true })
+      .toArray();
     return NextResponse.json(courses);
   } catch {
     return NextResponse.json(
