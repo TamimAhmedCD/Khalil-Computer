@@ -14,6 +14,7 @@ import axios from "axios";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import CourseDetailsPageLoader from "@/components/loader/course-details-page-loader";
 
 const fetchCourse = async (id) => {
   const res = await axios.get(`/api/courses/${id}`);
@@ -37,7 +38,7 @@ export default function CourseDetails() {
     enabled: !!id,
   });
 
-  if (isLoading) return <p>লোড হচ্ছে...</p>;
+  if (isLoading) return <CourseDetailsPageLoader />;
   if (isError) return <p>ত্রুটি: {(error).message}</p>;
 
   return (

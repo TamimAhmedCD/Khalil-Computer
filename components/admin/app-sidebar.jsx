@@ -56,6 +56,10 @@ const data = {
                 {
                     title: "অ্যাড কোর্স",
                     url: '/admin/add-course'
+                },
+                {
+                    title: "ম্যানেজ কোর্স",
+                    url: '/admin/manage-course'
                 }
             ]
         },
