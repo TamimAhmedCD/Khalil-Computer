@@ -82,14 +82,14 @@ export function JoinFreeSeminar({ open, onOpenChange }) {
     }
 
     return (
-        <Dialog>
+        <Dialog className="max-h-screen overflow-auto">
             <DialogTrigger asChild>
                 <button className="hover:bg-primary-600 py-3 cursor-pointer text-primary-600 rounded-md border-primary-600 transition-all duration-600 flex items-center gap-2 group hover:text-white border px-4">
                     জয়েন ফ্রি সেমিনার
                     {/* <ArrowRight size={20} className="transition-transform duration-200 group-hover:translate-x-1" /> */}
                 </button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="max-h-screen overflow-auto">
                 <DialogHeader>
                     <div className="flex justify-center mb-2">
                         <div className="bg-primary-500 text-white p-3 rounded-full">
@@ -229,9 +229,10 @@ export function JoinFreeSeminar({ open, onOpenChange }) {
                                                 <SelectItem value="ছাত্র/ছাত্রী">
                                                     ছাত্র/ছাত্রী
                                                 </SelectItem>
-                                                <SelectItem value="ব্যবসায়ী">ব্যবসায়ী</SelectItem>
                                                 <SelectItem value="চাকরিজীবী">চাকরিজীবী</SelectItem>
+                                                <SelectItem value="ব্যবসায়ী">ব্যবসায়ী</SelectItem>
                                                 <SelectItem value="গৃহিণী">গৃহিণী</SelectItem>
+                                                <SelectItem value="প্রবাসী">প্রবাসী</SelectItem>
                                                 <SelectItem value="অন্যান্য">অন্যান্য</SelectItem>
                                             </SelectContent>
                                         </Select>
