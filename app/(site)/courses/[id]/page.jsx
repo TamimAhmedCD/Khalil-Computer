@@ -15,6 +15,7 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import CourseDetailsPageLoader from "@/components/loader/course-details-page-loader";
+import CourseNotFound from "@/components/NotFound/course-not-found";
 
 const fetchCourse = async (id) => {
   const res = await axios.get(`/api/courses/${id}`);
@@ -39,7 +40,7 @@ export default function CourseDetails() {
   });
 
   if (isLoading) return <CourseDetailsPageLoader />;
-  if (isError) return <p>ত্রুটি: {(error).message}</p>;
+  if (isError) return (<CourseNotFound />);
 
   return (
     <div className="p-4">
