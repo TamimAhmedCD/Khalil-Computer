@@ -240,18 +240,16 @@ const Contact = () => {
 
                 {/* Map Section */}
                 <div className="mt-10">
-                    <Card className="overflow-hidden shadow-md">
+                    <Card className="overflow-hidden shadow-md py-0">
                         <div className="h-[400px] w-full bg-muted relative">
                             <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3624.6898142188134!2d92.1901875!3d24.703187500000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3751c90ccdc2e6c9%3A0x42cf91f581a63547!2zS2hhbGlsIENvbXB1dGVyIOCmluKAjOCmsuCmv-CmsiDgppXigIzgpq7gp43gpqrgpr_gpongpp_gpr7gprA!5e0!3m2!1sen!2sbd!4v1746296020966!5m2!1sen!2sbd" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-                                width="100%"
-                                height="100%"
-                                style={{ border: 0 }}
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3624.6898142188134!2d92.1901875!3d24.703187500000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3751c90ccdc2e6c9%3A0x42cf91f581a63547!2zS2hhbGlsIENvbXB1dGVyIOCmluKAjOCmsuCmv-CmsiDgppXigIzgpq7gp43gpqrgpr_gpongpp_gpr7gprA!5e0!3m2!1sen!2sbd!4v1746296020966!5m2!1sen!2sbd"
+                                style={{ border: 0, width: '100%', height: '450px' }}
                                 allowFullScreen
                                 loading="lazy"
                                 referrerPolicy="no-referrer-when-downgrade"
                                 title="খালিল কম্পিউটার ট্রেনিং সেন্টার লোকেশন"
-                            ></iframe>
+                            />
                         </div>
                     </Card>
                 </div>

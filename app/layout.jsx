@@ -5,8 +5,10 @@ import "./globals.css";
 import Providers from "@/provider/tenStackProvider";
 
 export const metadata = {
-    title:
-        "Khalil Computer | Graphic Design, Freelancing & Digital Marketing Courses",
+    title: {
+        template: '%s | Khalil Computer',
+        default: 'Acme', // a default is required when creating a template
+    },
     description:
         "খলিল কম্পিউটার বাংলাদেশের অন্যতম সেরা প্রশিক্ষণ প্রতিষ্ঠান, যেখানে আপনি গ্রাফিক ডিজাইন, ওয়েব ডিজাইন, ফ্রিল্যান্সিং এবং ডিজিটাল মার্কেটিং এর উপর হাতে-কলমে প্রশিক্ষণ নিতে পারবেন। দক্ষ প্রশিক্ষকদের মাধ্যমে আপনার ক্যারিয়ার গড়ে তুলুন।",
 };
