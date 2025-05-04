@@ -32,6 +32,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "../ui/select";
+import axios from "axios";
 
 const formSchema = z.object({
     studentName: z.string().min(2, {
@@ -40,14 +41,10 @@ const formSchema = z.object({
     studentMobile: z.string().min(11, {
         message: "সঠিক মোবাইল নম্বর দিন",
     }),
-    location: z.string().min(2, {
-        message: "শিক্ষাগত যোগ্যতা অবশ্যই দিতে হবে",
-    }),
-    occupation: z.string().min(2, {
-        message: "পেশা অবশ্যই দিতে হবে",
-    }),
-    course: z.string({
-        required_error: "কোর্স নির্বাচন করুন",
+    location: z.string().optional(),
+    occupation: z.string().optional(),
+    course: z.string().min(2, {
+        message: "কোর্স অবশ্যই দিতে হবে",
     }),
 });
 
@@ -71,6 +68,7 @@ export function JoinFreeSeminar({ open, onOpenChange }) {
 
         try {
             // Simulate API call
+            const sendEmail = await axios.post("/api/mail/free-seminar", data);
             await new Promise((resolve) => setTimeout(resolve, 1000));
             console.log("Form data:", data);
             setIsSuccess(true);
@@ -142,11 +140,11 @@ export function JoinFreeSeminar({ open, onOpenChange }) {
                             ধন্যবাদ! আপনার নিবন্ধন সফল হয়েছে
                         </h3>
                         <p className="text-gray-600">আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব</p>
-                        <DialogClose><Button
-                            className="mt-4 bg-primary-600 hover:bg-pritext-primary-700 text-white"
-                        >
-                            বন্ধ করুন
-                        </Button></DialogClose>
+                        <DialogClose>
+                            <Button className="mt-4 bg-primary-600 hover:bg-pritext-primary-700 text-white">
+                                বন্ধ করুন
+                            </Button>
+                        </DialogClose>
                     </div>
                 ) : (
                     <Form {...form}>
@@ -202,7 +200,9 @@ export function JoinFreeSeminar({ open, onOpenChange }) {
                                         <FormLabel className="text-primary-700 font-medium">
                                             ঠিকানা
                                         </FormLabel>
-                                        <Input placeholder="আপনার ঠিকানা লিখুন" {...field} />
+                                        <FormControl>
+                                            <Input placeholder="আপনার ঠিকানা লিখুন" {...field} />
+                                        </FormControl>
                                         <FormMessage className="text-red-500" />
                                     </FormItem>
                                 )}
@@ -214,7 +214,7 @@ export function JoinFreeSeminar({ open, onOpenChange }) {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="text-primary-700 font-medium">
-                                            পেশা *
+                                            পেশা
                                         </FormLabel>
                                         <Select
                                             onValueChange={field.onChange}
@@ -259,11 +259,11 @@ export function JoinFreeSeminar({ open, onOpenChange }) {
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent className="rounded-lg">
+                                                <SelectItem value="ব্যাসিক কম্পিউটার">
+                                                    বেসিক কম্পিউটার
+                                                </SelectItem>
                                                 <SelectItem value="গ্রাফিক্স ডিজাইন">
                                                     গ্রাফিক্স ডিজাইন
-                                                </SelectItem>
-                                                <SelectItem value="ব্যাসিক কম্পিউটার">
-                                                    ব্যাসিক কম্পিউটার
                                                 </SelectItem>
                                                 <SelectItem value="ওয়েব ডিজাইন এন্ড ডেভেলপমেন্ট">
                                                     ওয়েব ডিজাইন এন্ড ডেভেলপমেন্ট
