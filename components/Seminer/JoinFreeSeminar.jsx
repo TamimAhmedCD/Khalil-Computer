@@ -275,16 +275,21 @@ export function JoinFreeSeminar({ open, onOpenChange }) {
                                 )}
                             />
 
-                            <DialogFooter className="mt-6 flex justify-center">
+                            <DialogFooter className="mt-6">
                                 <Button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="bg-primary-600 hover:bg-pritext-primary-700 text-white font-bold py-2.5 px-6 rounded-full shadow-md transition-all duration-300 hover:scale-105 flex items-center gap-2"
+                                    className="bg-primary-600 hover:bg-primary-700 text-white font-bold py-2.5 px-6 rounded-full shadow-md transition-all duration-300 hover:scale-105 flex items-center gap-2 w-full"
                                 >
                                     {isSubmitting ? "অপেক্ষা করুন..." : "জমা দিন"}
                                     <ChevronRightIcon className="h-4 w-4" />
                                 </Button>
                             </DialogFooter>
+                            <div className="bg-white p-3 rounded-lg shadow-sm border border-primary-100 w-full max-w-md">
+                                <p className="text-primary-700">
+                                    📞 আপনার যে কোন জিজ্ঞাসায় হেল্প-লাইন নাম্বার: 01715409109
+                                </p>
+                            </div>
                         </form>
                     </Form>
                 )}
