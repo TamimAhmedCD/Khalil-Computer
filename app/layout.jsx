@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
     return (
         <html lang="bn">
             <body
-                className={` ${hindSiliguri.variable} ${montserrat.variable}  antialiased font-hind-siliguri scroll-smooth`} cz-shortcut-listen="true"
+                className={` no-scroll ${hindSiliguri.variable} ${montserrat.variable}  antialiased font-hind-siliguri scroll-smooth`} cz-shortcut-listen="true"
             >
                 <Providers><SessionProvider>{children}</SessionProvider></Providers>
 

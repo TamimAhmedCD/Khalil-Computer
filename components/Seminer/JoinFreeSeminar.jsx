@@ -48,7 +48,7 @@ const formSchema = z.object({
     }),
 });
 
-export function JoinFreeSeminar({ open, onOpenChange }) {
+export function JoinFreeSeminar({ triggerElements }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
 
@@ -82,10 +82,9 @@ export function JoinFreeSeminar({ open, onOpenChange }) {
     return (
         <Dialog className="max-h-screen overflow-auto">
             <DialogTrigger asChild>
-                <button className="hover:bg-primary-600 py-3 cursor-pointer text-primary-600 rounded-md border-primary-600 transition-all duration-600 flex items-center gap-2 group hover:text-white border px-4">
-                    জয়েন ফ্রি সেমিনার
-                    {/* <ArrowRight size={20} className="transition-transform duration-200 group-hover:translate-x-1" /> */}
-                </button>
+                {triggerElements}
+                {/* <ArrowRight size={20} className="transition-transform duration-200 group-hover:translate-x-1" /> */}
+
             </DialogTrigger>
             <DialogContent className="max-h-screen overflow-auto">
                 <DialogHeader>

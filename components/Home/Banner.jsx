@@ -29,7 +29,10 @@ export default function Banner() {
               কোর্স সমূহ
             </button></a>
 
-          <JoinFreeSeminar />
+          <JoinFreeSeminar triggerElements={<span className="hover:bg-primary-600 py-3 cursor-pointer text-primary-600 rounded-md border-primary-600 transition-all duration-600 flex items-center gap-2 group hover:text-white border px-4">
+
+            জয়েন ফ্রি সেমিনার
+          </span>} />
 
         </div>
       </div>

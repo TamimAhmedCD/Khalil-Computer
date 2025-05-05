@@ -2,6 +2,9 @@ import Navbar from "@/components/Shared/Navbar";
 import { Separator } from "@/components/ui/separator";
 import { Footer } from "@/components/Footer";
 import NotificationBanner from "@/components/Temp/NotificationBanner";
+import Link from "next/link";
+import Image from "next/image";
+import { JoinFreeSeminar } from "@/components/Seminer/JoinFreeSeminar";
 
 export const metadata = {
   title: "Graphic Design, Freelancing & Digital Marketing Courses",
@@ -19,9 +22,23 @@ export default function RootLayout({ children }) {
 
       <Separator className="w-full" />
 
+      <div className="fixed top-1/2 -translate-y-1/2 z-50">
+        <Link href="/discount">
+          <Image src={'/get-discount.svg'} alt="Get Discount" width={102.9} height={544.1} className="w-8 md:w-10 h-auto" />
+        </Link>
+      </div>
       <div className="container mx-auto px-5 md:px-10 lg:px-20">
         {children}
       </div>
+      <JoinFreeSeminar triggerElements={<div className="fixed right-0 top-1/2 -translate-y-1/2 z-50 cursor-pointer">
+        <Image
+          src="/join-free-seminar.svg"
+          alt="Get Discount"
+          width={102.9}
+          height={544.1}
+          className="w-8 md:w-10 h-auto"
+        />
+      </div>} />
       <Footer />
 
     </>

@@ -8,7 +8,7 @@ const NotificationBanner = ({
     const variantClasses = {
         default: "bg-background text-foreground",
         warning:
-            "bg-primary-100 dark:bg-yellow-900/30 text-primary-900 dark:text-yellow-100",
+            "bg-primary-600 dark:bg-yellow-900/30 text-white dark:text-yellow-100",
         destructive: "bg-destructive/15 text-destructive dark:bg-destructive/30",
     };
 

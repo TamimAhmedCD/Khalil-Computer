@@ -22,8 +22,6 @@ const fetchCourse = async (id) => {
   return res.data;
 };
 
-
-
 export default function CourseDetails() {
   const params = useParams();
   const id = params?.id;

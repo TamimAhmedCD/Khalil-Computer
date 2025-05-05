@@ -17,7 +17,7 @@ export default function AllCourseCard({ courses, isLoading }) {
         <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {courses?.map((course) => (
-                    <Card>
+                    <Card key={course._id}>
                         <Link href={`/courses/${course._id}`}>
                             <CardHeader>
                                 <Image

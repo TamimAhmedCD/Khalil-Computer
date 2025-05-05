@@ -216,15 +216,15 @@ const Navbar = () => {
 
                   {status === "loading" ? null : session?.user?.role === "admin" ? (
                     <Link href="/admin/dashboard">
-                      <button className="bg-primary-600 hover:bg-transparent border border-primary-600 hover:text-primary-600 cursor-pointer transition-all duration-600 flex items-center gap-2 group py-2 px-4 rounded-md text-white">ড্যাশবোর্ড</button>
+                      <button className="bg-primary-600 hover:bg-transparent border border-primary-600 hover:text-primary-600 cursor-pointer transition-all duration-600 w-full text-center gap-2 group py-2 px-4 rounded-md text-white">ড্যাশবোর্ড</button>
                     </Link>
                   ) : session?.user?.role === "student" ? (
                     <Link href="/student/dashboard">
-                      <button className="bg-primary-600 hover:bg-transparent border border-primary-600 hover:text-primary-600 cursor-pointer transition-all duration-600 flex items-center gap-2 group py-2 px-4 rounded-md text-white">ড্যাশবোর্ড</button>
+                      <button className="bg-primary-600 hover:bg-transparent border border-primary-600 hover:text-primary-600 cursor-pointer transition-all duration-600 w-full text-center gap-2 group py-2 px-4 rounded-md text-white">ড্যাশবোর্ড</button>
                     </Link>
                   ) : (
                     <Link href="/auth">
-                      <button className="bg-primary-600 hover:bg-transparent border border-primary-600 hover:text-primary-600 cursor-pointer transition-all duration-600 flex items-center gap-2 group py-2 px-4 rounded-md text-white">লগইন</button>
+                      <button className="bg-primary-600 hover:bg-transparent border border-primary-600 hover:text-primary-600 cursor-pointer transition-all duration-600 text-center gap-2 group py-2 px-4 rounded-md text-white w-full">লগইন</button>
                     </Link>
                   )}
                 </div>
