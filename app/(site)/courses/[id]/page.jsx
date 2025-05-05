@@ -16,6 +16,7 @@ import { useParams } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import CourseDetailsPageLoader from "@/components/loader/course-details-page-loader";
 import CourseNotFound from "@/components/NotFound/course-not-found";
+import Link from "next/link";
 
 const fetchCourse = async (id) => {
   const res = await axios.get(`/api/courses/${id}`);
@@ -89,9 +90,9 @@ export default function CourseDetails() {
                   <h3 className="text-3xl font-bold text-primary-900">৳ {course.price}</h3>
                 </div>
 
-                <Button className="w-full bg-primary-600 hover:bg-primary-700 mb-6 py-6">
+                <Link href={`/checkout/${course?._id}`}><Button className="w-full bg-primary-600 hover:bg-primary-700 mb-6 py-6">
                   ভর্তি হোন
-                </Button>
+                </Button></Link>
 
                 <div className="mb-6">
                   <h4 className="text-gray-500 mb-3">কোর্স ইনস্ট্রাক্টর</h4>
