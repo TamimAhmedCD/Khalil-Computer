@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
 
       <Separator className="w-full" />
 
-      <GetDiscount triggerElements={<div className="fixed top-1/2 -translate-y-1/2 z-50">
+      <GetDiscount triggerElements={<div className="fixed top-1/2 -translate-y-1/2 z-50c cursor-pointer">
         <Image src={'/get-discount.svg'} alt="Get Discount" width={102.9} height={544.1} className="w-8 md:w-10 h-auto" />
       </div>} />
       <div className="container mx-auto px-5 md:px-10 lg:px-20">

@@ -258,7 +258,7 @@ export function GetDiscount({ triggerElements }) {
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent className="rounded-lg">
-                                                <SelectItem value="ব্যাসিক কম্পিউটার">
+                                                <SelectItem value="বেসিক কম্পিউটার">
                                                     বেসিক কম্পিউটার
                                                 </SelectItem>
                                                 <SelectItem value="গ্রাফিক্স ডিজাইন">
