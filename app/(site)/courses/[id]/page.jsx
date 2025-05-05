@@ -32,7 +32,6 @@ export default function CourseDetails() {
     data: course,
     isLoading,
     isError,
-    error,
   } = useQuery({
     queryKey: ["course", id],
     queryFn: () => fetchCourse(id),

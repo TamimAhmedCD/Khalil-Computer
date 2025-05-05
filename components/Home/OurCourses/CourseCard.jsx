@@ -1,3 +1,5 @@
+import CourseCardSkeleton from "@/components/loader/CourseCardSkeleton";
+import CourseNotFound from "@/components/NotFound/course-not-found";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,7 +20,13 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export default function CourseCard({ courses }) {
+export default function CourseCard({ courses, isLoading, isError }) {
+  if (isLoading) {
+    return <CourseCardSkeleton />
+  }
+  if (isError) {
+    return <CourseNotFound />
+  }
   return (
     <Carousel
       opts={{

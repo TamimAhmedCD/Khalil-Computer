@@ -1,42 +1,24 @@
-'use client'
+"use client";
 import Link from "next/link";
 import CourseCard from "./CourseCard";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const fetchCourses = async () => {
-  const res = await axios.get('/api/courses');
+  const res = await axios.get("/api/courses");
   return res.data;
 };
 
 export default function Courses() {
-
-  const { data: courses, isLoading, error } = useQuery({
-    queryKey: ['courses'],
+  const {
+    data: courses,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["courses"],
     queryFn: fetchCourses,
   });
-  console.log(courses);
-  if (isLoading) {
-    return (<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {[...Array(3)].map((_, i) => (
-        <div key={i} className="flex flex-col space-y-3 p-4 border rounded-xl">
-          <Skeleton className="h-[200px] w-full rounded-xl" />
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-3/4 mt-3" /> {/* Title */}
-            <Skeleton className="h-4 w-1/2" /> {/* Author */}
-            <Skeleton className="h-4 w-2/3 mt-8" /> {/* Stroke / Description */}
-            <div className="flex justify-between items-center mt-5">
-              <Skeleton className="h-4 w-[80px]" /> {/* Price */}
-              <Skeleton className="h-8 w-[80px]" /> {/* Button */}
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-    )
-  }
 
   return (
     <section id="courses">
@@ -52,7 +34,7 @@ export default function Courses() {
       </div>
       {/* Card & Card Content */}
       <div className="mt-8">
-        <CourseCard courses={courses} />
+        <CourseCard courses={courses} isLoading={isLoading} isError={isError} />
       </div>
       {/* Button */}
       <div className="flex justify-center">
