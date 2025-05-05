@@ -5,6 +5,7 @@ import NotificationBanner from "@/components/Temp/NotificationBanner";
 import Link from "next/link";
 import Image from "next/image";
 import { JoinFreeSeminar } from "@/components/Seminer/JoinFreeSeminar";
+import { GetDiscount } from "@/components/Discount/get-discount";
 
 export const metadata = {
   title: "Graphic Design, Freelancing & Digital Marketing Courses",
@@ -22,11 +23,9 @@ export default function RootLayout({ children }) {
 
       <Separator className="w-full" />
 
-      <div className="fixed top-1/2 -translate-y-1/2 z-50">
-        <Link href="/discount">
-          <Image src={'/get-discount.svg'} alt="Get Discount" width={102.9} height={544.1} className="w-8 md:w-10 h-auto" />
-        </Link>
-      </div>
+      <GetDiscount triggerElements={<div className="fixed top-1/2 -translate-y-1/2 z-50">
+        <Image src={'/get-discount.svg'} alt="Get Discount" width={102.9} height={544.1} className="w-8 md:w-10 h-auto" />
+      </div>} />
       <div className="container mx-auto px-5 md:px-10 lg:px-20">
         {children}
       </div>

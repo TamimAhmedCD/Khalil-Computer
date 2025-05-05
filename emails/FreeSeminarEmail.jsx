@@ -23,7 +23,7 @@ export const AdminNotificationEmail = ({
     registrationTime
 }) => {
     const formattedRegistrationTime = format(new Date(registrationTime), "dd/MM/yyyy HH:mm")
-    const previewText = `নতুন সেমিনার রেজিস্ট্রেশন: ${studentName}`
+    const previewText = `${studentName} ডিসকাউন্ট অফারের জন্য একটি নতুন নিবন্ধন সম্পন্ন করেছেন`
 
     return (
         <Html>
@@ -38,7 +38,7 @@ export const AdminNotificationEmail = ({
 
                     {/* Notification Banner */}
                     <Section style={notificationBanner}>
-                        <Heading style={notificationTitle}>নতুন সেমিনার রেজিস্ট্রেশন!</Heading>
+                        <Heading style={notificationTitle}>ডিসকাউন্ট অফারের রেজিস্ট্রেশনন</Heading>
                     </Section>
 
                     {/* Registration Info */}
