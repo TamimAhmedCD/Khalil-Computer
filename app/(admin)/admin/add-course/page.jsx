@@ -21,6 +21,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { uploadToCloudinary } from "@/lib/uploadToCloudinary";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 
 // Define Zod schema for form validation
 const courseFormSchema = z.object({
@@ -58,6 +59,7 @@ const courseFormSchema = z.object({
     supportInfo: z.string().optional(),
     courseDuration: z.string().optional(),
     instructorName: z.string().optional(),
+    discount: z.number().optional()
 });
 
 // Define step-specific validation schemas
@@ -80,6 +82,7 @@ export default function AddCoursePage() {
     const [activeTab, setActiveTab] = useState("basic-info");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+    const { data: session } = useSession()
 
     const methods = useForm({
         resolver: zodResolver(courseFormSchema),
@@ -99,7 +102,8 @@ export default function AddCoursePage() {
             totalClasses: 0,
             supportInfo: "",
             courseDuration: "",
-            instructorName: "",
+            instructorName: session?.user?.name,
+            discount: 0,
         },
         mode: "onChange",
     });

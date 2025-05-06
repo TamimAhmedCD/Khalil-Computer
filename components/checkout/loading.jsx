@@ -5,7 +5,7 @@ import { Skeleton } from "../ui/skeleton";
 
 export default function CheckoutLoading() {
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen">
             <div className="container mx-auto px-4 py-8 max-w-6xl">
                 <Skeleton className="h-6 w-32 mb-6" />
                 <Skeleton className="h-10 w-64 mx-auto mb-8" />

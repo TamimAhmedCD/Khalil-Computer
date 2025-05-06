@@ -44,7 +44,7 @@ export function PricingMoreForm() {
                 />
 
                 {isPaid && (
-                    <FormField
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6"><FormField
                         control={control}
                         name="price"
                         render={({ field }) => (
@@ -62,7 +62,25 @@ export function PricingMoreForm() {
                                 <FormMessage />
                             </FormItem>
                         )}
-                    />
+                    /><FormField
+                            control={control}
+                            name="discount"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>ডিসকাউন্ট (%)</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="number"
+                                            placeholder="0"
+                                            min={0}
+                                            {...field}
+                                            onChange={(e) => field.onChange(e.target.valueAsNumber || 0)}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        /></div>
                 )}
             </div>
 

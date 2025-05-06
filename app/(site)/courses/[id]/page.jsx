@@ -86,10 +86,23 @@ export default function CourseDetails() {
             {/* Right Column - Course Info */}
             <div className="lg:col-span-1">
               <div className="border rounded-lg p-6 sticky top-4">
-                <div className="mb-4">
-                  <h3 className="text-3xl font-bold text-primary-900">৳ {course.price}</h3>
+                <div className="mb-4 space-y-1">
+                  {course.discount ? (
+                    <>
+                      <p className="text-base text-muted-foreground line-through">
+                        মূল মূল্য: ৳ {course.price}
+                      </p>
+                      <h3 className="text-3xl font-bold text-primary-900">
+                        অফার মূল্য: ৳ {course.price - (course.price * course.discount) / 100}
+                      </h3>
+                      <p className="text-sm text-green-600">
+                        {course.discount}% ছাড়ে আপনি সাশ্রয় করছেন ৳ {(course.price * course.discount) / 100}
+                      </p>
+                    </>
+                  ) : (
+                    <h3 className="text-3xl font-bold text-primary-900">৳ {course.price}</h3>
+                  )}
                 </div>
-
                 <Link href={`/checkout/${course?._id}`}><Button className="w-full bg-primary-600 hover:bg-primary-700 mb-6 py-6">
                   ভর্তি হোন
                 </Button></Link>

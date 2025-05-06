@@ -59,8 +59,22 @@ export default function CourseCard({ courses, isLoading, isError }) {
               </CardContent>
               <Separator />
               <CardFooter className="flex justify-between">
-                <p className="font-bold">
-                  <span className="font-hind-siliguri">৳</span> {course.price}
+                <p className="font-bold text-sm">
+                  {course.discount ? (
+                    <>
+                      <span className="line-through text-muted-foreground mr-1">
+                        <span className="font-hind-siliguri">৳</span> {course.price}
+                      </span>
+                      <span className="text-primary font-bold">
+                        <span className="font-hind-siliguri">৳</span>{' '}
+                        {course.price - (course.price * course.discount) / 100}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="font-hind-siliguri">৳</span> {course.price}
+                    </>
+                  )}
                 </p>
                 <Link href={`/courses/${course._id}`}>
                   <Button

@@ -1,9 +1,12 @@
 'use client'
+import { CheckoutForm } from '@/components/checkout/checkout-form';
 import CheckoutLoading from '@/components/checkout/loading';
+import CourseNotFound from '@/components/NotFound/course-not-found';
 import { Separator } from '@/components/ui/separator';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { ArrowLeft } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation'
@@ -18,6 +21,8 @@ export default function CheckoutPage() {
     const params = useParams()
     const courseId = params?.courseId
 
+    const { data: session, status } = useSession()
+
     const {
         data: course,
         isLoading,
@@ -31,6 +36,11 @@ export default function CheckoutPage() {
     if (isLoading) {
         return <CheckoutLoading />
     }
+
+    if (isError) {
+        return <CourseNotFound />
+    }
+    console.log(session);
 
     return (
         <div className="min-h-screen">
@@ -62,7 +72,7 @@ export default function CheckoutPage() {
                                 </div>
                             </div>
                             <Separator className="my-4" />
-                            {/* <CheckoutForm /> */}
+                            <CheckoutForm session={session} status={status} />
                         </div>
                     </div>
 
