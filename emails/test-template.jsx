@@ -14,16 +14,15 @@ import {
 } from "@react-email/components"
 
 export const EnrollmentEmail = ({
-    userName = "রহিম",
-    courseName = "উন্নত ওয়েব ডেভেলপমেন্ট",
-    orderId = "KCE-2023-05678",
+    studentName,
+    courseName,
+    orderId,
     status = "পেমেন্ট যাচাই চলছে",
     estimatedTime = "২৪ ঘণ্টার মধ্যে",
-    paymentAmount = "৳১২,০০০",
-    paymentMethod = "বিকাশ",
-    subtotal = "৳১৫,০০০",
-    discount = "৳৩,০০০",
-    total = "৳১২,০০০",
+    paymentMethod,
+    price,
+    discountAmount,
+    totalPaid,
 }) => {
     return (
         <Html>
@@ -40,7 +39,7 @@ export const EnrollmentEmail = ({
                     <Section style={content}>
                         {/* Greeting */}
                         <Heading as="h2" style={greeting} className="pl-5 pt-5">
-                            প্রিয় {userName},
+                            প্রিয় {studentName},
                         </Heading>
                         <Text style={messageText} className="px-5">আপনার কোর্স ইনরোলমেন্ট সফল হয়েছে!</Text>
 
@@ -80,16 +79,16 @@ export const EnrollmentEmail = ({
                         <Section style={detailsContainer}>
                             <Row style={detailRow}>
                                 <Column style={detailLabel}>সাবটোটাল:</Column>
-                                <Column style={detailValue}>{subtotal}</Column>
+                                <Column style={detailValue}>{price}</Column>
                             </Row>
                             <Row style={detailRow}>
                                 <Column style={detailLabel}>ডিসকাউন্ট:</Column>
-                                <Column style={discountValue}>-{discount}</Column>
+                                <Column style={discountValue}>-{discountAmount}</Column>
                             </Row>
                             <Hr style={divider} />
                             <Row style={totalRow}>
                                 <Column style={totalLabel}>সর্বমোট:</Column>
-                                <Column style={totalValue}>{total}</Column>
+                                <Column style={totalValue}>{totalPaid}</Column>
                             </Row>
                         </Section>
 

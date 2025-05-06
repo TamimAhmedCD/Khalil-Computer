@@ -1,12 +1,10 @@
 'use client'
 import { BookmarkCheck } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import React, { useState } from "react";
-import { JoinFreeSeminar } from "../Seminer/JoinFreeSeminar";
+import { Admission } from "../Admission/admission";
 
 export default function Banner() {
-  const [isModalOpen, setIsModalOpen] = useState(false)
   return (
     <div className="flex flex-col md:flex-row gap-6 items-center md:my-8 mt-5 md:mb-10">
       <div className="md:w-1/2">
@@ -29,9 +27,8 @@ export default function Banner() {
               কোর্স সমূহ
             </button></a>
 
-          <JoinFreeSeminar triggerElements={<span className="hover:bg-primary-600 py-3 cursor-pointer text-primary-600 rounded-md border-primary-600 transition-all duration-600 flex items-center gap-2 group hover:text-white border px-4">
-
-            জয়েন ফ্রি সেমিনার
+          <Admission triggerElements={<span className="hover:bg-primary-600 py-3 cursor-pointer text-primary-600 rounded-md border-primary-600 transition-all duration-600 flex items-center gap-2 group hover:text-white border px-4">
+            ভর্তি হোন
           </span>} />
 
         </div>

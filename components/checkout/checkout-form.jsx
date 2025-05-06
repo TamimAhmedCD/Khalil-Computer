@@ -164,8 +164,10 @@ const paymentInfo = {
 export function CheckoutForm({ session, course }) {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const originalPrice = course?.price || 0;
-    const discount = course?.discount || 0;
-    const totalPaid = originalPrice - discount;
+    const discountPercent = course?.discount || 0;
+
+    const discountAmount = (originalPrice * discountPercent) / 100;
+    const totalPaid = originalPrice - discountAmount;
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -197,10 +199,12 @@ export function CheckoutForm({ session, course }) {
                 userId: session?.user?.id,
                 courseId: course?._id,
                 price: originalPrice,
-                discount,
+                discountAmount,
                 totalPaid,
+                courName: course.title,
                 status: "pending"
             })
+            await axios.post('/api/mail/checkout', response.data)
             console.log("Order Submitted", response.data);
         } catch (error) {
             console.error("Order submission error:", error);

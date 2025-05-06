@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
 import { useSession } from "next-auth/react";
+import { Admission } from "../Admission/admission";
 
 const navItems = [
   {
@@ -170,7 +171,7 @@ const Navbar = () => {
             ))}
           </div>
 
-          <div>
+          {/* <div>
 
             {status === "loading" ? null : session?.user?.role === "admin" ? (
               <Link href="/admin/dashboard">
@@ -186,7 +187,8 @@ const Navbar = () => {
               </Link>
             )}
 
-          </div>
+          </div> */}
+          <Admission triggerElements={<span className="bg-primary-600 hover:bg-transparent border border-primary-600 hover:text-primary-600 cursor-pointer transition-all duration-600 flex items-center gap-2 group py-2 px-4 rounded-md text-white">ভর্তি হোন</span>} />
           <Sheet>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="outline" size="icon" className="ml-2">
