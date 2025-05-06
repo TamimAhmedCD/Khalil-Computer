@@ -1,6 +1,7 @@
 'use client'
 import { CheckoutForm } from '@/components/checkout/checkout-form';
 import CheckoutLoading from '@/components/checkout/loading';
+import { OrderSummary } from '@/components/checkout/order-summary';
 import CourseNotFound from '@/components/NotFound/course-not-found';
 import { Separator } from '@/components/ui/separator';
 import { useQuery } from '@tanstack/react-query';
@@ -78,14 +79,11 @@ export default function CheckoutPage() {
 
                     {/* Sidebar - Order summary */}
                     <div className="lg:col-span-1">
-                        {/* <div className="sticky top-8">
+                        <div className="sticky top-8">
                             <OrderSummary
-                                course={{
-                                    ...course,
-                                    benefits: courseBenefits,
-                                }}
+                                course={course}
                             />
-                        </div> */}
+                        </div>
                     </div>
                 </div>
             </div>

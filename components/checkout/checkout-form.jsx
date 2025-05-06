@@ -17,27 +17,87 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 
-const formSchema = z.object({
-    name: z.string().min(2, {
-        message: "নাম অবশ্যই ২ অক্ষরের বেশি হতে হবে",
-    }),
-    email: z.string().email({
-        message: "সঠিক ইমেইল ঠিকানা দিন",
-    }),
-    phone: z.string().min(11, {
-        message: "সঠিক মোবাইল নম্বর দিন",
-    }),
-    address: z.string().optional(),
-    paymentMethod: z.enum(["card", "bank", "mobile"]),
-    mobileBankingSystem: z.string().optional(),
-    transactionId: z.string().optional(),
-    paymentNumber: z.string().optional(),
-    bankName: z.string().optional(),
-    cardType: z.string().optional(),
-    agreeToTerms: z.literal(true, {
-        errorMap: () => ({ message: "আপনাকে শর্তাবলী মেনে নিতে হবে" }),
-    }),
-})
+const formSchema = z
+    .object({
+        name: z.string().min(2, {
+            message: "নাম অবশ্যই ২ অক্ষরের বেশি হতে হবে",
+        }),
+        email: z.string().email({
+            message: "সঠিক ইমেইল ঠিকানা দিন",
+        }),
+        phone: z.string().min(11, {
+            message: "সঠিক মোবাইল নম্বর দিন",
+        }),
+        address: z.string().optional(),
+        paymentMethod: z.enum(["card", "bank", "mobile"]),
+        mobileBankingSystem: z.string().optional(),
+        transactionId: z.string().optional(),
+        paymentNumber: z.string().optional(),
+        bankName: z.string().optional(),
+        cardType: z.string().optional(),
+        agreeToTerms: z.literal(true, {
+            errorMap: () => ({ message: "আপনাকে শর্তাবলী মেনে নিতে হবে" }),
+        }),
+    })
+    .superRefine((data, ctx) => {
+        // মোবাইল ব্যাংকিং চেক
+        if (data.paymentMethod === "mobile") {
+            if (!data.mobileBankingSystem) {
+                ctx.addIssue({
+                    code: "custom",
+                    message: "মোবাইল ব্যাংকিং সিস্টেম সিলেক্ট করুন",
+                    path: ["mobileBankingSystem"],
+                });
+            }
+
+            if (data.mobileBankingSystem && (!data.transactionId || !data.paymentNumber)) {
+                if (!data.transactionId) {
+                    ctx.addIssue({
+                        code: "custom",
+                        message: "ট্রানজেকশন আইডি দিতে হবে",
+                        path: ["transactionId"],
+                    });
+                }
+                if (!data.paymentNumber) {
+                    ctx.addIssue({
+                        code: "custom",
+                        message: "পেমেন্ট নাম্বার দিতে হবে",
+                        path: ["paymentNumber"],
+                    });
+                }
+            }
+        }
+
+        // ব্যাংকের জন্য চেক
+        if (data.paymentMethod === "bank") {
+            if (!data.bankName) {
+                ctx.addIssue({
+                    code: "custom",
+                    message: "ব্যাংকের নাম দিতে হবে",
+                    path: ["bankName"],
+                });
+            }
+            if (!data.transactionId) {
+                ctx.addIssue({
+                    code: "custom",
+                    message: "ট্রানজেকশন আইডি দিতে হবে",
+                    path: ["transactionId"],
+                });
+            }
+        }
+
+        // কার্ডের জন্য চেক
+        if (data.paymentMethod === "card") {
+            if (!data.cardType) {
+                ctx.addIssue({
+                    code: "custom",
+                    message: "কার্ড টাইপ সিলেক্ট করুন",
+                    path: ["cardType"],
+                });
+            }
+        }
+    });
+
 
 // Payment method information
 const paymentInfo = {
