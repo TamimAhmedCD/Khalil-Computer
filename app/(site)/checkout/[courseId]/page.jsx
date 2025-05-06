@@ -1,4 +1,5 @@
 'use client'
+import CheckoutLoading from '@/components/checkout/loading';
 import { Separator } from '@/components/ui/separator';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -15,19 +16,21 @@ const fetchCourse = async (id) => {
 
 export default function CheckoutPage() {
     const params = useParams()
-    const id = params?.courseId
+    const courseId = params?.courseId
 
     const {
         data: course,
         isLoading,
         isError,
     } = useQuery({
-        queryKey: ["course", id],
-        queryFn: () => fetchCourse(id),
-        enabled: !!id,
+        queryKey: ["course", courseId],
+        queryFn: () => fetchCourse(courseId),
+        enabled: !!courseId,
     });
 
-    console.log(course);
+    if (isLoading) {
+        return <CheckoutLoading />
+    }
 
     return (
         <div className="min-h-screen">
@@ -52,9 +55,9 @@ export default function CheckoutPage() {
                                     <Image src={course?.courseThumbnail || "/placeholder.svg"} alt={course?.title} fill className="object-cover" />
                                 </div>
                                 <div>
-                                    <h2 className="font-medium">{course.title}</h2>
+                                    <h2 className="font-medium">{course?.title}</h2>
                                     <p className="text-sm text-muted-foreground">
-                                        {course.courseDuration} • {course.classTiming}
+                                        {course?.courseDuration} • {course?.classTiming}
                                     </p>
                                 </div>
                             </div>
