@@ -8,8 +8,8 @@ export async function POST(request) {
     const body = await request.json();
     console.log(body);
     const { data, error } = await resend.emails.send({
-        from: "onboarding@resend.dev",
-        to: "khalilcomputer@gmail.com",
+        from: "info@khalilcomputer.com", //onboarding@resend.dev
+        to: "tamim20072@gmail.com",
         subject: `নতুন সেমিনার রেজিস্ট্রেশন: - ${body.studentName}`,
         react: FreeSeminarEmail({
             ...body,

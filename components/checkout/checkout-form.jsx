@@ -16,16 +16,17 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
+import axios from "axios"
 
 const formSchema = z
     .object({
-        name: z.string().min(2, {
+        studentName: z.string().min(2, {
             message: "নাম অবশ্যই ২ অক্ষরের বেশি হতে হবে",
         }),
-        email: z.string().email({
+        studentEmail: z.string().email({
             message: "সঠিক ইমেইল ঠিকানা দিন",
         }),
-        phone: z.string().min(11, {
+        studentPhone: z.string().min(11, {
             message: "সঠিক মোবাইল নম্বর দিন",
         }),
         address: z.string().optional(),
@@ -160,15 +161,18 @@ const paymentInfo = {
     },
 }
 
-export function CheckoutForm({ session, status }) {
+export function CheckoutForm({ session, course }) {
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const originalPrice = course?.price || 0;
+    const discount = course?.discount || 0;
+    const totalPaid = originalPrice - discount;
 
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: session?.user?.name,
-            email: session?.user?.email,
-            phone: "",
+            studentName: session?.user?.name,
+            studentEmail: session?.user?.email,
+            studentPhone: "",
             address: "",
             paymentMethod: "mobile",
             mobileBankingSystem: "",
@@ -182,16 +186,27 @@ export function CheckoutForm({ session, status }) {
 
     const watchPaymentMethod = form.watch("paymentMethod")
     const watchMobileBankingSystem = form.watch("mobileBankingSystem")
+    const watchCardType = form.watch("cardType");
 
-    function onSubmit(values) {
+    async function onSubmit(values) {
         setIsSubmitting(true)
 
-        // Simulate API call
-        setTimeout(() => {
-            console.log(values)
-            setIsSubmitting(false)
-            // Here you would typically redirect to a success page or show a success message
-        }, 1500)
+        try {
+            const response = await axios.post('/api/orders', {
+                ...values,
+                userId: session?.user?.id,
+                courseId: course?._id,
+                price: originalPrice,
+                discount,
+                totalPaid,
+                status: "pending"
+            })
+            console.log("Order Submitted", response.data);
+        } catch (error) {
+            console.error("Order submission error:", error);
+        } finally {
+            setIsSubmitting(false);
+        }
     }
 
     return (
@@ -202,7 +217,7 @@ export function CheckoutForm({ session, status }) {
 
                     <FormField
                         control={form.control}
-                        name="name"
+                        name="studentName"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>পূর্ণ নাম</FormLabel>
@@ -217,7 +232,7 @@ export function CheckoutForm({ session, status }) {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <FormField
                             control={form.control}
-                            name="email"
+                            name="studentEmail"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>ইমেইল</FormLabel>
@@ -231,7 +246,7 @@ export function CheckoutForm({ session, status }) {
 
                         <FormField
                             control={form.control}
-                            name="phone"
+                            name="studentPhone"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>মোবাইল নম্বর</FormLabel>
@@ -467,6 +482,42 @@ export function CheckoutForm({ session, status }) {
                                     </FormItem>
                                 )}
                             />
+
+                            {watchCardType && (
+                                <div className="space-y-4 mt-4">
+                                    <div className="bg-muted p-4 rounded-md space-y-2">
+                                        <p className="font-medium">পেমেন্ট সম্পন্ন করার পর নিচের তথ্য দিন:</p>
+                                    </div>
+
+                                    <FormField
+                                        control={form.control}
+                                        name="transactionId"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>ট্রানজেকশন আইডি</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="ট্রানজেকশন আইডি লিখুন" {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+
+                                    <FormField
+                                        control={form.control}
+                                        name="paymentNumber"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>যে নাম্বার/কার্ড থেকে পেমেন্ট করা হয়েছে</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="0123456789 / xxxx xxxx xxxx xxxx" {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
+                            )}
 
                             <p className="text-sm text-muted-foreground mt-4">
                                 "পেমেন্ট সম্পন্ন করুন" বাটনে ক্লিক করার পর আপনি সুরক্ষিত পেমেন্ট গেটওয়েতে রিডাইরেক্ট হবেন।

@@ -41,7 +41,6 @@ export default function CheckoutPage() {
     if (isError) {
         return <CourseNotFound />
     }
-    console.log(session);
 
     return (
         <div className="min-h-screen">
@@ -73,7 +72,7 @@ export default function CheckoutPage() {
                                 </div>
                             </div>
                             <Separator className="my-4" />
-                            <CheckoutForm session={session} status={status} />
+                            <CheckoutForm session={session} course={course} />
                         </div>
                     </div>
 
