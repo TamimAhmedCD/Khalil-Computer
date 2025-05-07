@@ -47,7 +47,7 @@ export default function CourseCard({ courses, isLoading, isError }) {
                     className="rounded-sm w-full"
                   />
                   <CardTitle className="font-hind-siliguri mt-3 text-lg text-gray-700" title={course.title}>
-                    {course.title.split(" ").slice(0, 6).join(" ")} ...
+                    {course.title.split(" ").slice(0, 6).join(" ")}
                   </CardTitle>
                 </CardHeader>
               </Link>
