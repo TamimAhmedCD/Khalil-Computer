@@ -197,10 +197,10 @@ export default function AddCoursePage() {
                 imageUrl = await uploadToCloudinary(data.courseThumbnail);
             }
 
-            // Prepare final payload
-            const { courseImagePreview, ...rest } = data;
+            // // Prepare final payload
+            // const { courseImagePreview, ...rest } = data;
             const payload = {
-                ...rest,
+                ...data,
                 courseThumbnail: imageUrl,
                 published: published,
                 createdAt: new Date().toISOString(),
