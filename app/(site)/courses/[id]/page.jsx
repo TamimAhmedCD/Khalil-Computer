@@ -17,6 +17,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import CourseDetailsPageLoader from "@/components/loader/course-details-page-loader";
 import CourseNotFound from "@/components/NotFound/course-not-found";
 import Link from "next/link";
+import { Admission } from "@/components/Admission/admission";
 
 const fetchCourse = async (id) => {
   const res = await axios.get(`/api/courses/${id}`);
@@ -86,7 +87,7 @@ export default function CourseDetails() {
             {/* Right Column - Course Info */}
             <div className="lg:col-span-1">
               <div className="border rounded-lg p-6 sticky top-4">
-                {/* <div className="mb-4 space-y-1">
+                <div className="mb-4 space-y-1">
                   {course.discount ? (
                     <>
                       <p className="text-base text-muted-foreground line-through">
@@ -102,12 +103,15 @@ export default function CourseDetails() {
                   ) : (
                     <h3 className="text-3xl font-bold text-primary-900">৳ {course.price}</h3>
                   )}
-                </div> */}
+                </div>
+                <Admission triggerElements={<Button className="w-full bg-primary-600 hover:bg-primary-700 mb-6 py-6">
+                  ভর্তি হোন
+                </Button>} />
                 {/* <Link href={`/checkout/${course?._id}`}><Button className="w-full bg-primary-600 hover:bg-primary-700 mb-6 py-6">
                   ভর্তি হোন
                 </Button></Link> */}
 
-                {/* <div className="mb-6">
+                <div className="mb-6">
                   <h4 className="text-gray-500 mb-3">কোর্স ইনস্ট্রাক্টর</h4>
                   <div className="flex items-center gap-3">
                     <Avatar className="h-8 w-8">
@@ -121,11 +125,11 @@ export default function CourseDetails() {
                       </p>
                     </div>
                   </div>
-                </div> */}
-                {/* 
+                </div>
+
                 <div>
                   <div className="prose">{parse(course?.whatInside)}</div>
-                </div> */}
+                </div>
               </div>
             </div>
           </div>

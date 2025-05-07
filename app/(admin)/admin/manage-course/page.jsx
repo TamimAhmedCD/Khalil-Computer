@@ -1,5 +1,6 @@
 'use client'
 
+import AllCourse from "@/components/admin/course/all-course";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -71,7 +72,7 @@ export default function ManageCourse() {
             <CardTitle className="text-2xl">কোর্স ব্যবস্থাপনা</CardTitle>
             <CardDescription>সকল কোর্স দেখুন, সম্পাদনা করুন এবং নতুন কোর্স যোগ করুন</CardDescription>
           </div>
-          <Button asChild>
+          <Button asChild className="bg-primary-600 hover:bg-primary-700">
             <Link href="/admin/add-course">
               <Plus className="h-4 w-4 mr-2" />
               নতুন কোর্স যোগ করুন
@@ -111,76 +112,7 @@ export default function ManageCourse() {
                     </tr>
                   ) : (
                     courses?.map((course) => (
-                      <tr key={course._id} className="border-t">
-                        <td className="px-4 py-3">
-                          <div className="flex items-center gap-3">
-                            <div
-                              className="h-10 w-10 rounded-md bg-cover bg-center bg-no-repeat"
-                              style={{ backgroundImage: `url(${course.courseThumbnail})` }}
-                            />
-                            <div>
-                              <div className="font-medium">{course.title}</div>
-                              <div className="text-sm text-muted-foreground truncate max-w-[250px]">
-                                {course.description}
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-4 py-3">
-                          {course.discount ? (
-                            <div>
-                              <span className="font-medium">
-                                ৳{(course.price - (course.price * course.discount) / 100).toLocaleString()}
-                              </span>
-                              <span className="text-sm text-muted-foreground line-through ml-2">
-                                ৳{course.price.toLocaleString()}
-                              </span>
-                              <span className="ml-2 text-sm text-green-600 font-medium">
-                                {course.discount}%
-                              </span>
-                            </div>
-                          ) : (
-                            <span className="font-medium">৳{course.price.toLocaleString()}</span>
-                          )}
-
-                        </td>
-                        <td className="px-4 py-3">
-                          <Badge variant={course.featured ? "default" : "secondary"}>
-                            {course.featured ? "ফিচার্ড" : "সাধারণ"}
-                          </Badge>
-                        </td>
-                        <td className="px-4 py-3 text-right">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="icon">
-                                <MoreHorizontal className="h-4 w-4" />
-                                <span className="sr-only">মেনু</span>
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuItem asChild>
-                                <Link href={`/courses/${course._id}`} className="flex items-center">
-                                  <Eye className="mr-2 h-4 w-4" />
-                                  <span>দেখুন</span>
-                                </Link>
-                              </DropdownMenuItem>
-                              <DropdownMenuItem asChild>
-                                <Link href={`/admin/manage-courses/edit/${course.id}`} className="flex items-center">
-                                  <Edit className="mr-2 h-4 w-4" />
-                                  <span>সম্পাদনা করুন</span>
-                                </Link>
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                className="text-destructive focus:text-destructive"
-                                onClick={() => handleDeleteCourse(course._id)}
-                              >
-                                <Trash2 className="mr-2 h-4 w-4" />
-                                <span>মুছুন</span>
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </td>
-                      </tr>
+                      <AllCourse course={course} handleDeleteCourse={handleDeleteCourse} />
                     ))
                   )}
                 </tbody>
