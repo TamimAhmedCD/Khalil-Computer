@@ -116,7 +116,7 @@ export function Admission({ triggerElements }) {
                         এখনই ভর্তি নিশ্চিত করুন
                     </DialogTitle>
                     <DialogDescription className="text-center">
-                        নিচের ফর্মটি পূরণ করে নির্ধারিত ফি পরিশোধ করুন এবং প্রদত্ত নম্বরে যোগাযোগ করুন ভর্তি নিশ্চিত করতে।
+                        নিচের ফর্মটি পূরণ করে নির্ধারিত ফি পরিশোধ করুন এবং প্রদত্ত নম্বরে যোগাযোগ করে ভর্তি নিশ্চিত করুন।
                     </DialogDescription>
                     <div className="bg-white p-3 rounded-lg shadow-sm border border-primary-100 w-full max-w-md text-center">
                         <p className="text-primary-700">

@@ -26,9 +26,6 @@ export default function page() {
         <h1 className="font-hind-siliguri font-bold text-3xl md:text-4xl mb-3 text-gray-800">
           আমাদের <span className="text-primary-600">কোর্স সমূহ</span>
         </h1>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          খলিল কম্পিউটারে আপনি পেতে পারেন বাছাইকৃত এবং বাস্তবভিত্তিক কোর্সসমূহ।
-        </p>
       </div>
       <AllCourseCard courses={courses} isLoading={isLoading} isError={isError} />
     </div>
