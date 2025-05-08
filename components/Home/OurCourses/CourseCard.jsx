@@ -16,6 +16,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Separator } from "@/components/ui/separator";
+import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -27,13 +28,16 @@ export default function CourseCard({ courses, isLoading, isError }) {
   if (isError) {
     return <CourseNotFound />
   }
+  const plugin = React.useRef(
+    Autoplay({ delay: 1000, stopOnInteraction: true })
+  )
   return (
     <Carousel
       opts={{
         algn: "start",
       }}
     >
-      <CarouselContent>
+      <CarouselContent plugins={[plugin]} onMouseEnter={plugin.current.stop} onMouseLeave={plugin.current.reset}>
         {courses?.map((course) => (
           <CarouselItem key={course._id} className="md:basis-1/2 lg:basis-1/3">
             <Card>
