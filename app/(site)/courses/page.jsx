@@ -26,6 +26,9 @@ export default function page() {
         <h1 className="font-hind-siliguri font-bold text-3xl md:text-4xl mb-3 text-gray-800">
           আমাদের <span className="text-primary-600">কোর্স সমূহ</span>
         </h1>
+        <p className="text-gray-600">
+          প্রফেশনাল স্কিল উন্নয়নে সহায়ক সময়োপযোগী ট্রেনিং কোর্স, যেখানে রয়েছে হাতে-কলমে শেখার বাস্তবভিত্তিক সুযোগ ও অভিজ্ঞ প্রশিক্ষকদের দিকনির্দেশনা।
+        </p>
       </div>
       <AllCourseCard courses={courses} isLoading={isLoading} isError={isError} />
     </div>
