@@ -5,8 +5,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { cn } from "@/lib/utils"
 import { Search } from "lucide-react"
 import { Input } from "@/components/ui/input"
-import { Button } from "./ui/button"
 import Link from "next/link"
+import { Button } from "../ui/button"
 
 // FAQ data in Bengali
 const faqData = [
