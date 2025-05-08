@@ -24,7 +24,7 @@ export default function Courses() {
     <section id="courses">
       {/* Heading */}
       <div className="text-center lg:w-2/4 mx-auto">
-        <h1 className="font-hind-siliguri font-bold text-3xl md:text-4xl mb-4">
+        <h1 className="font-hind-siliguri font-bold text-3xl md:text-4xl mb-4 text-gray-800">
           আমাদের <span className="text-primary-600">কোর্স সমূহ</span>
         </h1>
         <p className="text-gray-600">

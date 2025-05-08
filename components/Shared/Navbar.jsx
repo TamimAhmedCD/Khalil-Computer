@@ -10,6 +10,7 @@ import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
 import { useSession } from "next-auth/react";
 import { Admission } from "../Admission/admission";
+import useCurrentPath from "@/hooks/useCurrentPath";
 
 const navItems = [
   {
@@ -24,8 +25,8 @@ const navItems = [
     title: "কমিউনিটি",
     href: "#",
     items: [
-      { title: "ফেসবুক গ্রুপ", href: "/" },
-      { title: "ইউটিউব", href: "/" },
+      { title: "ফেসবুক গ্রুপ", href: "#" },
+      { title: "ইউটিউব", href: "#" },
     ],
   },
   {
@@ -40,6 +41,10 @@ const navItems = [
 
 const NavItem = ({ title, href, items }) => {
   const [open, setOpen] = useState(false);
+  const pathname = useCurrentPath();
+
+  const isActive =
+    pathname === href || items?.some((item) => item.href === pathname);
 
   return (
     <div
@@ -51,12 +56,17 @@ const NavItem = ({ title, href, items }) => {
         href={href}
         className={cn(
           "group flex items-center gap-1 px-3 py-2 text-base font-medium text-gray-700 hover:text-primary-600 transition-colors",
-          open && "text-primary-600"
+          isActive && "text-primary-600"
         )}
       >
         <span className="relative">
           {title}
-          <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-600 group-hover:w-4/5 transition-all duration-300"></span>
+          <span
+            className={cn(
+              "absolute -bottom-1 left-0 h-0.5 bg-primary-600 transition-all duration-300",
+              isActive || open ? "w-4/5" : "w-0"
+            )}
+          />
         </span>
         {items && (
           <ChevronDown
@@ -69,7 +79,7 @@ const NavItem = ({ title, href, items }) => {
       </Link>
 
       {items && open && (
-        <div className="absolute left-0 top-full z-50 min-w-[12rem] overflow-hidden rounded-md border bg-white p-1 shadow-md animate-in fade-in-10 zoom-in-95">
+        <div className="absolute left-0 top-full z-50 min-w-[12rem] overflow-hidden rounded-md border bg-white p-1 shadow-md">
           <div className="grid">
             {items.map((item) => (
               <Link
@@ -92,6 +102,10 @@ const NavItem = ({ title, href, items }) => {
 
 const MobileNavItem = ({ title, href, items }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = useCurrentPath();
+
+  const isActive =
+    pathname === href || items?.some((item) => item.href === pathname);
 
   return (
     <div className="border-b border-gray-100 py-2">
@@ -101,9 +115,14 @@ const MobileNavItem = ({ title, href, items }) => {
             className="group flex w-full items-center justify-between py-2 text-left text-base font-medium"
             onClick={() => setIsOpen(!isOpen)}
           >
-            <span className="relative">
+            <span className="relative text-gray-700">
               {title}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-600 group-hover:w-4/5 transition-all duration-300"></span>
+              <span
+                className={cn(
+                  "absolute -bottom-1 left-0 h-0.5 bg-primary-600 transition-all duration-300",
+                  isActive || isOpen ? "w-4/5" : "w-0"
+                )}
+              />
             </span>
             <ChevronDown
               className={cn(
@@ -118,7 +137,12 @@ const MobileNavItem = ({ title, href, items }) => {
                 <Link
                   key={item.title}
                   href={item.href}
-                  className="group block py-1.5 text-sm text-gray-600 hover:text-primary-600"
+                  className={cn(
+                    "group block py-1.5 text-sm",
+                    pathname === item.href
+                      ? "text-primary-600"
+                      : "text-gray-600 hover:text-primary-600"
+                  )}
                 >
                   <span className="relative">
                     {item.title}
@@ -132,11 +156,19 @@ const MobileNavItem = ({ title, href, items }) => {
       ) : (
         <Link
           href={href}
-          className="group block py-2 text-base font-medium hover:text-primary-600"
+          className={cn(
+            "group block py-2 text-base font-medium",
+            isActive ? "text-primary-600" : "hover:text-primary-600"
+          )}
         >
           <span className="relative">
             {title}
-            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-600 group-hover:w-4/5 transition-all duration-300"></span>
+            <span
+              className={cn(
+                "absolute -bottom-1 left-0 h-0.5 bg-primary-600 transition-all duration-300",
+                isActive ? "w-4/5" : "w-0"
+              )}
+            />
           </span>
         </Link>
       )}

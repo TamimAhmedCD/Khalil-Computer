@@ -2,6 +2,7 @@ import WhyChooseUsSection from "@/components/Home/WhyChooseUs";
 import Courses from "@/components/Home/OurCourses/Courses";
 import Banner from "@/components/Home/Banner";
 import Slogan from "@/components/Home/Slogan";
+import { BengaliFaqSection } from "@/components/faq";
 
 export const metadata = {
   title: "Khalil Computer | Graphic Design, Freelancing & Digital Marketing Courses",
@@ -17,6 +18,7 @@ export default async function Home() {
       <Slogan />
       <WhyChooseUsSection />
       <Courses />
+      <BengaliFaqSection />
     </div>
   );
 }
