@@ -55,7 +55,7 @@ export function RegistrationForm() {
     }
 
     return (
-        <div className="w-full max-w-7xl mx-auto px-4 py-12 font-bengali">
+        <div className="py-12">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 {/* Left side - Form */}
                 <div className="relative">
@@ -258,7 +258,7 @@ export function RegistrationForm() {
                             <div className="text-center">
                                 <p className="text-gray-600 text-sm flex items-center justify-center gap-2">
                                     <Smartphone className="h-4 w-4" />
-                                    প্রশ্ন আছে? কল করুন: <span className="font-medium">০১৭১২-৩৪৫৬৭৮</span>
+                                    প্রশ্ন আছে? কল করুন: <span className="font-medium">01715-409109</span>
                                 </p>
                             </div>
                         </div>
