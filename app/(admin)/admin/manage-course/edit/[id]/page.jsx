@@ -5,6 +5,7 @@ import { PricingMoreForm } from "@/components/admin/course/pricing-more-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { uploadToCloudinary } from "@/lib/uploadToCloudinary";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
