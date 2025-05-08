@@ -40,16 +40,10 @@ const reviews = [
     },
 ];
 
-
 const firstRow = reviews.slice(0, reviews.length / 2);
 const secondRow = reviews.slice(reviews.length / 2);
 
-const ReviewCard = ({
-    img,
-    name,
-    username,
-    body,
-}) => {
+const ReviewCard = ({ img, name, username, body }) => {
     return (
         <figure
             className={cn(
@@ -57,7 +51,7 @@ const ReviewCard = ({
                 // light styles
                 "border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05]",
                 // dark styles
-                "dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15]",
+                "dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15]"
             )}
         >
             <div className="flex flex-row items-center gap-2">
@@ -74,16 +68,20 @@ const ReviewCard = ({
     );
 };
 
-export function MarqueeDemo() {
+export function Testimonial() {
     return (
-        <>                    {/* Heading */}
+        <>
+            {" "}
+            {/* Heading */}
             <div className="text-center lg:w-2/4 mx-auto mt-5 md:mt-10 mb-3">
                 <h1 className="font-hind-siliguri font-bold text-3xl md:text-4xl mb-3 text-gray-800">
-                    শিক্ষার্থীদের  <span className="text-primary-600">অভিজ্ঞতা</span>
+                    শিক্ষার্থীদের <span className="text-primary-600">অভিজ্ঞতা</span>
                 </h1>
                 <p className="text-gray-600">
-                    আমাদের কম্পিউটার ট্রেনিং সেন্টার সম্পর্কে সাধারণ প্রশ্নের উত্তর                        </p>
-            </div><div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
+                    আমাদের প্রশিক্ষণ শেষে শিক্ষার্থীরা কেমন অভিজ্ঞতা অর্জন করেছে, তাদের কিছু বাস্তব মতামত এখানে তুলে ধরা হলো।
+                </p>
+            </div>
+            <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
                 <Marquee pauseOnHover className="[--duration:20s]">
                     {firstRow.map((review) => (
                         <ReviewCard key={review.username} {...review} />
@@ -96,6 +94,7 @@ export function MarqueeDemo() {
                 </Marquee>
                 <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-background"></div>
                 <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-background"></div>
-            </div></>
+            </div>
+        </>
     );
 }
