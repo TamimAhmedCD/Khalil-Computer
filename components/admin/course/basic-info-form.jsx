@@ -13,6 +13,7 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/comp
 
 const categories = [
     { value: "IT & Computer Skills", label: "IT & Computer Skills" },
+    { value: "Web Development", label: "Web Development" },
     { value: "design", label: "ডিজাইন" },
     { value: "business", label: "ব্যবসা" },
     { value: "marketing", label: "মার্কেটিং" },
