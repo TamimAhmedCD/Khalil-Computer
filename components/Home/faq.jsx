@@ -71,7 +71,7 @@ export function BengaliFaqSection() {
     })
 
     return (
-        <section className="md:mt-10 mt-5">
+        <section className="md:mt-10 mt-7">
             <div>
                 <div className="flex flex-col items-center justify-center space-y-4 text-center">
                     <div className="inline-block rounded-lg bg-primary-200/70 px-3 py-1 text-sm text-primary-600 dark:bg-gray-800 dark:text-primary-400">
