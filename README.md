@@ -42,7 +42,7 @@
 
 - **Frontend:** Next.js, Tailwind CSS, React Router DOM
 - **Backend:** Node.js, Express.js
-- **Database:** MongoDB (with and without Mongoose)
+- **Database:** MongoDB
 - **Authentication:** Auth.js
 - **Image Hosting:** Cloudinary
 - **Validation:** Zod, React Hook Form
@@ -57,7 +57,7 @@
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/khalil-computer.git
+git clone https://github.com/TamimAhmedCD/Khalil-Computer
 cd khalil-computer
 ```
 
