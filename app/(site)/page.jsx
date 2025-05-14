@@ -6,6 +6,7 @@ import { BengaliFaqSection } from "@/components/Home/faq";
 import { Testimonial } from "@/components/Home/Testimonials";
 import { RegistrationForm } from "@/components/Home/RegistrationForm";
 import OurAchievement from "@/components/Home/OurAchievement";
+import AdvertisementSection from "@/components/Home/AdvertisementSection";
 
 export const metadata = {
   title: "Khalil Computer | Graphic Design, Freelancing & Digital Marketing Courses",
@@ -19,6 +20,7 @@ export default async function Home() {
         <Banner />
       </header>
       <Slogan />
+      <AdvertisementSection />
       <WhyChooseUsSection />
       <Courses />
       <Testimonial />
