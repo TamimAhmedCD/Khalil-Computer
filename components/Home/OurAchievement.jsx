@@ -287,7 +287,7 @@ export default function OurAchievement() {
               inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8",
             )}
           >
-            আমাদের কম্পিউটার প্রশিক্ষণ কেন্দ্রে আমরা গর্বিত যে আমরা শত শত শিক্ষার্থীকে সফল ক্যারিয়ার গড়তে সাহায্য করেছি।
+            আমাদের বাস্তবভিত্তিক প্রশিক্ষণে শত শত শিক্ষার্থী সফল ক্যারিয়ার গড়তে সক্ষম হয়েছে।
           </p>
           <div
             className={cn(
@@ -296,7 +296,7 @@ export default function OurAchievement() {
             )}
           >
             <AchievementItem text="১০০% প্র্যাকটিক্যাল ট্রেনিং" />
-            <AchievementItem text="ফ্রিলান্সিং সাপোর্ট" />
+            <AchievementItem text="ক্যারিয়ার সাপোর্ট" />
             <AchievementItem text="লাইফটাইম এক্সেস" />
             <AchievementItem text="প্রজেক্ট ভিত্তিক শিক্ষা" />
           </div>

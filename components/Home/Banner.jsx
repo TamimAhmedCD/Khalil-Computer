@@ -19,7 +19,7 @@ export default function Banner() {
         </h1>
         <p className="text-gray-600 leading-7 my-5 text-justify">
           খলিল কম্পিউটার — ২৫ বছরের অভিজ্ঞতায় প্রযুক্তি শিক্ষা ও দক্ষতা উন্নয়নে প্রতিশ্রুতিবদ্ধ।
-          আমরা তাত্ত্বিক নয়, বাস্তবভিত্তিক প্রশিক্ষণের মাধ্যমে তরুণদের আইটি খাতে দক্ষ করে গড়ে তুলি। আজই শুরু করুন আপনার সাফল্যের যাত্রা আমাদের যেকোনো কোর্স দিয়ে।
+          আমরা শুধু তাত্ত্বিক নয়, বাস্তবভিত্তিক প্রশিক্ষণের মাধ্যমে তরুণদের আইটি খাতে দক্ষ করে গড়ে তুলি। আজই শুরু করুন আপনার সাফল্যের যাত্রা আমাদের যেকোনো কোর্স দিয়ে।
         </p>
         <div className="flex gap-3 font-hind-siliguri">
           <a href="#courses">
@@ -28,7 +28,7 @@ export default function Banner() {
             </button></a>
 
           <Admission triggerElements={<span className="hover:bg-primary-600 py-3 cursor-pointer text-primary-600 rounded-md border-primary-600 transition-all duration-600 flex items-center gap-2 group hover:text-white border px-4">
-            ভর্তি হোন
+            ভর্তি আবেদন
           </span>} />
 
         </div>

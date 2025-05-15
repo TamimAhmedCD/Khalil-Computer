@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform, useInView } from "framer-motion"
 import { Card } from "../ui/card"
 import { Button } from "../ui/button"
 import { Admission } from "../Admission/admission"
+import Link from "next/link"
 
 export default function AdvertisementSection() {
     const [isHovered, setIsHovered] = useState(false)
@@ -99,7 +100,7 @@ export default function AdvertisementSection() {
 
                         <motion.div variants={staggerContainer} className="space-y-6">
                             <motion.p variants={fadeInUp} className="text-lg leading-relaxed text-gray-600">
-                                খলিল কম্পিউটারে আপনাকে স্বাগতম! আমরা বাংলাদেশের অ��্যতম সেরা আইটি প্রশিক্ষণ কেন্দ্র। আমাদের বিশেষজ্ঞ শিক্ষকদের সাহায্যে আপনি
+                                খলিল কম্পিউটারে আপনাকে স্বাগতম! আমরা বাংলাদেশের অন্যতম সেরা আইটি প্রশিক্ষণ কেন্দ্র। আমাদের বিশেষজ্ঞ শিক্ষকদের সাহায্যে আপনি
                                 ওয়েব ডিজাইন, গ্রাফিক ডিজাইন, প্রোগ্রামিং, ডিজিটাল মার্কেটিং এবং আরও অনেক কিছু শিখতে পারবেন।
                             </motion.p>
 
@@ -140,13 +141,13 @@ export default function AdvertisementSection() {
                                 </span>
                             </Button>}
                             />
-                            <Button
+                            <Link href={'/contact-us'}><Button
                                 variant="outline"
                                 size="lg"
                                 className="rounded-xl border-primary-200 text-primary-700 font-medium px-8 py-6 text-lg hover:bg-primary-50 hover:border-primary-300 transition-all duration-300"
                             >
                                 <span className="flex items-center">আরও জানুন</span>
-                            </Button>
+                            </Button></Link>
                         </motion.div>
 
                         <motion.div variants={fadeInUp} className="flex items-center gap-4 pt-6">

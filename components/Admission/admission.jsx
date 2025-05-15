@@ -113,10 +113,10 @@ export function Admission({ triggerElements }) {
                         </div>
                     </div>
                     <DialogTitle className="text-2xl font-bold text-primary-700 text-center">
-                        এখনই ভর্তি নিশ্চিত করুন
+                        এখনই ভর্তির জন্য আবেদন করুন
                     </DialogTitle>
                     <DialogDescription className="text-center">
-                        নিচের ফর্মটি পূরণ করে নির্ধারিত ফি পরিশোধ করুন এবং প্রদত্ত নম্বরে যোগাযোগ করে ভর্তি নিশ্চিত করুন।
+                        নিচের ফর্মটি পূরণ করে সাবমিট করুন, আমাদের প্রতিনিধি অতি শীঘ্রই ‍আপনার সাথে যোগাযোগ করবে
                     </DialogDescription>
                     <div className="bg-white p-3 rounded-lg shadow-sm border border-primary-100 w-full max-w-md text-center">
                         <p className="text-primary-700">
