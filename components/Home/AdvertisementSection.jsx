@@ -100,8 +100,7 @@ export default function AdvertisementSection() {
 
                         <motion.div variants={staggerContainer} className="space-y-6">
                             <motion.p variants={fadeInUp} className="text-lg leading-relaxed text-gray-600">
-                                খলিল কম্পিউটারে আপনাকে স্বাগতম! আমরা বাংলাদেশের অন্যতম সেরা আইটি প্রশিক্ষণ কেন্দ্র। আমাদের বিশেষজ্ঞ শিক্ষকদের সাহায্যে আপনি
-                                ওয়েব ডিজাইন, গ্রাফিক ডিজাইন, প্রোগ্রামিং, ডিজিটাল মার্কেটিং এবং আরও অনেক কিছু শিখতে পারবেন।
+                                আমাদের প্রতিষ্ঠানে বেসিক কম্পিউটার, গ্রাফিক ডিজাইন (লেভেল ১-৩) ও ওয়েব ডিজাইন-ডেভেলপমেন্ট কোর্স শেখানো হয় বাস্তব অভিজ্ঞতা ও প্রজেক্ট-ভিত্তিক পদ্ধতিতে। প্রতিটি কোর্সে রয়েছে হাতে-কলমে প্রশিক্ষণ, প্রফেশনাল গাইডলাইন ও মার্কেটপ্লেস প্রস্তুতি। দক্ষতা অর্জনে নিশ্চিত সাপোর্ট ও একটি উজ্জ্বল ভবিষ্যতের প্রতিশ্রুতি দিচ্ছি আমরা।
                             </motion.p>
 
                             <motion.div variants={fadeInUp} className="grid grid-cols-1 md:grid-cols-2 gap-5 py-4">
@@ -163,7 +162,7 @@ export default function AdvertisementSection() {
                                 ))}
                             </div>
                             <div className="text-sm text-gray-600">
-                                <span className="font-semibold text-primary-700">১০০০+</span> শিক্ষার্থী ইতিমধ্যে যোগ দিয়েছে
+                                <span className="font-semibold text-primary-700">৫৫০+</span> শিক্ষার্থী ইতিমধ্যে যোগ দিয়েছে
                             </div>
                         </motion.div>
                     </motion.div>
