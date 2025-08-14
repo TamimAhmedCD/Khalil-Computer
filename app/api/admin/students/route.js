@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { collection } from "@/lib/mongodb";
-import { uploadToCloudinary } from "@/lib/uploadToCloudinary"; // your helper
+import { ObjectId } from "mongodb";
+import { uploadToCloudinary } from "@/lib/uploadToCloudinary";
 
 export async function POST(req) {
   try {
@@ -9,13 +10,12 @@ export async function POST(req) {
 
     let imageUrl = studentImage;
 
-    // Upload new image only if studentImage is a File or Base64
-    if (studentImage && studentImage.startsWith("data:image")) {
+    // Upload only if a new File object exists
+    if (studentImage && studentImage instanceof File) {
       imageUrl = await uploadToCloudinary(studentImage);
     }
 
     const studentsCol = await collection("students");
-    let result;
 
     if (_id) {
       // EDIT student
@@ -24,8 +24,8 @@ export async function POST(req) {
         studentImage: imageUrl,
         updatedAt: new Date(),
       };
-      result = await studentsCol.updateOne(
-        { _id: new Object(_id) },
+      const result = await studentsCol.updateOne(
+        { _id: new ObjectId(_id) },
         { $set: updateData }
       );
       return NextResponse.json({
@@ -40,17 +40,30 @@ export async function POST(req) {
         studentImage: imageUrl,
         createdAt: new Date(),
       };
-      result = await studentsCol.insertOne(newStudent);
+      const result = await studentsCol.insertOne(newStudent);
       return NextResponse.json({
         success: true,
         message: "Student added",
         studentId: result.insertedId,
+        student: newStudent,
       });
     }
   } catch (err) {
     console.error(err);
     return NextResponse.json(
       { success: false, error: err.message },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET() {
+  try {
+    const students = await (await collection("students")).find().toArray();
+    return NextResponse.json(students);
+  } catch {
+    return NextResponse.json(
+      { error: "Failed to fetch students" },
       { status: 500 }
     );
   }

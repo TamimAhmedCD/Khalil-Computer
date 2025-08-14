@@ -1,42 +1,28 @@
-'use client'
-import React, { useState } from 'react'
-import { z } from 'zod';
-import {
-    Users,
-    GraduationCap,
-    Phone,
-} from "lucide-react";
-import { Separator } from "@/components/ui/separator";
-import { Textarea } from "@/components/ui/textarea";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-import { useEffect } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import FormPersonalInformation from './FormPersonalInformation';
-import FormFamilyInformation from './FormFamilyInformation';
-import FormContactInformation from './FormContactInformation';
-import FormAcademicInformation from './FormAcademicInformation';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import axios from "axios";
+import { GraduationCap } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import FormPersonalInformation from "./FormPersonalInformation";
+import FormFamilyInformation from "./FormFamilyInformation";
+import FormContactInformation from "./FormContactInformation";
+import FormAcademicInformation from "./FormAcademicInformation";
 
-// ✅ Zod schema for validation
+// Zod validation schema
 const studentSchema = z.object({
     studentName: z.string().min(1, "Student name is required"),
-    batchNumber: z.string().min(3, "Batch Number is required"),
-    idNumber: z.string().min(5, "ID Number is required"),
-    duration: z.string().min(5, "Duration is required"),
+    batchNumber: z.string().min(1, "Batch number is required"),
+    idNumber: z.string().min(1, "ID number is required"),
+    duration: z.string().min(1, "Duration is required"),
     fatherName: z.string().min(1, "Father's name is required"),
     motherName: z.string().min(1, "Mother's name is required"),
     email: z.string().email("Invalid email").optional().or(z.literal("")),
     studentMobile: z.string().min(11, "Mobile number is required"),
-    guardianMobile: z.string().min(11, "Guardian mobile number invalid").optional(),
+    guardianMobile: z.string().optional(),
     birthDate: z.string().min(1, "Date of birth is required"),
     gender: z.string().min(1, "Gender is required"),
     bloodGroup: z.string().optional(),
@@ -46,10 +32,10 @@ const studentSchema = z.object({
     course: z.string().min(1, "Course is required"),
     currentAddress: z.string().min(1, "Current address is required"),
     permanentAddress: z.string().min(1, "Permanent address is required"),
-    studentImage: z.string().optional(),
+    studentImage: z.any().optional(),
 });
 
-export default function Form({ editingStudent }) {
+export default function StudentForm({ editingStudent }) {
     const [imagePreview, setImagePreview] = useState(
         editingStudent?.studentImage || null
     );
@@ -64,6 +50,9 @@ export default function Form({ editingStudent }) {
         resolver: zodResolver(studentSchema),
         defaultValues: {
             studentName: editingStudent?.studentName || "",
+            batchNumber: editingStudent?.batchNumber || "",
+            idNumber: editingStudent?.idNumber || "",
+            duration: editingStudent?.duration || "",
             fatherName: editingStudent?.fatherName || "",
             motherName: editingStudent?.motherName || "",
             email: editingStudent?.email || "",
@@ -84,26 +73,10 @@ export default function Form({ editingStudent }) {
 
     useEffect(() => {
         if (editingStudent) {
-            setValue("studentName", editingStudent.studentName);
-            setValue("fatherName", editingStudent.fatherName);
-            setValue("motherName", editingStudent.motherName);
-            setValue("email", editingStudent.email);
-            setValue("studentMobile", editingStudent.studentMobile);
-            setValue("guardianMobile", editingStudent.guardianMobile);
-            setValue("birthDate", editingStudent.birthDate);
-            setValue("gender", editingStudent.gender);
-            setValue("bloodGroup", editingStudent.bloodGroup);
-            setValue("maritalStatus", editingStudent.maritalStatus);
-            setValue("education", editingStudent.education);
-            setValue("occupation", editingStudent.occupation);
-            setValue("course", editingStudent.course);
-            setValue("currentAddress", editingStudent.currentAddress);
-            setValue("permanentAddress", editingStudent.permanentAddress);
-            setValue("studentImage", editingStudent.studentImage);
-            setImagePreview(editingStudent.studentImage);
-            setValue('batchNumber', editingStudent.batchNumber),
-                setValue('idNumber', editingStudent.idNumber),
-                setValue('duration', editingStudent.duration)
+            Object.keys(editingStudent).forEach((key) =>
+                setValue(key, editingStudent[key])
+            );
+            setImagePreview(editingStudent.studentImage || null);
         }
     }, [editingStudent, setValue]);
 
@@ -114,18 +87,15 @@ export default function Form({ editingStudent }) {
                 alert("Please select a valid image file");
                 return;
             }
-
             if (file.size > 5 * 1024 * 1024) {
                 alert("Image size should be less than 5MB");
                 return;
             }
-
             setImageFile(file);
             const reader = new FileReader();
             reader.onload = (e) => {
-                const result = e.target?.result;
-                setImagePreview(result);
-                setValue("studentImage", result);
+                setImagePreview(e.target.result);
+                setValue("studentImage", file);
             };
             reader.readAsDataURL(file);
         }
@@ -134,38 +104,66 @@ export default function Form({ editingStudent }) {
     const removeImage = () => {
         setImagePreview(null);
         setImageFile(null);
-        setValue("studentImage", "");
+        setValue("studentImage", null);
     };
 
-    const onSubmit = (data) => {
-        if (editingStudent) {
-            console.log("Updating student:", { ...data, id: editingStudent.id });
-            alert("Student updated successfully!");
+    const onSubmit = async (data) => {
+        try {
+            // Convert File object to base64 if present
+            if (data.studentImage && data.studentImage instanceof File) {
+                const reader = new FileReader();
+                reader.onloadend = async () => {
+                    const base64Image = reader.result;
+                    await submitData({ ...data, studentImage: base64Image });
+                };
+                reader.readAsDataURL(data.studentImage);
+            } else {
+                await submitData(data);
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Error: " + err.message);
+        }
+    };
+
+    const submitData = async (payload) => {
+        const res = await axios.post("/api/admin/students", {
+            ...payload,
+            _id: editingStudent?._id,
+        });
+
+        if (res.data.success) {
+            alert(
+                editingStudent
+                    ? "Student updated successfully!"
+                    : "Student added successfully!"
+            );
+            console.log("Result:", res.data);
         } else {
-            console.log("Creating new student:", data);
-            alert("Student registered successfully!");
+            throw new Error(res.data.error || "Failed to save student");
         }
     };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-            {/* Personal Information Section */}
-            <FormPersonalInformation register={register} errors={errors} imagePreview={imagePreview} removeImage={removeImage} handleImageUpload={handleImageUpload} setValue={setValue} />
+            <FormPersonalInformation
+                register={register}
+                errors={errors}
+                imagePreview={imagePreview}
+                handleImageUpload={handleImageUpload}
+                removeImage={removeImage}
+                setValue={setValue}
+            />
             <Separator className="bg-slate-200" />
-
-            {/* Family Information Section */}
-            <FormFamilyInformation errors={errors} register={register} />
-
+            <FormFamilyInformation register={register} errors={errors} />
             <Separator className="bg-slate-200" />
-
-            {/* Contact Information Section */}
-            <FormContactInformation errors={errors} register={register} />
+            <FormContactInformation register={register} errors={errors} />
             <Separator className="bg-slate-200" />
-
-            {/* Academic Information Section */}
-            <FormAcademicInformation errors={errors} register={register} setValue={setValue} />
-
-            {/* Submit Button */}
+            <FormAcademicInformation
+                register={register}
+                errors={errors}
+                setValue={setValue}
+            />
             <div className="flex justify-end pt-6">
                 <Button
                     type="submit"
@@ -177,5 +175,5 @@ export default function Form({ editingStudent }) {
                 </Button>
             </div>
         </form>
-    )
+    );
 }
