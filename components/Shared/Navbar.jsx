@@ -203,7 +203,7 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* <div>
+          <div>
 
             {status === "loading" ? null : session?.user?.role === "admin" ? (
               <Link href="/admin/dashboard">
@@ -214,13 +214,10 @@ const Navbar = () => {
                 <button className="bg-primary-600 hover:bg-transparent border border-primary-600 hover:text-primary-600 cursor-pointer transition-all duration-600 flex items-center gap-2 group py-2 px-4 rounded-md text-white">ড্যাশবোর্ড</button>
               </Link>
             ) : (
-              <Link href="/auth">
-                <button className="bg-primary-600 hover:bg-transparent border border-primary-600 hover:text-primary-600 cursor-pointer transition-all duration-600 flex items-center gap-2 group py-2 px-4 rounded-md text-white">লগইন</button>
-              </Link>
+              <Admission triggerElements={<span className="bg-primary-600 hover:bg-transparent border border-primary-600 hover:text-primary-600 cursor-pointer transition-all duration-600 flex items-center gap-2 group py-2 px-4 rounded-md text-white">ভর্তি হোন</span>} />
             )}
 
-          </div> */}
-          <Admission triggerElements={<span className="bg-primary-600 hover:bg-transparent border border-primary-600 hover:text-primary-600 cursor-pointer transition-all duration-600 flex items-center gap-2 group py-2 px-4 rounded-md text-white">ভর্তি হোন</span>} />
+          </div>
           <Sheet>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="outline" size="icon" className="ml-2">

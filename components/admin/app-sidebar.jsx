@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import {
-    BarChartIcon,
     Book,
     CameraIcon,
     ClipboardListIcon,
@@ -12,7 +11,6 @@ import {
     FileTextIcon,
     FolderIcon,
     HelpCircleIcon,
-    LayoutDashboardIcon,
     SearchIcon,
     SettingsIcon,
     Users,
@@ -30,6 +28,8 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { NavMain } from "./nav-main";
+import { NavUser } from "./NavUser";
+import { useSession } from "next-auth/react";
 
 // import { NavDocuments } from "@/components/nav-documents"
 // import { NavMain } from "@/components/nav-main"
@@ -44,39 +44,34 @@ const data = {
     },
     navMain: [
         {
-            title: "ড্যাশবোর্ড",
-            url: "/admin/dashboard",
-            icon: LayoutDashboardIcon,
-        },
-        {
-            title: "কোর্স ম্যানেজমেন্ট",
+            title: "Course Management",
             url: "#",
             icon: Book,
             items: [
                 {
-                    title: "অ্যাড কোর্স",
+                    title: "Add Course",
                     url: '/admin/add-course'
                 },
                 {
-                    title: "ম্যানেজ কোর্স",
+                    title: "Manage Course",
                     url: '/admin/manage-course'
                 }
             ]
         },
         {
-            title: "শিক্ষার্থীগণ",
+            title: "Student Management",
             url: "/admin/students",
             icon: Users,
-        },
-        {
-            title: "Projects",
-            url: "#",
-            icon: FolderIcon,
-        },
-        {
-            title: "Team",
-            url: "#",
-            icon: UsersIcon,
+            items: [
+                {
+                    title: "Add Student",
+                    url: '/admin/add-student'
+                },
+                {
+                    title: "Manage Students",
+                    url: "/admin/manage-students"
+                }
+            ]
         },
     ],
     navClouds: [
@@ -164,6 +159,7 @@ const data = {
 };
 
 export function AppSidebar() {
+    const { data: session } = useSession()
     return (
         <Sidebar collapsible="offcanvas">
             <SidebarHeader>
@@ -196,7 +192,7 @@ export function AppSidebar() {
                 {/* <NavDocuments items={data.documents} /> */}
                 {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
             </SidebarContent>
-            <SidebarFooter>{/* <NavUser user={data.user} /> */}</SidebarFooter>
+            <SidebarFooter><NavUser user={session.user} /></SidebarFooter>
         </Sidebar>
     );
 }

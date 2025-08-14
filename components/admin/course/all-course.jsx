@@ -5,7 +5,7 @@ import { Edit, Eye, MoreHorizontal, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
-export default function AllCourse({ course }) {
+export default function AllCourse({ course, handleDeleteCourse }) {
     return (
         <tr key={course._id} className="border-t">
             <td className="px-4 py-3">
