@@ -1,6 +1,7 @@
 'use client'
 
 import AllCourse from "@/components/admin/course/all-course";
+import AdminCardHeader from "@/components/Shared/AdminCardHeader";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -68,10 +69,7 @@ export default function ManageCourse() {
     <div className="m-6 md:m-8">
       <Card>
         <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <CardTitle className="text-2xl">কোর্স ব্যবস্থাপনা</CardTitle>
-            <CardDescription>সকল কোর্স দেখুন, সম্পাদনা করুন এবং নতুন কোর্স যোগ করুন</CardDescription>
-          </div>
+          <AdminCardHeader title='কোর্স ব্যবস্থাপনা' description='সকল কোর্স দেখুন, সম্পাদনা করুন এবং নতুন কোর্স যোগ করুন' />
           <Button asChild className="bg-primary-600 hover:bg-primary-700">
             <Link href="/admin/add-course">
               <Plus className="h-4 w-4 mr-2" />

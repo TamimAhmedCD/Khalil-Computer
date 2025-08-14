@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Edit, Eye, MoreHorizontal, Trash2 } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
@@ -10,10 +11,11 @@ export default function AllCourse({ course, handleDeleteCourse }) {
         <tr key={course._id} className="border-t">
             <td className="px-4 py-3">
                 <div className="flex items-center gap-3">
-                    <div
+                    {/* <div
                         className="h-10 w-10 rounded-md bg-cover bg-center bg-no-repeat"
-                        style={{ backgroundImage: `url(${course.courseThumbnail})` }}
-                    />
+                        style={{ backgroundImage: `url(${course.})` }}
+                    /> */}
+                    <Image src={course.courseThumbnail} width={60} height={60} className="rounded-md" />
                     <div>
                         <div className="font-medium">{course.title}</div>
                         <div className="text-sm text-muted-foreground truncate max-w-[250px]">
