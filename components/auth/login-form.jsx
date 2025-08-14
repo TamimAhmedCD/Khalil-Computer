@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter, } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { loginAction } from "@/app/actions/login";
 import { LoginFormFields } from "./login-form-fields";
 import { SocialLoginButtons } from "./SocialLoginButton";
+import { signIn, useSession } from "next-auth/react";
 
 const loginFormSchema = z.object({
     email: z.string().email({ message: "সঠিক ইমেইল ঠিকানা দিন" }),
@@ -22,6 +23,8 @@ const loginFormSchema = z.object({
 export function LoginForm({ onSwitchMode }) {
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
+    const { data: session } = useSession()
+    console.log(session);
 
     // Initialize form with validation schema
     const form = useForm({
@@ -39,15 +42,14 @@ export function LoginForm({ onSwitchMode }) {
 
         try {
             // Call the login action
-            const result = await loginAction(data.email, data.password);
+            const result = await signIn('credentials', {
+                redirect: false,
+                email: data.email,
+                password: data.password
+            })
 
-            if (result?.success) {
-                // Wait for 300ms before showing the success toast
-                setTimeout(() => {
-                    toast.success("লগইন সফল হয়েছে!");
-                }, 500);
-                router.push('/')
-                window.location.reload()
+            if (result?.ok) {
+                toast.success('লগইন সফল হয়েছে!')
             } else {
                 toast.error(result.error || "লগইন করতে ব্যর্থ হয়েছে");
             }
@@ -57,6 +59,16 @@ export function LoginForm({ onSwitchMode }) {
             setIsLoading(false);
         }
     };
+
+    useEffect(() => {
+        if (session?.user?.role) {
+            if (session.user.role === 'admin') {
+                router.push('/admin/dashboard')
+            } else if (session.user.role === 'user') {
+                router.push('/')
+            }
+        }
+    }, [session, router])
 
 
     return (

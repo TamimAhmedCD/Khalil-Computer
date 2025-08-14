@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Bell, Search, User, Settings, HelpCircle, LogOut } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { useState } from "react";
+import { Bell, Search, User, Settings, HelpCircle, LogOut } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -12,16 +12,15 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { SidebarTrigger } from "@/components/ui/sidebar"
-import { useSession } from "next-auth/react"
-import { logoutAction } from "@/app/actions/logoutAction"
+} from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { signOut, useSession } from "next-auth/react";
 
 export function SiteHeader() {
-    const [showSearch, setShowSearch] = useState(false)
-    const { data: session } = useSession()
+    const [showSearch, setShowSearch] = useState(false);
+    const { data: session } = useSession();
 
     return (
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4 md:px-6 lg:px-8">
@@ -76,7 +75,12 @@ export function SiteHeader() {
                 {/* Notifications */}
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="relative" aria-label="Notifications">
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="relative"
+                            aria-label="Notifications"
+                        >
                             <Bell size={20} />
                             <Badge className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary-600 p-0 text-xs text-white">
                                 3
@@ -91,27 +95,40 @@ export function SiteHeader() {
                                 <span className="font-medium">নতুন ডকুমেন্ট</span>
                                 <span className="text-xs text-gray-500">২ মিনিট আগে</span>
                             </div>
-                            <span className="text-sm text-gray-500">৩টি নতুন ডকুমেন্ট যুক্ত হয়েছে</span>
+                            <span className="text-sm text-gray-500">
+                                ৩টি নতুন ডকুমেন্ট যুক্ত হয়েছে
+                            </span>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className="justify-center text-primary-600">সব দেখুন</DropdownMenuItem>
+                        <DropdownMenuItem className="justify-center text-primary-600">
+                            সব দেখুন
+                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
 
                 {/* User menu */}
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="rounded-full" aria-label="User menu">
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="rounded-full"
+                            aria-label="User menu"
+                        >
                             <Avatar className="h-8 w-8">
                                 <AvatarImage src={session?.user?.image} alt="User" />
-                                <AvatarFallback className="bg-primary-600 text-white">{session?.user?.name?.charAt(0)?.toUpperCase() || "A"}</AvatarFallback>
+                                <AvatarFallback className="bg-primary-600 text-white">
+                                    {session?.user?.name?.charAt(0)?.toUpperCase() || "A"}
+                                </AvatarFallback>
                             </Avatar>
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel className="flex flex-col">
                             <span>{session?.user?.name}</span>
-                            <span className="text-xs font-normal text-gray-500">{session?.user?.email}</span>
+                            <span className="text-xs font-normal text-gray-500">
+                                {session?.user?.email}
+                            </span>
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
@@ -128,12 +145,14 @@ export function SiteHeader() {
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
-                            <div className="flex" onClick={() => logoutAction()}><LogOut className="mr-2 h-4 w-4" />
-                                <span>লগআউট</span></div>
+                            <div className="flex" onClick={() => signOut({ callbackUrl: '/' })}>
+                                <LogOut className="mr-2 h-4 w-4" />
+                                <span>লগআউট</span>
+                            </div>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
         </header>
-    )
+    );
 }
