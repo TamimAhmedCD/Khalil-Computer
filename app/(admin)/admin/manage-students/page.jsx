@@ -15,161 +15,83 @@ import AdminCardHeader from "@/components/Shared/AdminCardHeader";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import StudentsCard from "@/components/admin/ManageStudent/StudentsCard";
-import LoadingSkeleton from "./Loader";
+import LoadingSkeleton from "../../../../components/admin/ManageStudent/Loader";
 import Link from "next/link";
 
-// Mock data for demonstration
-const mockStudents = [
-    {
-        id: 1,
-        studentName: "John Doe",
-        fatherName: "Robert Doe",
-        motherName: "Jane Doe",
-        email: "john.doe@email.com",
-        studentMobile: "+1 (555) 123-4567",
-        guardianMobile: "+1 (555) 987-6543",
-        birthDate: "2005-03-15",
-        gender: "Male",
-        bloodGroup: "O+",
-        maritalStatus: "Single",
-        education: "High School",
-        occupation: "Student",
-        course: "Web Design",
-        currentAddress: "123 Main St, Springfield, IL 62701",
-        permanentAddress: "123 Main St, Springfield, IL 62701",
-        studentImage: "/placeholder.svg?height=120&width=120",
-        status: "Active",
-        enrollmentDate: "2024-01-15",
-    },
-    {
-        id: 2,
-        studentName: "Sarah Johnson",
-        fatherName: "Michael Johnson",
-        motherName: "Lisa Johnson",
-        email: "sarah.johnson@email.com",
-        studentMobile: "+1 (555) 234-5678",
-        guardianMobile: "+1 (555) 876-5432",
-        birthDate: "2004-07-22",
-        gender: "Female",
-        bloodGroup: "A+",
-        maritalStatus: "Single",
-        education: "High School Graduate",
-        occupation: "Student",
-        course: "Graphics Design",
-        currentAddress: "456 Oak Ave, Springfield, IL 62702",
-        permanentAddress: "456 Oak Ave, Springfield, IL 62702",
-        studentImage: "/placeholder.svg?height=120&width=120",
-        status: "Active",
-        enrollmentDate: "2024-02-01",
-    },
-    {
-        id: 3,
-        studentName: "Michael Brown",
-        fatherName: "David Brown",
-        motherName: "Susan Brown",
-        email: "michael.brown@email.com",
-        studentMobile: "+1 (555) 345-6789",
-        guardianMobile: "+1 (555) 765-4321",
-        birthDate: "2006-01-10",
-        gender: "Male",
-        bloodGroup: "B+",
-        maritalStatus: "Single",
-        education: "High School",
-        occupation: "Student",
-        course: "Digital Marketing",
-        currentAddress: "789 Pine St, Springfield, IL 62703",
-        permanentAddress: "789 Pine St, Springfield, IL 62703",
-        studentImage: "/placeholder.svg?height=120&width=120",
-        status: "Inactive",
-        enrollmentDate: "2023-09-15",
-    },
-];
 const fetchStudents = async () => {
     const res = await axios.get("/api/admin/students");
     return res.data;
 };
 export default function StudentList() {
-    const {
-        data: students,
-        isLoading,
-    } = useQuery({
+    const { data: students, isLoading } = useQuery({
         queryKey: ["students"],
         queryFn: fetchStudents,
     });
+
+    if (isLoading) return <LoadingSkeleton />
     return (
-        <>
-            {isLoading ? (
-                <LoadingSkeleton />
-            ) : (
-                <Card className="m-6 md:m-8">
-                    {/* Header Section */}
-                    <CardHeader className="pb-4">
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                            <AdminCardHeader
-                                title="Student Directory"
-                                description="Manage and view all registered students in your institution"
-                            />
-                            <Link href="/admin/add-student"><Button className="bg-primary-700 hover:bg-primary-800/90">
-                                <Plus className="w-4 h-4 mr-2" />
-                                Add New Student
-                            </Button></Link>
-                        </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        {/* Controls Section */}
-                        {/* Search and Filters */}
-                        <div className="flex flex-col lg:flex-row gap-4">
-                            <div className="relative flex-1">
-                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                                <Input
-                                    placeholder="Search by name, email, or course..."
-                                    className="pl-10 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
-                                />
-                            </div>
-                            <div className="flex gap-2">
-                                <Select>
-                                    <SelectTrigger className="w-48">
-                                        <Filter className="w-4 h-4 mr-2" />
-                                        <SelectValue placeholder="Course" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="all">All Courses</SelectItem>
-                                        <SelectItem value="Web Design">Web Design</SelectItem>
-                                        <SelectItem value="Graphics Design">
-                                            Graphics Design
-                                        </SelectItem>
-                                        <SelectItem value="Digital Marketing">
-                                            Digital Marketing
-                                        </SelectItem>
-                                        <SelectItem value="Basic Computer">
-                                            Basic Computer
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
-                                <Select>
-                                    <SelectTrigger className="w-32">
-                                        <SelectValue placeholder="Status" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="all">All Status</SelectItem>
-                                        <SelectItem value="active">Active</SelectItem>
-                                        <SelectItem value="inactive">Inactive</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        </div>
-                    </CardContent>
-                    {/* Students Grid */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 px-6">
-                        {students.map((student) => (
-                            <StudentsCard
-                                key={student.idNumber}
-                                student={student}
-                            />
-                        ))}
+        <Card className="m-6 md:m-8">
+            {/* Header Section */}
+            <CardHeader className="pb-4">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <AdminCardHeader
+                        title="Student Directory"
+                        description="Manage and view all registered students in your institution"
+                    />
+                    <Link href="/admin/add-student">
+                        <Button className="bg-primary-700 hover:bg-primary-800/90">
+                            <Plus className="w-4 h-4 mr-2" />
+                            Add New Student
+                        </Button>
+                    </Link>
+                </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                {/* Controls Section */}
+                {/* Search and Filters */}
+                <div className="flex flex-col lg:flex-row gap-4">
+                    <div className="relative flex-1">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                        <Input
+                            placeholder="Search by name, email, or course..."
+                            className="pl-10 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                        />
                     </div>
-                </Card>
-            )}
-        </>
+                    <div className="flex gap-2">
+                        <Select>
+                            <SelectTrigger className="w-48">
+                                <Filter className="w-4 h-4 mr-2" />
+                                <SelectValue placeholder="Course" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">All Courses</SelectItem>
+                                <SelectItem value="Web Design">Web Design</SelectItem>
+                                <SelectItem value="Graphics Design">Graphics Design</SelectItem>
+                                <SelectItem value="Digital Marketing">
+                                    Digital Marketing
+                                </SelectItem>
+                                <SelectItem value="Basic Computer">Basic Computer</SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <Select>
+                            <SelectTrigger className="w-32">
+                                <SelectValue placeholder="Status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">All Status</SelectItem>
+                                <SelectItem value="active">Active</SelectItem>
+                                <SelectItem value="inactive">Inactive</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </div>
+            </CardContent>
+            {/* Students Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 px-6">
+                {students.map((student) => (
+                    <StudentsCard key={student.idNumber} student={student} />
+                ))}
+            </div>
+        </Card>
     );
 }

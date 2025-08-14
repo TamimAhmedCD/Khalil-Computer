@@ -16,7 +16,6 @@ import { useParams } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import CourseDetailsPageLoader from "@/components/loader/course-details-page-loader";
 import CourseNotFound from "@/components/NotFound/course-not-found";
-import Link from "next/link";
 import { Admission } from "@/components/Admission/admission";
 
 const fetchCourse = async (id) => {
