@@ -55,3 +55,15 @@ export async function POST(req) {
     );
   }
 }
+
+export async function GET() {
+  try {
+    const courses = await (await collection("courses")).find().toArray();
+    return NextResponse.json(courses);
+  } catch {
+    return NextResponse.json(
+      { error: "Failed to fetch course" },
+      { status: 500 }
+    );
+  }
+}

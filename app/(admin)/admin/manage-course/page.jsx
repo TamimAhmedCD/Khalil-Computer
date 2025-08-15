@@ -65,6 +65,14 @@ export default function ManageCourse() {
     }
   };
 
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Loading student details...</p>
+      </div>
+    );
+  }
   return (
     <div className="m-6 md:m-8">
       <Card>
