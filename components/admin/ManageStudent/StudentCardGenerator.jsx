@@ -240,7 +240,7 @@ export default function StudentCardGenerator({ student }) {
                                             <Image src="/qrcode.svg" width={60} height={60} alt="qr" />
                                         </div>
                                         <div>
-                                            <Image src="/authorized.svg" width={100g} height={100g} alt="signature" />
+                                            <Image src="/authorized.svg" width={100} height={100} alt="signature" /> 
                                         </div>
                                     </div>
                                 </div>
