@@ -168,7 +168,7 @@ export default function StudentForm({ student }) {
                 <Button
                     type="submit"
                     size="lg"
-                    className="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white px-8 py-3 h-12 font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+                    className="bg-primary-700 hover:bg-primary-600 text-white px-8 py-3 h-12 font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
                 >
                     <GraduationCap className="w-5 h-5 mr-2" />
                     {student ? "Update Student" : "Register Student"}
