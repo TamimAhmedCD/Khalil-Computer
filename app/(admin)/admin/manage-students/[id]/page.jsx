@@ -83,10 +83,6 @@ export default function StudentDetails() {
         return age;
     };
 
-    const handleEdit = () => {
-        router.push(`/admin/students/${studentId}/edit`);
-    };
-
     const handleDeleteConfirm = () => {
         console.log("Deleting student with ID:", student._id);
         alert(`Student ${student.studentName} has been deleted successfully!`);
@@ -109,14 +105,13 @@ export default function StudentDetails() {
                         </Button>
                     </Link>
                     <div className="flex items-center gap-2">
-                        <Button
+                        <Link href={`${student._id}/edit`}><Button
                             variant="outline"
-                            onClick={handleEdit}
                             className="text-blue-600 border-blue-200 hover:bg-blue-50 bg-transparent"
                         >
                             <Edit className="w-4 h-4 mr-2" />
                             Edit Student
-                        </Button>
+                        </Button></Link>
                         <Button
                             variant="outline"
                             onClick={() => setIsDeleteDialogOpen(true)}
