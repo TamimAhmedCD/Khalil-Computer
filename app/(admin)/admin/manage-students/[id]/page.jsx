@@ -60,11 +60,6 @@ export default function StudentDetails() {
             .join("");
     };
 
-    const getStatusColor = (status) => {
-        return status === "Active"
-            ? "bg-emerald-100 text-emerald-800 border-emerald-200"
-            : "bg-gray-100 text-gray-800 border-gray-200";
-    };
 
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString("en-US", {
@@ -98,9 +93,7 @@ export default function StudentDetails() {
         setIsDeleteDialogOpen(false);
         router.push("/admin/students");
     };
-
     console.log(student);
-
     return (
         <div className="m-6 md:m-8">
             <div className="space-y-8">

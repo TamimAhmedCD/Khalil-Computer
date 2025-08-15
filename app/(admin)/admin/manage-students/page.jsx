@@ -89,7 +89,7 @@ export default function StudentList() {
             {/* Students Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 px-6">
                 {students.map((student) => (
-                    <Link href={`manage-students/${student?._id}`}><StudentsCard key={student.idNumber} student={student} /></Link>
+                    <Link key={student.idNumber} href={`manage-students/${student?._id}`}><StudentsCard student={student} /></Link>
                 ))}
             </div>
         </Card>

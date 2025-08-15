@@ -35,9 +35,9 @@ const studentSchema = z.object({
     studentImage: z.any().optional(),
 });
 
-export default function StudentForm({ editingStudent }) {
+export default function StudentForm({ student }) {
     const [imagePreview, setImagePreview] = useState(
-        editingStudent?.studentImage || null
+        student?.studentImage || null
     );
     const [imageFile, setImageFile] = useState(null);
 
@@ -49,36 +49,36 @@ export default function StudentForm({ editingStudent }) {
     } = useForm({
         resolver: zodResolver(studentSchema),
         defaultValues: {
-            studentName: editingStudent?.studentName || "",
-            batchNumber: editingStudent?.batchNumber || "",
-            idNumber: editingStudent?.idNumber || "",
-            duration: editingStudent?.duration || "",
-            fatherName: editingStudent?.fatherName || "",
-            motherName: editingStudent?.motherName || "",
-            email: editingStudent?.email || "",
-            studentMobile: editingStudent?.studentMobile || "",
-            guardianMobile: editingStudent?.guardianMobile || "",
-            birthDate: editingStudent?.birthDate || "",
-            gender: editingStudent?.gender || "",
-            bloodGroup: editingStudent?.bloodGroup || "",
-            maritalStatus: editingStudent?.maritalStatus || "",
-            education: editingStudent?.education || "",
-            occupation: editingStudent?.occupation || "",
-            course: editingStudent?.course || "",
-            currentAddress: editingStudent?.currentAddress || "",
-            permanentAddress: editingStudent?.permanentAddress || "",
-            studentImage: editingStudent?.studentImage || "",
+            studentName: student?.studentName || "",
+            batchNumber: student?.batchNumber || "",
+            idNumber: student?.idNumber || "",
+            duration: student?.duration || "",
+            fatherName: student?.fatherName || "",
+            motherName: student?.motherName || "",
+            email: student?.email || "",
+            studentMobile: student?.studentMobile || "",
+            guardianMobile: student?.guardianMobile || "",
+            birthDate: student?.birthDate || "",
+            gender: student?.gender || "",
+            bloodGroup: student?.bloodGroup || "",
+            maritalStatus: student?.maritalStatus || "",
+            education: student?.education || "",
+            occupation: student?.occupation || "",
+            course: student?.course || "",
+            currentAddress: student?.currentAddress || "",
+            permanentAddress: student?.permanentAddress || "",
+            studentImage: student?.studentImage || "",
         },
     });
 
     useEffect(() => {
-        if (editingStudent) {
-            Object.keys(editingStudent).forEach((key) =>
-                setValue(key, editingStudent[key])
+        if (student) {
+            Object.keys(student).forEach((key) =>
+                setValue(key, student[key])
             );
-            setImagePreview(editingStudent.studentImage || null);
+            setImagePreview(student.studentImage || null);
         }
-    }, [editingStudent, setValue]);
+    }, [student, setValue]);
 
     const handleImageUpload = (event) => {
         const file = event.target.files?.[0];
@@ -129,12 +129,12 @@ export default function StudentForm({ editingStudent }) {
     const submitData = async (payload) => {
         const res = await axios.post("/api/admin/students", {
             ...payload,
-            _id: editingStudent?._id,
+            _id: student?._id,
         });
 
         if (res.data.success) {
             alert(
-                editingStudent
+                student
                     ? "Student updated successfully!"
                     : "Student added successfully!"
             );
@@ -171,7 +171,7 @@ export default function StudentForm({ editingStudent }) {
                     className="bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white px-8 py-3 h-12 font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
                 >
                     <GraduationCap className="w-5 h-5 mr-2" />
-                    {editingStudent ? "Update Student" : "Register Student"}
+                    {student ? "Update Student" : "Register Student"}
                 </Button>
             </div>
         </form>
