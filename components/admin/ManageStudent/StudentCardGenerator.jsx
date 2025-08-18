@@ -212,7 +212,8 @@ export default function StudentCardGenerator({ student }) {
                                         </div>
 
                                         <div className="flex items-center space-x-3 p-3 bg-[#00558C]/5 rounded-lg">
-                                            <Phone className="w-5 h-5 text-[#00558C]" />
+
+                                            <Globe className="w-5 h-5 text-[#00558C]" />
                                             <div>
                                                 <p className="text-base font-medium text-gray-500 uppercase tracking-wide">
                                                     Website
@@ -223,7 +224,7 @@ export default function StudentCardGenerator({ student }) {
                                             </div>
                                         </div>
                                         <div className="flex items-center space-x-3 p-3 bg-[#00558C]/5 rounded-lg">
-                                            <Globe className="w-5 h-5 text-[#00558C]" />
+                                            <Phone className="w-5 h-5 text-[#00558C]" />
                                             <div>
                                                 <p className="text-base font-medium text-gray-500 uppercase tracking-wide">
                                                     Emergency Contact
@@ -240,7 +241,7 @@ export default function StudentCardGenerator({ student }) {
                                             <Image src="/qrcode.svg" width={60} height={60} alt="qr" />
                                         </div>
                                         <div>
-                                            <Image src="/authorized.svg" width={100} height={100} alt="signature" /> 
+                                            <Image src="/authorized.svg" width={100} height={100} alt="signature" />
                                         </div>
                                     </div>
                                 </div>
