@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { GraduationCap, Mail, MapPin, Phone } from 'lucide-react'
 import React from 'react'
@@ -26,6 +27,15 @@ export default function StudentsCard({ student }) {
                                 <GraduationCap className="w-4 h-4 mr-2" />
                                 {student.course}
                             </div>
+                            <Badge
+                                variant="outline"
+                                className={`font-xs text-xs px-2 py-1 mt-1 ${student.outstandingAmount == 0
+                                    ? 'bg-emerald-100 text-emerald-800 border-emerald-200'
+                                    : 'bg-orange-100 text-orange-800 border-orange-200'
+                                    }`}
+                            >
+                                {student.outstandingAmount == 0 ? 'Status: Paid' : 'Status: Unpaid'}
+                            </Badge>
                         </div>
                     </div>
                 </div>

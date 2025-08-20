@@ -9,7 +9,6 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
-import { loginAction } from "@/app/actions/login";
 import { LoginFormFields } from "./login-form-fields";
 import { SocialLoginButtons } from "./SocialLoginButton";
 import { signIn, useSession } from "next-auth/react";

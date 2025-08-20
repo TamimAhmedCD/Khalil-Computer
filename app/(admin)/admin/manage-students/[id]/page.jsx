@@ -135,6 +135,15 @@ export default function StudentDetails() {
                         <div className="flex-1">
                             <h1 className="text-4xl font-bold text-gray-900 mb-3">{student.studentName}</h1>
                             <div className="flex items-center gap-4 mb-4">
+                                <Badge
+                                    variant="outline"
+                                    className={`font-medium text-base px-3 py-1 ${student.outstandingAmount == 0
+                                        ? 'bg-emerald-100 text-emerald-800 border-emerald-200'
+                                        : 'bg-orange-100 text-orange-800 border-orange-200'
+                                        }`}
+                                >
+                                    {student.outstandingAmount == 0 ? 'Status: Paid' : 'Status: Unpaid'}
+                                </Badge>
                                 <span className="text-gray-600 font-medium">Student ID: #{student.idNumber}</span>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
@@ -319,6 +328,41 @@ export default function StudentDetails() {
                                     </div>
                                 </div>
                             </div>
+                            <div className="space-y-6">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                                        <CreditCard className="w-6 h-6 text-green-600" />
+                                    </div>
+                                    <h2 className="text-2xl font-semibold text-gray-900">Payment Information</h2>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-gradient-to-r from-gray-50 to-green-50 rounded-xl">
+                                    <div>
+                                        <label className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
+                                            Course Fee
+                                        </label>
+                                        <p className="text-xl text-gray-900 font-semibold mt-1">{student.courseFee} ৳</p>
+                                    </div>
+                                    <div>
+                                        <label className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
+                                            Amount Paid
+                                        </label>
+                                        <p className="text-lg text-gray-900 mt-1">{student.amountPaid} ৳</p>
+                                    </div>
+                                    <div>
+                                        <label className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
+                                            Outstanding Amount
+                                        </label>
+                                        <p className="text-lg text-gray-900 mt-1">{student.outstandingAmount} ৳</p>
+                                    </div>
+                                    <div>
+                                        <label className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
+                                            Comments
+                                        </label>
+                                        <p className="text-lg text-gray-900 mt-1">{student.comments || "N/A"}</p>
+                                    </div>
+                                </div>
+                            </div>
+
                         </TabsContent>
 
                         <TabsContent value="id-card" className="space-y-6">

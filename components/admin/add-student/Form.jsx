@@ -11,6 +11,9 @@ import FormPersonalInformation from "./FormPersonalInformation";
 import FormFamilyInformation from "./FormFamilyInformation";
 import FormContactInformation from "./FormContactInformation";
 import FormAcademicInformation from "./FormAcademicInformation";
+import FormPaymentInformation from "./FormPaymentInformation";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 // Zod validation schema
 const studentSchema = z.object({
@@ -33,6 +36,10 @@ const studentSchema = z.object({
     currentAddress: z.string().min(1, "Current address is required"),
     permanentAddress: z.string().min(1, "Permanent address is required"),
     studentImage: z.any().optional(),
+    courseFee: z.string().min(1, "Course fee is required"),
+    amountPaid: z.string().min(1, "Amount paid is required"),
+    outstandingAmount: z.string().min(1, "Outstanding amount is required"),
+    comments: z.string().optional(),
 });
 
 export default function StudentForm({ student }) {
@@ -40,6 +47,7 @@ export default function StudentForm({ student }) {
         student?.studentImage || null
     );
     const [imageFile, setImageFile] = useState(null);
+    const router = useRouter()
 
     const {
         register,
@@ -68,6 +76,10 @@ export default function StudentForm({ student }) {
             currentAddress: student?.currentAddress || "",
             permanentAddress: student?.permanentAddress || "",
             studentImage: student?.studentImage || "",
+            courseFee: student?.courseFee || 0,
+            amountPaid: student?.amountPaid || 0,
+            outstandingAmount: student?.outstandingAmount || 0,
+            comments: student?.comments || "",
         },
     });
 
@@ -133,14 +145,14 @@ export default function StudentForm({ student }) {
         });
 
         if (res.data.success) {
-            alert(
+            toast.success(
                 student
                     ? "Student updated successfully!"
                     : "Student added successfully!"
             );
-            console.log("Result:", res.data);
+            router.push("/admin/manage-students");
         } else {
-            throw new Error(res.data.error || "Failed to save student");
+            toast.error(res.data.error || "Failed to save student");
         }
     };
 
@@ -164,6 +176,8 @@ export default function StudentForm({ student }) {
                 errors={errors}
                 setValue={setValue}
             />
+            <Separator className="bg-slate-200" />
+            <FormPaymentInformation register={register} errors={errors} setValue={setValue} />
             <div className="flex justify-end pt-6">
                 <Button
                     type="submit"
