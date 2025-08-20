@@ -4,7 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { GraduationCap } from 'lucide-react'
 import React from 'react'
 
-export default function FormAcademicInformation({ errors, register, setValue }) {
+export default function FormAcademicInformation({ errors, register, setValue, watch }) {
     return (
         <div className="space-y-6">
             <div className="flex items-center gap-3">
@@ -62,7 +62,7 @@ export default function FormAcademicInformation({ errors, register, setValue }) 
                     >
                         Course <span className="text-red-500">*</span>
                     </Label>
-                    <Select onValueChange={(val) => setValue("course", val)}>
+                    <Select value={watch("course")} onValueChange={(val) => setValue("course", val)}>
                         <SelectTrigger className="h-11 border-slate-200 focus:border-blue-500 focus:ring-blue-500/20 w-full">
                             <SelectValue placeholder="Select Course" />
                         </SelectTrigger>

@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Upload, User, X } from "lucide-react";
 
 
-export default function FormPersonalInformation({ imagePreview, removeImage, handleImageUpload, register, errors, setValue }) {
+export default function FormPersonalInformation({ imagePreview, removeImage, handleImageUpload, register, errors, setValue, watch }) {
     return (
         <div className="space-y-6">
             <div className="flex items-center gap-3">
@@ -120,7 +120,7 @@ export default function FormPersonalInformation({ imagePreview, removeImage, han
                     >
                         Gender <span className="text-red-500">*</span>
                     </Label>
-                    <Select onValueChange={(val) => setValue("gender", val)}>
+                    <Select value={watch("gender")} onValueChange={(val) => setValue("gender", val)}>
                         <SelectTrigger className="h-11 border-slate-200 focus:border-blue-500 focus:ring-blue-500/20 w-full">
                             <SelectValue placeholder="Select Gender" />
                         </SelectTrigger>
@@ -145,7 +145,7 @@ export default function FormPersonalInformation({ imagePreview, removeImage, han
                     >
                         Blood Group
                     </Label>
-                    <Select onValueChange={(val) => setValue("bloodGroup", val)}>
+                    <Select value={watch("bloodGroup")} onValueChange={(val) => setValue("bloodGroup", val)}>
                         <SelectTrigger className="h-11 border-slate-200 focus:border-blue-500 focus:ring-blue-500/20 w-full">
                             <SelectValue placeholder="Select Blood Group" />
                         </SelectTrigger>
@@ -169,7 +169,7 @@ export default function FormPersonalInformation({ imagePreview, removeImage, han
                     >
                         Marital Status
                     </Label>
-                    <Select onValueChange={(val) => setValue("maritalStatus", val)}>
+                    <Select value={watch("maritalStatus")} onValueChange={(val) => setValue("maritalStatus", val)}>
                         <SelectTrigger className="h-11 border-slate-200 focus:border-blue-500 focus:ring-blue-500/20 w-full">
                             <SelectValue placeholder="Select Marital Status" />
                         </SelectTrigger>

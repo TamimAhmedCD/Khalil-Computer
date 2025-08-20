@@ -53,6 +53,7 @@ export default function StudentForm({ student }) {
         register,
         handleSubmit,
         setValue,
+        watch,
         formState: { errors },
     } = useForm({
         resolver: zodResolver(studentSchema),
@@ -165,6 +166,7 @@ export default function StudentForm({ student }) {
                 handleImageUpload={handleImageUpload}
                 removeImage={removeImage}
                 setValue={setValue}
+                watch={watch}
             />
             <Separator className="bg-slate-200" />
             <FormFamilyInformation register={register} errors={errors} />
@@ -172,6 +174,7 @@ export default function StudentForm({ student }) {
             <FormContactInformation register={register} errors={errors} />
             <Separator className="bg-slate-200" />
             <FormAcademicInformation
+                watch={watch}
                 register={register}
                 errors={errors}
                 setValue={setValue}
