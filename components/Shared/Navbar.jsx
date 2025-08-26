@@ -18,8 +18,8 @@ const navItems = [
     href: "/courses",
   },
   {
-    title: "ব্লগ",
-    href: "/blog",
+    title: "নোটিশ বোর্ড",
+    href: "/noticeboard",
   },
   {
     title: "কমিউনিটি",
