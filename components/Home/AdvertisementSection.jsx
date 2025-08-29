@@ -46,7 +46,7 @@ export default function AdvertisementSection() {
     }
 
     return (
-        <section className="w-full pt-10 md:pt-20 overflow-hidden bg-gradient-to-br from-primary-50 via-white to-primary-50 relative">
+        <section className="w-full pt-10 md:pt-20 overflow-hidden relative">
             {/* Decorative elements */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
                 <div className="absolute top-[10%] right-[5%] w-64 h-64 rounded-full bg-primary-200/30 blur-3xl"></div>

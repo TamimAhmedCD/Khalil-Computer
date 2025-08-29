@@ -41,7 +41,7 @@ export function Footer() {
     ]
 
     return (
-        <footer className="pt-20 pb-8 relative overflow-hidden bg-primary-100/80 mt-10 md:mt-20 font-hind-siliguri">
+        <footer className="pt-20 pb-8 relative overflow-hidden bg-primary-50/80 mt-10 md:mt-20 font-hind-siliguri">
             <div className="container mx-auto px-5 md:px-10 lg:px-20">
                 {/* Top section with logo and newsletter - redesigned for minimal elegance */}
                 <div className="mb-16 relative">
@@ -50,7 +50,7 @@ export function Footer() {
                     <div className="relative z-10 flex flex-col items-center text-center">
                         {/* Logo */}
                         <Image
-                            src="/logo.png"
+                            src="/logoFull.svg"
                             width={130}
                             height={160}
                             alt="Khalil Computer Logo"

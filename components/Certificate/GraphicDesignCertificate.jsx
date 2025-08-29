@@ -486,7 +486,7 @@ const GraphicDesignCertificate = ({ student }) => (
                                 letterSpacing: ".05em",
                             }}
                         >
-                            {"Has success fully completed the"}
+                            {"Has successfully completed the"}
                         </tspan>
                         <tspan
                             x={183.29}
@@ -1086,7 +1086,7 @@ const GraphicDesignCertificate = ({ student }) => (
                         }}
                     >
                         <tspan x={0} y={0}>
-                            {`${student.idNumber} `}
+                            {`Student ID: ${student.idNumber} `}
                         </tspan>
                     </text>
                     <text

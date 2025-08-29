@@ -185,7 +185,7 @@ const Navbar = () => {
         <div>
           <Link href="/">
             <Image
-              src="/logo.png"
+              src="/logoFull.svg"
               width={130}
               height={160}
               alt="Khalil Computer Logo"
