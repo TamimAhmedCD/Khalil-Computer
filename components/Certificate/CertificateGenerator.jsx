@@ -42,7 +42,7 @@ export default function CertificateGenerator({ student }) {
           onClick={downloadCertificate}
           variant="outline"
           className="text-green-600 border-green-200 hover:bg-green-50"
-          disabled={isGenerating}
+          disabled={isGenerating || !student.certificate_issued}
         >
           {isGenerating ? "Generating..." : "Download Certificate"}
         </Button>
