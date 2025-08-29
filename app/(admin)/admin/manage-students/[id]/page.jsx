@@ -1,6 +1,7 @@
 "use client";
 
 import StudentCardGenerator from "@/components/admin/ManageStudent/StudentCardGenerator";
+import CertificateGenerator from "@/components/Certificate/CertificateGenerator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -165,7 +166,7 @@ export default function StudentDetails() {
                 {/* Tabs Content */}
                 <div className=" rounded-2xl border">
                     <Tabs defaultValue="details" className="p-8">
-                        <TabsList className="grid w-full grid-cols-2 mb-8">
+                        <TabsList className="grid w-full grid-cols-3 mb-8">
                             <TabsTrigger value="details" className="flex items-center gap-2 text-base py-3">
                                 <User className="w-5 h-5" />
                                 Student Details
@@ -173,6 +174,10 @@ export default function StudentDetails() {
                             <TabsTrigger value="id-card" className="flex items-center gap-2 text-base py-3">
                                 <CreditCard className="w-5 h-5" />
                                 ID Card Generator
+                            </TabsTrigger>
+                            <TabsTrigger value="certificate" className="flex items-center gap-2 text-base py-3">
+                                <GraduationCap className="w-5 h-5" />
+                                Certificate
                             </TabsTrigger>
                         </TabsList>
 
@@ -367,6 +372,31 @@ export default function StudentDetails() {
 
                         <TabsContent value="id-card" className="space-y-6">
                             <StudentCardGenerator student={student} />
+                        </TabsContent>
+                        <TabsContent value="certificate" className="space-y-6">
+                            {/* Replace with your certificate generator component */}
+                            <div className="p-6 border rounded-xl bg-gradient-to-r from-indigo-50 to-blue-50">
+                                <h2 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                                    <GraduationCap className="w-6 h-6 text-indigo-600" />
+                                    Certificate Generator
+                                </h2>
+                                <p className="text-gray-700 mb-6">
+                                    Generate and preview certificates for <span className="font-semibold">{student.studentName}</span>.
+                                </p>
+
+                                {/* Example: Certificate Preview Component */}
+                                {/* Create CertificateGenerator.js similar to StudentCardGenerator */}
+                                {/* <CertificateGenerator student={student} /> */}
+                                <CertificateGenerator student={student} />
+                                {/* <div className="flex gap-4">
+                                    <Button className="bg-blue-600 text-white hover:bg-blue-700">
+                                        Print Certificate
+                                    </Button>
+                                    <Button variant="outline" className="text-green-600 border-green-200 hover:bg-green-50">
+                                        Download JPG
+                                    </Button>
+                                </div> */}
+                            </div>
                         </TabsContent>
                     </Tabs>
                 </div>

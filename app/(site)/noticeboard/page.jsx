@@ -61,6 +61,8 @@ const sampleNotices = [
         isPinned: false
     }
 ];
+
+
 export default function NoticeBoard() {
     const [selectedFilter, setSelectedFilter] = useState("all");
     const [selectedNotice, setSelectedNotice] = useState(null);
@@ -94,7 +96,7 @@ export default function NoticeBoard() {
                 {/* Header */}
                 <div className="text-center mb-12 animate-fade-in">
                     <h1 className="text-4xl md:text-5xl font-bold font-bangla text-foreground mb-4">
-                        📢 নোটিশ বোর্ড
+                        নোটিশ বোর্ড
                     </h1>
                     <p className="text-lg text-muted-foreground font-bangla max-w-2xl mx-auto">
                         খালিল কম্পিউটার ইনস্টিটিউটের সকল গুরুত্বপূর্ণ নোটিশ ও আপডেট

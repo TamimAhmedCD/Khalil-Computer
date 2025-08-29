@@ -11,6 +11,7 @@ import {
     FileTextIcon,
     FolderIcon,
     HelpCircleIcon,
+    Megaphone,
     SearchIcon,
     SettingsIcon,
     Users,
@@ -70,6 +71,21 @@ const data = {
                 {
                     title: "Manage Students",
                     url: "/admin/manage-students"
+                }
+            ]
+        },
+        {
+            title: "Notice Board",
+            url: "/admin/noticeboard",
+            icon: Megaphone,
+            items: [
+                {
+                    title: "Add Notice",
+                    url: '/admin/add-notice'
+                },
+                {
+                    title: "Manage Notice",
+                    url: "/admin/manage-notice"
                 }
             ]
         },

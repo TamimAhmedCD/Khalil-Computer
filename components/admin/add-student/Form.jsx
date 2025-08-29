@@ -40,6 +40,7 @@ const studentSchema = z.object({
     amountPaid: z.string().min(1, "Amount paid is required"),
     outstandingAmount: z.string().min(1, "Outstanding amount is required"),
     comments: z.string().optional(),
+    certificate_issued: z.string().optional(),
 });
 
 export default function StudentForm({ student }) {
@@ -81,6 +82,7 @@ export default function StudentForm({ student }) {
             amountPaid: student?.amountPaid || 0,
             outstandingAmount: student?.outstandingAmount || 0,
             comments: student?.comments || "",
+            certificate_issued: student?.certificate_issued || "",
         },
     });
 

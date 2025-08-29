@@ -141,6 +141,25 @@ export default function FormAcademicInformation({ errors, register, setValue, wa
                         </p>
                     )}
                 </div>
+                <div className="space-y-2">
+                    <Label
+                        htmlFor="certificate_issued"
+                        className="text-sm font-medium text-slate-700"
+                    >
+                        Certificate Issued
+                    </Label>
+                    <Input
+                        type={'date'}
+                        id="certificate_issued"
+                        {...register("certificate_issued")}
+                        className="h-11 border-slate-200 focus:border-blue-500 focus:ring-blue-500/20"
+                    />
+                    {errors.certificate_issued && (
+                        <p className="text-sm text-red-500">
+                            {errors.certificate_issued.message}
+                        </p>
+                    )}
+                </div>
             </div>
         </div>
     )
