@@ -26,7 +26,7 @@ export async function POST(req) {
       };
       const result = await studentsCol.updateOne(
         { _id: new ObjectId(_id) },
-        { $set: updateData }
+        { $set: updateData },
       );
       return NextResponse.json({
         success: true,
@@ -52,19 +52,41 @@ export async function POST(req) {
     console.error(err);
     return NextResponse.json(
       { success: false, error: err.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
-export async function GET() {
+export async function GET(req) {
   try {
-    const students = await (await collection("students")).find().toArray();
+    const { searchParams } = new URL(req.url);
+    const idNumber = searchParams.get("idNumber");
+
+    const students = await (
+      await collection("students")
+    )
+      .find(
+        idNumber ? { idNumber: idNumber.trim() } : {},
+        idNumber
+          ? {
+              projection: {
+                studentName: 1,
+                batchNumber: 1,
+                idNumber: 1,
+                course: 1,
+                certificate_issued: 1,
+                _id: 0,
+              },
+            }
+          : {},
+      )
+      .toArray();
+
     return NextResponse.json(students);
   } catch {
     return NextResponse.json(
       { error: "Failed to fetch students" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

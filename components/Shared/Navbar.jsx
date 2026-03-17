@@ -35,6 +35,7 @@ const navItems = [
     items: [
       { title: "যোগাযোগ", href: "/contact-us" },
       { title: "আমাদের সম্পর্কে", href: "/about" },
+      { title: "সার্টিফিকেট ভেরিফাই", href: "/verify-certificate" },
     ],
   },
 ];
