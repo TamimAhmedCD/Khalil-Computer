@@ -140,7 +140,7 @@ export default function VerificationCard() {
             </motion.div>
 
             {/* Result */}
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode="wait" >
                 {result === "success" && certData && (
                     <motion.div
                         key="success"
