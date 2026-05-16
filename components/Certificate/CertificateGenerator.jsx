@@ -1,52 +1,100 @@
 "use client";
-import React, { useRef, useState } from "react";
-import { toPng } from "html-to-image";
-import GraphicDesignCertificate from "./GraphicDesignCertificate";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 export default function CertificateGenerator({ student }) {
-  const certRef = useRef(null);
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState(null);
 
-  const downloadCertificate = async () => {
-    setIsGenerating(true);
+  // 🔥 Preview Certificate (DOCX → PDF from backend)
+  const previewCertificate = async () => {
+    setLoading(true);
+
     try {
-      const dataUrl = await toPng(certRef.current, {
-        cacheBust: true,
-        quality: 1,
-        pixelRatio: 3, // high-quality export
-        backgroundColor: "white", // make background white
-        style: { margin: 0, padding: 0 },
-      });
+      const res = await fetch(
+        `/api/certificate/${student._id}`
+      );
 
-      const link = document.createElement("a");
-      link.download = `${student.studentName}-certificate.png`;
-      link.href = dataUrl;
-      link.click();
+      const blob = await res.blob();
+
+      const url = window.URL.createObjectURL(blob);
+
+      setPreviewUrl(url);
     } catch (err) {
-      console.error("Error generating certificate", err);
+      console.log("Preview error:", err);
     }
-    setIsGenerating(false);
+
+    setLoading(false);
+  };
+
+  // 🔥 Download Certificate
+  const downloadCertificate = async () => {
+    setLoading(true);
+
+    try {
+      const res = await fetch(
+        `/api/certificate/${student._id}`
+      );
+
+      const blob = await res.blob();
+
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${student.studentName}-certificate.docx`;
+
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.log("Download error:", err);
+    }
+
+    setLoading(false);
   };
 
   return (
-    <div>
-      {/* Certificate container */}
-      <div ref={certRef} className="p-3 border bg-white rounded-2xl mb-5">
-        <GraphicDesignCertificate student={student} />
+    <div className="space-y-6">
+
+      {/* 🔥 Preview Container */}
+      <div className="border rounded-xl p-4 bg-white shadow-md">
+        <div className="flex justify-between items-center mb-3">
+          <h2 className="text-lg font-semibold">
+            Certificate Preview
+          </h2>
+
+          <Button
+            onClick={previewCertificate}
+            disabled={loading}
+            variant="outline"
+          >
+            {loading ? "Loading..." : "Load Preview"}
+          </Button>
+        </div>
+
+        {/* 🔥 PDF Preview */}
+        {previewUrl && (
+          <iframe
+            src={previewUrl}
+            className="w-full h-[500px] border rounded-lg"
+          />
+        )}
       </div>
 
-      {/* Download button */}
+      {/* 🔘 Actions */}
       <div className="flex gap-4">
         <Button
           onClick={downloadCertificate}
-          variant="outline"
-          className="text-green-600 border-green-200 hover:bg-green-50"
-          disabled={isGenerating || !student.certificate_issued}
+          disabled={loading || !student.certificate_issued}
+          className="bg-green-600 hover:bg-green-700 text-white"
         >
-          {isGenerating ? "Generating..." : "Download Certificate"}
+          {loading ? "Processing..." : "Download Certificate"}
         </Button>
       </div>
+
     </div>
   );
 }
