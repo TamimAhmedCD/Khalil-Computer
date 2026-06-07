@@ -58,7 +58,7 @@ export default function LinkHub() {
       id: 6,
       title: "Facebook Page",
       desc: "Join our community and stay updated.",
-      url: "#facebook",
+      url: "https://web.facebook.com/khalilcomputer01715409109",
       icon: Facebook,
     },
     // { id: 7, title: 'Fiverr Profile', desc: 'Order freelance development gigs securely.', url: '#fiverr', icon: UserCheck },
