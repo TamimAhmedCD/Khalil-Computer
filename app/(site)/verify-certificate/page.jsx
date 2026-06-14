@@ -1,8 +1,9 @@
-import VerificationCard from '@/components/VerifyCertificate/VerificationCard'
-import React from 'react'
+import VerificationCard from "@/components/VerifyCertificate/VerificationCard";
 
 export default function page() {
-    return (
-        <div><VerificationCard /></div>
-    )
+  return (
+    <div>
+      <VerificationCard />
+    </div>
+  );
 }
