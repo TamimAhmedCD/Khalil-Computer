@@ -8,7 +8,7 @@ export async function POST(request) {
   const body = await request.json();
   console.log(body);
   const { data, error } = await resend.emails.send({
-    from: "onboarding@resend.dev",
+    from: "mail@khalilcomputer.com",
     to: "khalilcomputer@gmail.com",
     subject: `${body.studentName} ডিসকাউন্ট অফারের জন্য একটি নতুন নিবন্ধন সম্পন্ন করেছেন`,
     react: FreeSeminarEmail({
