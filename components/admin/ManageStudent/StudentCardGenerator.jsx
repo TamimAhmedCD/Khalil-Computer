@@ -3,39 +3,41 @@
 import { useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Download, CreditCard, Building2, GraduationCap, Calendar, Hash, Mail, Phone, Globe } from "lucide-react"
+import { Download, CreditCard, Building2, GraduationCap, Calendar, Hash, Mail, Phone, Globe, FileText } from "lucide-react"
 import Image from "next/image"
 import { toPng } from "html-to-image"
+import jsPDF from "jspdf"
 
 export default function StudentCardGenerator({ student }) {
     const frontRef = useRef(null)
     const backRef = useRef(null)
     const [isGenerating, setIsGenerating] = useState(false)
 
+    const captureOptions = {
+        cacheBust: true,
+        quality: 1,
+        pixelRatio: 3,
+        skipAutoScale: true,
+        style: {
+            margin: '0',
+            padding: '0',
+        },
+        backgroundColor: null,
+    }
+
+    const captureFilter = (node) => {
+        return !(node.classList && node.classList.contains('download-button-exclude'))
+    }
+
+    // Download as PNG
     const downloadCard = async (type) => {
         setIsGenerating(true)
 
         try {
-            const options = {
-                cacheBust: true,
-                quality: 1,
-                pixelRatio: 3,
-                skipAutoScale: true, // Prevent automatic scaling
-                style: {
-                    margin: '0', // Remove any margins
-                    padding: '0', // Remove any padding
-                },
-                backgroundColor: null, // Set to null for transparent background
-            }
-
             if (type === "front" || type === "both") {
                 const frontDataUrl = await toPng(frontRef.current, {
-                    ...options,
-                    filter: (node) => {
-                        // Exclude the download button from the capture
-                        return !(node.classList &&
-                            node.classList.contains('download-button-exclude'))
-                    }
+                    ...captureOptions,
+                    filter: captureFilter,
                 })
                 const link = document.createElement("a")
                 link.download = `${student.studentName}-student-card-front.png`
@@ -45,12 +47,8 @@ export default function StudentCardGenerator({ student }) {
 
             if (type === "back" || type === "both") {
                 const backDataUrl = await toPng(backRef.current, {
-                    ...options,
-                    filter: (node) => {
-                        // Exclude the download button from the capture
-                        return !(node.classList &&
-                            node.classList.contains('download-button-exclude'))
-                    }
+                    ...captureOptions,
+                    filter: captureFilter,
                 })
                 const link = document.createElement("a")
                 link.download = `${student.studentName}-student-card-back.png`
@@ -59,6 +57,76 @@ export default function StudentCardGenerator({ student }) {
             }
         } catch (err) {
             console.error("Error generating image", err)
+        }
+
+        setIsGenerating(false)
+    }
+
+    // Download as PDF (single side or both sides)
+    const downloadCardAsPDF = async (type) => {
+        setIsGenerating(true)
+
+        try {
+            const pdfCaptureOptions = {
+                ...captureOptions,
+                backgroundColor: '#ffffff',
+            }
+
+            // ID card dimensions in mm (standard portrait orientation for ID cards)
+            const pdfWidth = 63.5
+            const pdfHeight = 101
+
+            if (type === "front") {
+                const frontDataUrl = await toPng(frontRef.current, {
+                    ...pdfCaptureOptions,
+                    filter: captureFilter,
+                })
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: [pdfWidth, pdfHeight],
+                })
+                pdf.addImage(frontDataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight)
+                pdf.save(`${student.studentName}-student-card-front.pdf`)
+            } else if (type === "back") {
+                const backDataUrl = await toPng(backRef.current, {
+                    ...pdfCaptureOptions,
+                    filter: captureFilter,
+                })
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: [pdfWidth, pdfHeight],
+                })
+                pdf.addImage(backDataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight)
+                pdf.save(`${student.studentName}-student-card-back.pdf`)
+            } else if (type === "both") {
+                const frontDataUrl = await toPng(frontRef.current, {
+                    ...pdfCaptureOptions,
+                    filter: captureFilter,
+                })
+                const backDataUrl = await toPng(backRef.current, {
+                    ...pdfCaptureOptions,
+                    filter: captureFilter,
+                })
+
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: [pdfWidth, pdfHeight],
+                })
+
+                // Front side (page 1)
+                pdf.addImage(frontDataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight)
+
+                // Back side (page 2)
+                pdf.addPage([pdfWidth, pdfHeight], 'portrait')
+                pdf.addImage(backDataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight)
+
+                pdf.save(`${student.studentName}-student-card-both-sides.pdf`)
+            }
+        } catch (err) {
+            console.error("Error generating PDF", err)
         }
 
         setIsGenerating(false)
@@ -164,15 +232,26 @@ export default function StudentCardGenerator({ student }) {
                                 </div>
                             </div>
                         </div>
-                        <Button
-                            onClick={() => downloadCard("front")}
-                            disabled={isGenerating}
-                            variant="outline"
-                            className="w-full border-slate-300 hover:bg-slate-50 mt-3 download-button-exclude"
-                        >
-                            <Download className="w-4 h-4 mr-2" />
-                            Download Front
-                        </Button>
+                        <div className="flex gap-2 mt-3">
+                            <Button
+                                onClick={() => downloadCard("front")}
+                                disabled={isGenerating}
+                                variant="outline"
+                                className="flex-1 border-slate-300 hover:bg-slate-50 download-button-exclude"
+                            >
+                                <Download className="w-4 h-4 mr-2" />
+                                PNG
+                            </Button>
+                            <Button
+                                onClick={() => downloadCardAsPDF("front")}
+                                disabled={isGenerating}
+                                variant="outline"
+                                className="flex-1 border-blue-300 text-blue-700 hover:bg-blue-50 download-button-exclude"
+                            >
+                                <FileText className="w-4 h-4 mr-2" />
+                                PDF
+                            </Button>
+                        </div>
                     </CardContent>
                 </Card>
 
@@ -212,7 +291,6 @@ export default function StudentCardGenerator({ student }) {
                                         </div>
 
                                         <div className="flex items-center space-x-3 p-3 bg-[#00558C]/5 rounded-lg">
-
                                             <Globe className="w-5 h-5 text-[#00558C]" />
                                             <div>
                                                 <p className="text-base font-medium text-gray-500 uppercase tracking-wide">
@@ -247,29 +325,50 @@ export default function StudentCardGenerator({ student }) {
                                 </div>
                             </div>
                         </div>
-                        <Button
-                            onClick={() => downloadCard("back")}
-                            disabled={isGenerating}
-                            variant="outline"
-                            className="w-full border-slate-300 hover:bg-slate-50 mt-3 download-button-exclude"
-                        >
-                            <Download className="w-4 h-4 mr-2" />
-                            Download Back
-                        </Button>
+                        <div className="flex gap-2 mt-3">
+                            <Button
+                                onClick={() => downloadCard("back")}
+                                disabled={isGenerating}
+                                variant="outline"
+                                className="flex-1 border-slate-300 hover:bg-slate-50 download-button-exclude"
+                            >
+                                <Download className="w-4 h-4 mr-2" />
+                                PNG
+                            </Button>
+                            <Button
+                                onClick={() => downloadCardAsPDF("back")}
+                                disabled={isGenerating}
+                                variant="outline"
+                                className="flex-1 border-blue-300 text-blue-700 hover:bg-blue-50 download-button-exclude"
+                            >
+                                <FileText className="w-4 h-4 mr-2" />
+                                PDF
+                            </Button>
+                        </div>
                     </CardContent>
                 </Card>
             </div>
 
-            {/* Download Both Button */}
-            <div className="flex justify-center">
+            {/* Download Both Buttons */}
+            <div className="flex flex-col sm:flex-row justify-center gap-3">
                 <Button
                     onClick={() => downloadCard("both")}
                     disabled={isGenerating}
                     size="lg"
-                    className="bg-primary-700 hover:bg-primary-600 text-white px-8 download-button-exclude"
+                    variant="outline"
+                    className="border-primary-300 text-primary-700 hover:bg-primary-50 px-8 download-button-exclude"
                 >
                     <Download className="w-5 h-5 mr-2" />
-                    {isGenerating ? "Generating..." : "Download Both Cards"}
+                    {isGenerating ? "Generating..." : "Download Both (PNG)"}
+                </Button>
+                <Button
+                    onClick={() => downloadCardAsPDF("both")}
+                    disabled={isGenerating}
+                    size="lg"
+                    className="bg-primary-700 hover:bg-primary-600 text-white px-8 download-button-exclude"
+                >
+                    <FileText className="w-5 h-5 mr-2" />
+                    {isGenerating ? "Generating..." : "Download Both (PDF)"}
                 </Button>
             </div>
         </div>
