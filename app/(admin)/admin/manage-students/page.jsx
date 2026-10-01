@@ -20,7 +20,7 @@ import Link from "next/link";
 import { useState, useEffect, useTransition } from "react";
 
 const fetchStudents = async (params) => {
-    const { page = 1, limit = 12, search = "", course = "all", status = "all" } = params;
+    const { page = 1, limit = 10, search = "", course = "all", status = "all" } = params;
     const res = await axios.get("/api/admin/students", {
         params: {
             page,
@@ -39,7 +39,7 @@ export default function StudentList() {
     const [selectedCourse, setSelectedCourse] = useState("all");
     const [selectedStatus, setSelectedStatus] = useState("all");
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(12);
+    const [itemsPerPage, setItemsPerPage] = useState(10);
     const [isPending, startTransition] = useTransition();
 
     // Debounce search input by 300ms
@@ -90,11 +90,78 @@ export default function StudentList() {
     };
 
     const students = data?.students || [];
-    const pagination = data?.pagination || { page: 1, limit: 12, total: 0, pages: 1 };
+    const pagination = data?.pagination || { page: 1, limit: 10, total: 0, pages: 1 };
     const hasActiveFilters = searchInput || selectedCourse !== "all" || selectedStatus !== "all";
 
-    // Only show full loading skeleton on FIRST ever mount with no data
-    if (isLoading && !data) return <LoadingSkeleton />;
+    // Show loading state with skeleton only for first load
+    if (isLoading && !data) {
+        return (
+            <Card className="m-6 md:m-8">
+                {/* Header Section - Static */}
+                <CardHeader className="pb-4">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <AdminCardHeader
+                            title="Student Directory"
+                            description="Manage and view all registered students in your institution"
+                        />
+                        <Link href="/admin/add-student">
+                            <Button className="bg-primary-700 hover:bg-primary-800/90 text-white">
+                                <Plus className="w-4 h-4 mr-2" />
+                                Add New Student
+                            </Button>
+                        </Link>
+                    </div>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    {/* Controls Section - Static */}
+                    <div className="flex flex-col lg:flex-row gap-4">
+                        <div className="relative flex-1">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                            <Input
+                                placeholder="Search by name, ID number, email, or mobile..."
+                                className="pl-10 pr-10 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                            />
+                        </div>
+                        <div className="flex flex-wrap gap-2 items-center">
+                            <Select value="all">
+                                <SelectTrigger className="w-48">
+                                    <Filter className="w-4 h-4 mr-2 text-gray-500" />
+                                    <SelectValue placeholder="Course" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">All Courses</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <Select value="all">
+                                <SelectTrigger className="w-36">
+                                    <SelectValue placeholder="Status" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">All Status</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <Select value="10">
+                                <SelectTrigger className="w-28">
+                                    <SelectValue placeholder="Per page" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="10">10 / page</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+
+                    {/* Loading indicator */}
+                    <div className="flex items-center justify-center py-12">
+                        <div className="flex flex-col items-center gap-4">
+                            <div className="h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                            <p className="text-sm text-muted-foreground">Loading students...</p>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+        );
+    }
 
     return (
         <Card className="m-6 md:m-8">
@@ -168,7 +235,7 @@ export default function StudentList() {
                                 <SelectValue placeholder="Per page" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="6">6 / page</SelectItem>
+                                <SelectItem value="10">10 / page</SelectItem>
                                 <SelectItem value="12">12 / page</SelectItem>
                                 <SelectItem value="24">24 / page</SelectItem>
                                 <SelectItem value="48">48 / page</SelectItem>
@@ -203,6 +270,14 @@ export default function StudentList() {
 
                 {/* Students Grid */}
                 <div className={`relative transition-opacity duration-200 ${isFetching ? "opacity-70" : "opacity-100"}`}>
+                    {isFetching && (
+                        <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/50 backdrop-blur-sm">
+                            <div className="flex flex-col items-center gap-2">
+                                <div className="h-6 w-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                                <p className="text-xs text-muted-foreground">Searching...</p>
+                            </div>
+                        </div>
+                    )}
                     {isError ? (
                         <div className="text-center py-12 text-red-500">
                             Failed to load students. Please refresh or try again later.

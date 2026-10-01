@@ -1,7 +1,7 @@
 import { collection } from "@/lib/mongodb";
 import { NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
-import { deleteFromCloudinary } from "@/lib/uploadToCloudinary";
+import { deleteFromCloudinary } from "@/lib/cloudinaryHelper";
 
 export async function GET(req, context) {
   try {
@@ -58,12 +58,15 @@ export async function DELETE(req, context) {
     // Delete image from Cloudinary if exists
     if (student?.studentImage && student.studentImage.includes("cloudinary")) {
       try {
-        await deleteFromCloudinary(student.studentImage);
-        console.log("Deleted student image from Cloudinary:", student.studentImage);
+        console.log("Attempting to delete image from Cloudinary:", student.studentImage);
+        const deleteResult = await deleteFromCloudinary(student.studentImage);
+        console.log("Cloudinary deletion result:", deleteResult);
       } catch (deleteError) {
         console.warn("Failed to delete image from Cloudinary:", deleteError.message);
         // Continue even if deletion fails
       }
+    } else {
+      console.log("Not deleting image. Student image:", student?.studentImage || "No image");
     }
 
     return NextResponse.json({

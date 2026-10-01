@@ -14,6 +14,7 @@ import FormAcademicInformation from "./FormAcademicInformation";
 import FormPaymentInformation from "./FormPaymentInformation";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import ImageCropModal from "./ImageCropModal";
 
 // Zod validation schema
 const studentSchema = z.object({
@@ -50,6 +51,8 @@ export default function StudentForm({ student }) {
     const [imageFile, setImageFile] = useState(null);
     const [oldImageUrl, setOldImageUrl] = useState(student?.studentImage || null);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [cropModalOpen, setCropModalOpen] = useState(false);
     const router = useRouter();
 
     const {
@@ -109,14 +112,20 @@ export default function StudentForm({ student }) {
                 toast.error("Image size should be less than 5MB");
                 return;
             }
-            setImageFile(file);
             const reader = new FileReader();
             reader.onload = (e) => {
-                setImagePreview(e.target.result);
-                setValue("studentImage", file);
+                setSelectedFile(e.target.result);
+                setCropModalOpen(true);
             };
             reader.readAsDataURL(file);
         }
+    };
+
+    const handleCropComplete = (croppedFile, previewUrl) => {
+        setImageFile(croppedFile);
+        setImagePreview(previewUrl);
+        setValue("studentImage", croppedFile);
+        setSelectedFile(null);
     };
 
     const removeImage = () => {
@@ -130,10 +139,14 @@ export default function StudentForm({ student }) {
             setIsSubmitting(true);
             const formData = new FormData();
 
+            // Track if we're uploading a new image
+            let hasNewImage = false;
+
             // Add all fields to FormData
             Object.keys(data).forEach((key) => {
                 if (key === "studentImage" && data[key] instanceof File) {
                     formData.append(key, data[key]); // Send File object directly for Cloudinary
+                    hasNewImage = true;
                 } else if (data[key] !== null && data[key] !== undefined) {
                     formData.append(key, data[key]);
                 }
@@ -142,12 +155,19 @@ export default function StudentForm({ student }) {
             // Add _id for updates
             if (student?._id) {
                 formData.append("_id", student._id);
-                // Send old image URL so backend can delete it if a new image is uploaded
-                if (oldImageUrl) {
+                // Send old image URL so backend can delete it
+                // Always send for updates - backend decides if it needs deletion
+                if (oldImageUrl && oldImageUrl.includes("cloudinary")) {
                     formData.append("oldImageUrl", oldImageUrl);
+                    console.log("Sending oldImageUrl for deletion:", oldImageUrl);
                 }
             }
 
+            // Debug: Log what's being sent
+            console.log("FormData contents:");
+            for (let pair of formData.entries()) {
+                console.log(pair[0] + ': ', pair[1]);
+            }
             await submitData(formData);
         } catch (err) {
             console.error(err);
@@ -175,49 +195,58 @@ export default function StudentForm({ student }) {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-            <FormPersonalInformation
-                register={register}
-                errors={errors}
-                imagePreview={imagePreview}
-                handleImageUpload={handleImageUpload}
-                removeImage={removeImage}
-                setValue={setValue}
-                watch={watch}
+        <>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+                <FormPersonalInformation
+                    register={register}
+                    errors={errors}
+                    imagePreview={imagePreview}
+                    handleImageUpload={handleImageUpload}
+                    removeImage={removeImage}
+                    setValue={setValue}
+                    watch={watch}
+                />
+                <Separator className="bg-slate-200" />
+                <FormFamilyInformation register={register} errors={errors} />
+                <Separator className="bg-slate-200" />
+                <FormContactInformation register={register} errors={errors} />
+                <Separator className="bg-slate-200" />
+                <FormAcademicInformation
+                    watch={watch}
+                    register={register}
+                    errors={errors}
+                    setValue={setValue}
+                />
+                <Separator className="bg-slate-200" />
+                <FormPaymentInformation register={register} errors={errors} setValue={setValue} />
+                <div className="flex justify-end pt-6">
+                    <Button
+                        type="submit"
+                        size="lg"
+                        disabled={isSubmitting}
+                        className="bg-primary-700 hover:bg-primary-600 text-white px-8 py-3 h-12 font-semibold shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50"
+                    >
+                        {isSubmitting ? (
+                            <>
+                                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                                {student ? "Updating..." : "Registering..."}
+                            </>
+                        ) : (
+                            <>
+                                <GraduationCap className="w-5 h-5 mr-2" />
+                                {student ? "Update Student" : "Register Student"}
+                            </>
+                        )}
+                    </Button>
+                </div>
+            </form>
+
+            <ImageCropModal
+                open={cropModalOpen}
+                onClose={() => setCropModalOpen(false)}
+                imageSrc={selectedFile}
+                onCropComplete={handleCropComplete}
             />
-            <Separator className="bg-slate-200" />
-            <FormFamilyInformation register={register} errors={errors} />
-            <Separator className="bg-slate-200" />
-            <FormContactInformation register={register} errors={errors} />
-            <Separator className="bg-slate-200" />
-            <FormAcademicInformation
-                watch={watch}
-                register={register}
-                errors={errors}
-                setValue={setValue}
-            />
-            <Separator className="bg-slate-200" />
-            <FormPaymentInformation register={register} errors={errors} setValue={setValue} />
-            <div className="flex justify-end pt-6">
-                <Button
-                    type="submit"
-                    size="lg"
-                    disabled={isSubmitting}
-                    className="bg-primary-700 hover:bg-primary-600 text-white px-8 py-3 h-12 font-semibold shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50"
-                >
-                    {isSubmitting ? (
-                        <>
-                            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                            {student ? "Updating..." : "Registering..."}
-                        </>
-                    ) : (
-                        <>
-                            <GraduationCap className="w-5 h-5 mr-2" />
-                            {student ? "Update Student" : "Register Student"}
-                        </>
-                    )}
-                </Button>
-            </div>
-        </form>
+        </>
     );
 }

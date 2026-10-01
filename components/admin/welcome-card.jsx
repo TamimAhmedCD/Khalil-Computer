@@ -32,7 +32,7 @@ export function AdminWelcomeCard() {
     const updateTime = () => {
       const date = new Date();
       setCurrentDateTime(
-        date.toLocaleString("bn-BD", {
+        date.toLocaleString("en-US", {
           weekday: "long",
           year: "numeric",
           month: "long",
@@ -102,10 +102,10 @@ export function AdminWelcomeCard() {
             </div>
             <div>
               <h1 className="text-3xl font-bold tracking-tight text-white mb-1">
-                স্বাগতম, {session?.user?.name}
+                Welcome, {session?.user?.name}
               </h1>
               <p className="text-primary-100 text-lg opacity-90">
-                খলিল কম্পিউটার ম্যানেজমেন্ট ড্যাশবোর্ড
+                Khalil Computer Management Dashboard
               </p>
             </div>
           </div>
@@ -120,7 +120,7 @@ export function AdminWelcomeCard() {
               <Link href="/admin/add-student" className="flex-1 md:flex-none">
                 <Button className="w-full bg-white text-primary-700 hover:bg-primary-50 shadow-sm border-0 font-semibold gap-2">
                   <UserPlus className="w-4 h-4" />
-                  নতুন শিক্ষার্থী
+                  New Student
                 </Button>
               </Link>
             </div>
@@ -134,7 +134,7 @@ export function AdminWelcomeCard() {
         <Card className="hover:shadow-md transition-all border-l-4 border-l-blue-500">
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium leading-none text-muted-foreground uppercase tracking-wider mb-2">মোট শিক্ষার্থী</p>
+              <p className="text-sm font-medium leading-none text-muted-foreground uppercase tracking-wider mb-2">Total Students</p>
               <h2 className="text-3xl font-bold text-gray-900">
                 {isLoading ? "..." : stats?.stats?.totalStudents || 0}
               </h2>
@@ -149,9 +149,9 @@ export function AdminWelcomeCard() {
         <Card className="hover:shadow-md transition-all border-l-4 border-l-orange-500">
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium leading-none text-muted-foreground uppercase tracking-wider mb-2">বকেয়া আছে</p>
+              <p className="text-sm font-medium leading-none text-muted-foreground uppercase tracking-wider mb-2">Unpaid Students</p>
               <h2 className="text-3xl font-bold text-gray-900">
-                {isLoading ? "..." : stats?.stats?.unpaidStudents || 0} <span className="text-sm font-normal text-muted-foreground">জন</span>
+                {isLoading ? "..." : stats?.stats?.unpaidStudents || 0} <span className="text-sm font-normal text-muted-foreground">Students</span>
               </h2>
             </div>
             <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-600">
@@ -164,7 +164,7 @@ export function AdminWelcomeCard() {
         <Card className="hover:shadow-md transition-all border-l-4 border-l-emerald-500">
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium leading-none text-muted-foreground uppercase tracking-wider mb-2">মোট কালেকশন</p>
+              <p className="text-sm font-medium leading-none text-muted-foreground uppercase tracking-wider mb-2">Total Collection</p>
               <h2 className="text-3xl font-bold text-gray-900">
                 <span className="text-lg">৳</span>{isLoading ? "..." : formatCurrency(stats?.financial?.totalCollected)}
               </h2>
@@ -179,7 +179,7 @@ export function AdminWelcomeCard() {
         <Card className="hover:shadow-md transition-all border-l-4 border-l-purple-500">
           <CardContent className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium leading-none text-muted-foreground uppercase tracking-wider mb-2">মোট কোর্স</p>
+              <p className="text-sm font-medium leading-none text-muted-foreground uppercase tracking-wider mb-2">Total Courses</p>
               <h2 className="text-3xl font-bold text-gray-900">
                 {isLoading ? "..." : stats?.stats?.totalCourses || 0}
               </h2>
@@ -196,12 +196,12 @@ export function AdminWelcomeCard() {
         <Card className="lg:col-span-2 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between border-b bg-gray-50/50 pb-4">
             <div>
-              <CardTitle className="text-xl text-gray-900">নতুন শিক্ষার্থী তালিকা</CardTitle>
-              <CardDescription>সম্প্রতি ভর্তি হওয়া ৫ জন শিক্ষার্থী</CardDescription>
+              <CardTitle className="text-xl text-gray-900">Recent Students</CardTitle>
+              <CardDescription>5 most recently enrolled students</CardDescription>
             </div>
             <Link href="/admin/manage-students">
               <Button variant="outline" size="sm" className="hidden sm:flex items-center gap-1">
-                সব দেখুন <ArrowRight className="w-4 h-4" />
+                View All <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
           </CardHeader>
@@ -209,7 +209,7 @@ export function AdminWelcomeCard() {
             {isLoading ? (
               <div className="p-8 text-center flex flex-col items-center justify-center text-muted-foreground">
                 <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
-                তথ্য লোড হচ্ছে...
+                <p>Loading data...</p>
               </div>
             ) : stats?.recentStudents?.length > 0 ? (
               <div className="divide-y">
@@ -243,8 +243,8 @@ export function AdminWelcomeCard() {
                         }
                       >
                         {!student.outstandingAmount || student.outstandingAmount == 0
-                          ? "পরিশোধিত"
-                          : `বকেয়া: ৳${student.outstandingAmount}`}
+                          ? "Paid"
+                          : `Unpaid: ৳${student.outstandingAmount}`}
                       </Badge>
                     </div>
                   </div>
@@ -253,13 +253,13 @@ export function AdminWelcomeCard() {
             ) : (
               <div className="p-8 text-center text-muted-foreground">
                 <Users className="w-12 h-12 mx-auto text-gray-300 mb-3" />
-                <p>কোনো শিক্ষার্থীর তথ্য পাওয়া যায়নি</p>
+                <p>No student records found</p>
               </div>
             )}
             <div className="p-4 border-t bg-gray-50 block sm:hidden">
               <Link href="/admin/manage-students">
                 <Button variant="outline" className="w-full justify-center gap-2">
-                  সব শিক্ষার্থী দেখুন <ArrowRight className="w-4 h-4" />
+                  View All Students <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
             </div>
@@ -269,7 +269,7 @@ export function AdminWelcomeCard() {
         {/* 4. Quick Actions */}
         <Card className="shadow-sm">
           <CardHeader className="border-b bg-gray-50/50 pb-4">
-            <CardTitle className="text-lg text-gray-900">কুইক অ্যাকশনস</CardTitle>
+            <CardTitle className="text-lg text-gray-900">Quick Actions</CardTitle>
           </CardHeader>
           <CardContent className="p-4 flex flex-col gap-3">
             <Link href="/admin/add-student">
@@ -277,7 +277,7 @@ export function AdminWelcomeCard() {
                 <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
                   <UserPlus className="w-4 h-4 text-blue-600" />
                 </div>
-                <span className="font-medium text-base">নতুন শিক্ষার্থী ভর্তি করুন</span>
+                <span className="font-medium text-base">Add New Student</span>
               </Button>
             </Link>
 
@@ -286,7 +286,7 @@ export function AdminWelcomeCard() {
                 <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-3">
                   <BookOpen className="w-4 h-4 text-purple-600" />
                 </div>
-                <span className="font-medium text-base">নতুন কোর্স তৈরি করুন</span>
+                <span className="font-medium text-base">Create New Course</span>
               </Button>
             </Link>
 
@@ -295,7 +295,7 @@ export function AdminWelcomeCard() {
                 <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center mr-3">
                   <Megaphone className="w-4 h-4 text-amber-600" />
                 </div>
-                <span className="font-medium text-base">নতুন নোটিশ তৈরি করুন</span>
+                <span className="font-medium text-base">Create New Notice</span>
               </Button>
             </Link>
 
@@ -304,7 +304,7 @@ export function AdminWelcomeCard() {
                 <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center mr-3">
                   <GraduationCap className="w-4 h-4 text-emerald-600" />
                 </div>
-                <span className="font-medium text-base">সার্টিফিকেট ও আইডি কার্ড</span>
+                <span className="font-medium text-base">Certificates & ID Cards</span>
               </Button>
             </Link>
           </CardContent>

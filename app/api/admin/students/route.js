@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { collection } from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
-import { uploadToCloudinary, deleteFromCloudinary } from "@/lib/uploadToCloudinary";
+import { uploadToCloudinary } from "@/lib/uploadToCloudinary";
+import { deleteFromCloudinary } from "@/lib/cloudinaryHelper";
 
 export async function POST(req) {
   try {
@@ -12,21 +13,27 @@ export async function POST(req) {
 
     if (contentType.includes("multipart/form-data")) {
       const formData = await req.formData();
+      console.log("Received FormData fields:");
       for (const [key, value] of formData.entries()) {
+        console.log(`${key}: ${value instanceof File ? "[File]" : value}`);
         if (key === "studentImage") {
           if (value instanceof File && value.size > 0 && value.name !== "undefined") {
             studentImageFile = value;
+            console.log("Found studentImage File");
           } else if (typeof value === "string") {
             data[key] = value;
+            console.log("Found studentImage string:", value.substring(0, 50) + "...");
           }
         } else if (key === "oldImageUrl") {
           oldImageUrl = value;
+          console.log("Found oldImageUrl:", value);
         } else {
           data[key] = value;
         }
       }
     } else {
       data = await req.json();
+      console.log("Received JSON data:", JSON.stringify(data, null, 2));
       if (data.studentImage && typeof data.studentImage === "string" && data.studentImage.startsWith("data:image")) {
         // Convert base64 to File for backward compatibility
         const base64Data = data.studentImage.split(",")[1];
@@ -39,18 +46,38 @@ export async function POST(req) {
       oldImageUrl = data.oldImageUrl;
     }
 
+    // For multipart/form-data, we need to get studentImage from formData directly
+    // since it was kept as File and not added to data object
+    if (contentType.includes("multipart/form-data") && studentImageFile) {
+      // imageUrl will be set from the uploaded File below
+      console.log("Got studentImageFile from FormData");
+    }
+
     const { _id, studentImage, ...rest } = data;
     let imageUrl = typeof studentImage === "string" ? studentImage : "";
 
     // Delete old image from Cloudinary if new image is provided and old image exists
+    console.log("Checking if we should delete old image:", {
+      studentImageFile: studentImageFile ? "File exists" : "No file",
+      oldImageUrl: oldImageUrl || "No old URL",
+      hasCloudinary: oldImageUrl?.includes("cloudinary") || false,
+    });
+
     if (studentImageFile && oldImageUrl && oldImageUrl.includes("cloudinary")) {
       try {
-        await deleteFromCloudinary(oldImageUrl);
-        console.log("Deleted old image from Cloudinary:", oldImageUrl);
+        console.log("Deleting old image from Cloudinary:", oldImageUrl);
+        const deleteResult = await deleteFromCloudinary(oldImageUrl);
+        console.log("Cloudinary delete result:", deleteResult);
       } catch (deleteError) {
         console.warn("Failed to delete old image:", deleteError.message);
         // Continue even if deletion fails
       }
+    } else {
+      console.log("Not deleting old image. Reasons:", {
+        hasFile: !!studentImageFile,
+        hasOldUrl: !!oldImageUrl,
+        isCloudinaryUrl: oldImageUrl?.includes("cloudinary") || false,
+      });
     }
 
     // Upload to Cloudinary if new image file is provided
