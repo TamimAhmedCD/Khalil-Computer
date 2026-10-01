@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import axios from "axios";
-import { GraduationCap } from "lucide-react";
+import { GraduationCap, Loader2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import FormPersonalInformation from "./FormPersonalInformation";
@@ -48,6 +48,8 @@ export default function StudentForm({ student }) {
         student?.studentImage || null
     );
     const [imageFile, setImageFile] = useState(null);
+    const [oldImageUrl, setOldImageUrl] = useState(student?.studentImage || null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
 
     const {
@@ -92,6 +94,7 @@ export default function StudentForm({ student }) {
                 setValue(key, student[key])
             );
             setImagePreview(student.studentImage || null);
+            setOldImageUrl(student.studentImage || null);
         }
     }, [student, setValue]);
 
@@ -124,6 +127,7 @@ export default function StudentForm({ student }) {
 
     const onSubmit = async (data) => {
         try {
+            setIsSubmitting(true);
             const formData = new FormData();
 
             // Add all fields to FormData
@@ -138,12 +142,18 @@ export default function StudentForm({ student }) {
             // Add _id for updates
             if (student?._id) {
                 formData.append("_id", student._id);
+                // Send old image URL so backend can delete it if a new image is uploaded
+                if (oldImageUrl) {
+                    formData.append("oldImageUrl", oldImageUrl);
+                }
             }
 
             await submitData(formData);
         } catch (err) {
             console.error(err);
             toast.error("Error: " + err.message);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -192,10 +202,20 @@ export default function StudentForm({ student }) {
                 <Button
                     type="submit"
                     size="lg"
-                    className="bg-primary-700 hover:bg-primary-600 text-white px-8 py-3 h-12 font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+                    disabled={isSubmitting}
+                    className="bg-primary-700 hover:bg-primary-600 text-white px-8 py-3 h-12 font-semibold shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50"
                 >
-                    <GraduationCap className="w-5 h-5 mr-2" />
-                    {student ? "Update Student" : "Register Student"}
+                    {isSubmitting ? (
+                        <>
+                            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                            {student ? "Updating..." : "Registering..."}
+                        </>
+                    ) : (
+                        <>
+                            <GraduationCap className="w-5 h-5 mr-2" />
+                            {student ? "Update Student" : "Register Student"}
+                        </>
+                    )}
                 </Button>
             </div>
         </form>

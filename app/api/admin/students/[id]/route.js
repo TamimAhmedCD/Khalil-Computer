@@ -1,6 +1,7 @@
 import { collection } from "@/lib/mongodb";
 import { NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
+import { deleteFromCloudinary } from "@/lib/uploadToCloudinary";
 
 export async function GET(req, context) {
   try {
@@ -40,6 +41,11 @@ export async function DELETE(req, context) {
     }
 
     const studentsCol = await collection("students");
+
+    // Get student to check for image URL
+    const student = await studentsCol.findOne({ _id: new ObjectId(id) });
+
+    // Delete student from MongoDB
     const result = await studentsCol.deleteOne({ _id: new ObjectId(id) });
 
     if (result.deletedCount === 0) {
@@ -47,6 +53,17 @@ export async function DELETE(req, context) {
         { success: false, error: "Student not found" },
         { status: 404 }
       );
+    }
+
+    // Delete image from Cloudinary if exists
+    if (student?.studentImage && student.studentImage.includes("cloudinary")) {
+      try {
+        await deleteFromCloudinary(student.studentImage);
+        console.log("Deleted student image from Cloudinary:", student.studentImage);
+      } catch (deleteError) {
+        console.warn("Failed to delete image from Cloudinary:", deleteError.message);
+        // Continue even if deletion fails
+      }
     }
 
     return NextResponse.json({

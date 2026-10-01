@@ -31,25 +31,27 @@ export default function FormPersonalInformation({ imagePreview, removeImage, han
                     {/* Image Preview */}
                     <div className="flex-shrink-0">
                         {imagePreview ? (
-                            <div className="relative">
-                                <img
-                                    src={imagePreview || "/placeholder.svg"}
-                                    alt="Student preview"
-                                    className="w-24 h-24 rounded-lg object-cover border-2 border-slate-200"
-                                />
+                            <div className="relative w-32 h-32">
+                                <div className="w-full h-full rounded-lg overflow-hidden border-2 border-slate-200 bg-slate-100">
+                                    <img
+                                        src={imagePreview || "/placeholder.svg"}
+                                        alt="Student preview"
+                                        className="w-full h-full object-cover"
+                                    />
+                                </div>
                                 <Button
                                     type="button"
                                     variant="destructive"
                                     size="sm"
-                                    className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0"
+                                    className="absolute -top-2 -right-2 w-6 h-6 rounded-full p-0 shadow-md"
                                     onClick={removeImage}
                                 >
                                     <X className="w-3 h-3" />
                                 </Button>
                             </div>
                         ) : (
-                            <div className="w-24 h-24 rounded-lg border-2 border-dashed border-slate-300 flex items-center justify-center bg-slate-50">
-                                <User className="w-8 h-8 text-slate-400" />
+                            <div className="w-32 h-32 rounded-lg border-2 border-dashed border-slate-300 flex items-center justify-center bg-slate-50">
+                                <User className="w-10 h-10 text-slate-400" />
                             </div>
                         )}
                     </div>

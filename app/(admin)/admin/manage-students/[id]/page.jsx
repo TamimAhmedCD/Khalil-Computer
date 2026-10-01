@@ -8,7 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { ArrowLeft, Calendar, CreditCard, Edit, GraduationCap, Heart, Mail, MapPin, Phone, Trash2, User, Users, FileText, IdCard } from "lucide-react";
+import { ArrowLeft, Calendar, CreditCard, Edit, GraduationCap, Heart, Mail, MapPin, Phone, Trash2, User, Users, FileText, IdCard, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -454,8 +454,16 @@ export default function StudentDetails() {
                             variant="destructive"
                             onClick={handleDeleteConfirm}
                             disabled={isDeleting}
+                            className="min-w-32"
                         >
-                            {isDeleting ? "Deleting..." : "Delete Student"}
+                            {isDeleting ? (
+                                <>
+                                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                    Deleting...
+                                </>
+                            ) : (
+                                "Delete Student"
+                            )}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

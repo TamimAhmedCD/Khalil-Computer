@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server";
 import { collection } from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
-import { uploadToCloudinary } from "@/lib/uploadToCloudinary";
+import { uploadToCloudinary, deleteFromCloudinary } from "@/lib/uploadToCloudinary";
 
 export async function POST(req) {
   try {
     const contentType = req.headers.get("content-type") || "";
     let data = {};
     let studentImageFile = null;
+    let oldImageUrl = null;
 
     if (contentType.includes("multipart/form-data")) {
       const formData = await req.formData();
@@ -18,6 +19,8 @@ export async function POST(req) {
           } else if (typeof value === "string") {
             data[key] = value;
           }
+        } else if (key === "oldImageUrl") {
+          oldImageUrl = value;
         } else {
           data[key] = value;
         }
@@ -33,14 +36,27 @@ export async function POST(req) {
         const blob = new Blob([buffer], { type: mimeType });
         studentImageFile = new File([blob], "student-image.jpg", { type: mimeType });
       }
+      oldImageUrl = data.oldImageUrl;
     }
 
     const { _id, studentImage, ...rest } = data;
     let imageUrl = typeof studentImage === "string" ? studentImage : "";
 
+    // Delete old image from Cloudinary if new image is provided and old image exists
+    if (studentImageFile && oldImageUrl && oldImageUrl.includes("cloudinary")) {
+      try {
+        await deleteFromCloudinary(oldImageUrl);
+        console.log("Deleted old image from Cloudinary:", oldImageUrl);
+      } catch (deleteError) {
+        console.warn("Failed to delete old image:", deleteError.message);
+        // Continue even if deletion fails
+      }
+    }
+
     // Upload to Cloudinary if new image file is provided
     if (studentImageFile) {
-      imageUrl = await uploadToCloudinary(studentImageFile, "khalilcomputer/students");
+      const uploadResult = await uploadToCloudinary(studentImageFile, "khalilcomputer/students");
+      imageUrl = uploadResult.secure_url;
     }
 
     const studentsCol = await collection("students");
