@@ -3,10 +3,10 @@
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { AppSidebar } from "@/components/admin/app-sidebar";
+import { SimpleAppSidebar } from "@/components/admin/simple-app-sidebar";
 import { SiteHeader } from "@/components/admin/site-header";
 import { DashboardLoader } from "@/components/loader/dashboarLoader";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/simple-sidebar";
 import NotFoundPage from "../not-found";
 
 export default function AdminLayout({ children }) {
@@ -31,22 +31,15 @@ export default function AdminLayout({ children }) {
 
   return (
     <SidebarProvider>
-      <AppSidebar variant="inset" />
-      <SidebarInset>
-        <SiteHeader />
-        <div className="flex flex-1 flex-col">
-          <div className="@container/main flex flex-1 flex-col gap-2">
+      <div className="flex h-screen overflow-hidden bg-background">
+        <SimpleAppSidebar />
+        <div className="flex flex-1 flex-col overflow-hidden">
+          <SiteHeader />
+          <main className="flex-1 overflow-y-auto">
             {children}
-            {/* <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-              <SectionCards />
-              <div className="px-4 lg:px-6">
-                <ChartAreaInteractive />
-              </div>
-              <DataTable data={data} />
-            </div> */}
-          </div>
+          </main>
         </div>
-      </SidebarInset>
+      </div>
     </SidebarProvider>
   );
 }

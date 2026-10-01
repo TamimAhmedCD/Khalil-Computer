@@ -48,7 +48,7 @@ export default function StudentForm({ student }) {
         student?.studentImage || null
     );
     const [imageFile, setImageFile] = useState(null);
-    const router = useRouter()
+    const router = useRouter();
 
     const {
         register,
@@ -99,11 +99,11 @@ export default function StudentForm({ student }) {
         const file = event.target.files?.[0];
         if (file) {
             if (!file.type.startsWith("image/")) {
-                alert("Please select a valid image file");
+                toast.error("Please select a valid image file");
                 return;
             }
             if (file.size > 5 * 1024 * 1024) {
-                alert("Image size should be less than 5MB");
+                toast.error("Image size should be less than 5MB");
                 return;
             }
             setImageFile(file);
@@ -124,27 +124,32 @@ export default function StudentForm({ student }) {
 
     const onSubmit = async (data) => {
         try {
-            // Convert File object to base64 if present
-            if (data.studentImage && data.studentImage instanceof File) {
-                const reader = new FileReader();
-                reader.onloadend = async () => {
-                    const base64Image = reader.result;
-                    await submitData({ ...data, studentImage: base64Image });
-                };
-                reader.readAsDataURL(data.studentImage);
-            } else {
-                await submitData(data);
+            const formData = new FormData();
+
+            // Add all fields to FormData
+            Object.keys(data).forEach((key) => {
+                if (key === "studentImage" && data[key] instanceof File) {
+                    formData.append(key, data[key]); // Send File object directly for Cloudinary
+                } else if (data[key] !== null && data[key] !== undefined) {
+                    formData.append(key, data[key]);
+                }
+            });
+
+            // Add _id for updates
+            if (student?._id) {
+                formData.append("_id", student._id);
             }
+
+            await submitData(formData);
         } catch (err) {
             console.error(err);
-            alert("Error: " + err.message);
+            toast.error("Error: " + err.message);
         }
     };
 
-    const submitData = async (payload) => {
-        const res = await axios.post("/api/admin/students", {
-            ...payload,
-            _id: student?._id,
+    const submitData = async (formData) => {
+        const res = await axios.post("/api/admin/students", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
         });
 
         if (res.data.success) {

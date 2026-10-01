@@ -1,8 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader } from "./card";
 import { Button } from "./button";
@@ -29,31 +28,25 @@ export function ErrorState(props) {
     } = props;
 
     const router = useRouter();
+    const [animate, setAnimate] = useState(false);
+    const [iconAnimate, setIconAnimate] = useState(false);
+
+    useEffect(() => {
+        // Trigger animations after mount
+        setAnimate(true);
+        const iconTimer = setTimeout(() => setIconAnimate(true), 200);
+        return () => clearTimeout(iconTimer);
+    }, []);
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="w-full max-w-md"
-            >
+            <div className={`w-full max-w-md transition-all duration-500 ease-out ${animate ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
                 <Card className="overflow-hidden border-none shadow-lg">
                     <CardHeader className={`${headerBgColor} pb-8 pt-8`}>
                         <div className="flex flex-col items-center justify-center space-y-3 text-center">
-                            <motion.div
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                                transition={{
-                                    type: "spring",
-                                    stiffness: 260,
-                                    damping: 20,
-                                    delay: 0.2,
-                                }}
-                                className={`flex h-16 w-16 items-center justify-center rounded-full ${iconBgColor} ${iconColor}`}
-                            >
+                            <div className={`flex h-16 w-16 items-center justify-center rounded-full ${iconBgColor} ${iconColor} transition-all duration-700 ease-out ${iconAnimate ? 'scale-100' : 'scale-0'}`}>
                                 <Icon className="h-8 w-8" />
-                            </motion.div>
+                            </div>
                             <h1 className="text-2xl font-bold tracking-tight text-gray-900">{title}</h1>
                             <p className="text-gray-500">{description}</p>
                         </div>
@@ -110,7 +103,7 @@ export function ErrorState(props) {
                         )}
                     </CardFooter>
                 </Card>
-            </motion.div>
+            </div>
         </div>
     );
 }

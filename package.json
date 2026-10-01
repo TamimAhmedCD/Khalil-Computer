@@ -44,6 +44,7 @@
     "dom-to-image-more": "^3.7.1",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
+    "framer-motion": "^13.5.0",
     "html-react-parser": "^5.2.3",
     "html-to-image": "^1.11.13",
     "jspdf": "^4.2.1",

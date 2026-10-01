@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Award, Download, Shield, QrCode, BookOpen, Clock, User, Calendar, CheckCircle2 } from "lucide-react";
+import { Award, Download, Shield, QrCode, BookOpen, Clock, User, Calendar, CheckCircle2, AlertCircle } from "lucide-react";
 import { PDFDocument, rgb } from "pdf-lib";
 import fontkit from "@pdf-lib/fontkit";
 import QRCode from "qrcode";
@@ -18,14 +18,14 @@ const POSITIONS = {
         x: 68,
         y: 315,
         size: 38,
-        color: rgb(0, 62/255, 111/255),
+        color: rgb(0, 62 / 255, 111 / 255),
         font: "bold",
     },
     courseName: {
         x: 68,
         y: 253,
         size: 26,
-        color: rgb(216/255, 166/255, 46/255),
+        color: rgb(216 / 255, 166 / 255, 46 / 255),
         align: "left",
         font: "bold",
     },
@@ -43,21 +43,21 @@ const POSITIONS = {
         x: 279,
         y: 52,
         size: 9.6,
-        color: rgb(0, 62/255, 111/255),
+        color: rgb(0, 62 / 255, 111 / 255),
         font: "bold",
     },
     certificate_issued: {
         x: 410,
         y: 52,
         size: 9.6,
-        color: rgb(0, 62/255, 111/255),
+        color: rgb(0, 62 / 255, 111 / 255),
         font: "bold",
     },
     studentId: {
         x: 539,
         y: 52,
         size: 9.6,
-        color: rgb(0, 62/255, 111/255),
+        color: rgb(0, 62 / 255, 111 / 255),
         font: "bold",
     },
     qrCode: {
@@ -95,11 +95,13 @@ export default function CertificateGenerator({ student }) {
     const [currentCertificateId, setCurrentCertificateId] = useState("");
     const [downloadSuccess, setDownloadSuccess] = useState(false);
 
+    const hasCertificateIssued = Boolean(student?.certificate_issued && String(student.certificate_issued).trim() !== "");
+
     useEffect(() => {
         if (student?.idNumber) {
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, "0");
+            const dateSource = student?.certificate_issued ? new Date(student.certificate_issued) : new Date();
+            const year = isNaN(dateSource.getTime()) ? new Date().getFullYear() : dateSource.getFullYear();
+            const month = isNaN(dateSource.getTime()) ? String(new Date().getMonth() + 1).padStart(2, "0") : String(dateSource.getMonth() + 1).padStart(2, "0");
             const certId = "KC-" + student.idNumber + "-" + year + month;
             setCurrentCertificateId(certId);
 
@@ -139,20 +141,22 @@ export default function CertificateGenerator({ student }) {
         return lines;
     };
 
-    const getFormattedDate = () => {
-        const today = new Date();
-        const monthNames = [
-            "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
-            "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER",
-        ];
-        return monthNames[today.getMonth()] + "-" + today.getDate() + "-" + today.getFullYear();
+    const getFormattedIssueDate = () => {
+        if (!student?.certificate_issued) return "NOT ISSUED";
+        const dateObj = new Date(student.certificate_issued);
+        if (isNaN(dateObj.getTime())) return student.certificate_issued;
+        return dateObj.toLocaleDateString("en-GB", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+        });
     };
 
     // =========================================================================
     // MAIN DOWNLOAD: OVERLAY DATA ON TEMPLATE PDF WITH MONTSERRAT FONT
     // =========================================================================
     const downloadCertificate = async () => {
-        if (!student) return;
+        if (!student || !hasCertificateIssued) return;
         setLoading(true);
         setDownloadSuccess(false);
 
@@ -196,13 +200,8 @@ export default function CertificateGenerator({ student }) {
             const courseName = student.course || "Training Course";
             const duration = student.duration || "N/A";
             const idNumber = student.idNumber || "N/A";
-const certificate_issued = student.certificate_issued
-    ? new Date(student.certificate_issued).toLocaleDateString("en-GB", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      })
-    : "N/A";            const courseDesc = getCourseDescription(courseName, studentName);
+            const certificate_issued = getFormattedIssueDate();
+            const courseDesc = getCourseDescription(courseName, studentName);
 
             // =================================================================
             // 4. DRAW DYNAMIC TEXT ON PDF USING MONTSERRAT
@@ -257,38 +256,35 @@ const certificate_issued = student.certificate_issued
                 descY -= POSITIONS.courseDescription.lineHeight;
             });
 
-            /* D. Duration */
-const durValueFont = getFont(POSITIONS.duration.font);
+            // D. Duration
+            const durValueFont = getFont(POSITIONS.duration.font);
+            page.drawText(duration, {
+                x: POSITIONS.duration.x,
+                y: POSITIONS.duration.y,
+                size: POSITIONS.duration.size,
+                font: durValueFont,
+                color: POSITIONS.duration.color,
+            });
 
-page.drawText(duration, {
-    x: POSITIONS.duration.x,
-    y: POSITIONS.duration.y,
-    size: POSITIONS.duration.size,
-    font: durValueFont,
-    color: POSITIONS.duration.color,
-});
+            // E. Completion / Issue Date
+            const dateValueFont = getFont(POSITIONS.certificate_issued.font);
+            page.drawText(certificate_issued, {
+                x: POSITIONS.certificate_issued.x,
+                y: POSITIONS.certificate_issued.y,
+                size: POSITIONS.certificate_issued.size,
+                font: dateValueFont,
+                color: POSITIONS.certificate_issued.color,
+            });
 
-/* F. Completion / Issue Date */
-const dateValueFont = getFont(POSITIONS.certificate_issued.font);
-
-page.drawText(certificate_issued, {
-    x: POSITIONS.certificate_issued.x,
-    y: POSITIONS.certificate_issued.y,
-    size: POSITIONS.certificate_issued.size,
-    font: dateValueFont,
-    color: POSITIONS.certificate_issued.color,
-});
-
- /* G. Student ID */
-const idValueFont = getFont(POSITIONS.studentId.font);
-
-page.drawText(idNumber, {
-    x: POSITIONS.studentId.x,
-    y: POSITIONS.studentId.y,
-    size: POSITIONS.studentId.size,
-    font: idValueFont,
-    color: POSITIONS.studentId.color,
-});
+            // F. Student ID
+            const idValueFont = getFont(POSITIONS.studentId.font);
+            page.drawText(idNumber, {
+                x: POSITIONS.studentId.x,
+                y: POSITIONS.studentId.y,
+                size: POSITIONS.studentId.size,
+                font: idValueFont,
+                color: POSITIONS.studentId.color,
+            });
 
             // =================================================================
             // 5. DRAW QR CODE ON PDF
@@ -330,7 +326,7 @@ page.drawText(idNumber, {
         }
     };
 
-    const formattedDate = getFormattedDate();
+    const formattedIssueDate = getFormattedIssueDate();
     const courseDescription = getCourseDescription(student?.course, student?.studentName);
 
     return (
@@ -352,6 +348,19 @@ page.drawText(idNumber, {
                     <span>Montserrat · PDF-Lib Engine</span>
                 </div>
             </div>
+
+            {/* Warning if certificate date is not set */}
+            {!hasCertificateIssued && (
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
+                    <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                        <h4 className="text-sm font-semibold text-amber-900">Certificate Not Issued Yet</h4>
+                        <p className="text-xs text-amber-700 mt-0.5">
+                            Please set the <strong>Certificate Issued Date</strong> in the student edit form to enable the official certificate download.
+                        </p>
+                    </div>
+                </div>
+            )}
 
             {/* Live Certificate Preview Card */}
             <div className="border rounded-xl p-8 bg-gradient-to-br from-white to-gray-50 shadow-xl relative min-h-[500px] font-montserrat">
@@ -414,7 +423,7 @@ page.drawText(idNumber, {
                         </div>
                         <div className="flex items-center gap-2">
                             <Calendar className="w-4 h-4 text-[#FF6B35]" />
-                            <span>Issue Date: <strong className="text-gray-900">{formattedDate}</strong></span>
+                            <span>Issue Date: <strong className={hasCertificateIssued ? "text-gray-900" : "text-amber-600"}>{formattedIssueDate}</strong></span>
                         </div>
                     </div>
 
@@ -445,14 +454,23 @@ page.drawText(idNumber, {
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
                 <Button
                     onClick={downloadCertificate}
-                    disabled={loading}
+                    disabled={loading || !hasCertificateIssued}
                     size="lg"
-                    className="bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] hover:from-[#FF8C42] hover:to-[#FF6B35] text-white px-10 py-6 text-lg w-full sm:w-auto shadow-xl transition-all duration-200"
+                    className={`text-white px-10 py-6 text-lg w-full sm:w-auto shadow-xl transition-all duration-200 ${
+                        !hasCertificateIssued
+                            ? "bg-gray-400 hover:bg-gray-400 cursor-not-allowed opacity-75"
+                            : "bg-gradient-to-r from-[#FF6B35] to-[#FF8C42] hover:from-[#FF8C42] hover:to-[#FF6B35]"
+                    }`}
                 >
                     {loading ? (
                         <>
                             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
                             Embedding Data into Template PDF...
+                        </>
+                    ) : !hasCertificateIssued ? (
+                        <>
+                            <AlertCircle className="w-6 h-6 mr-3" />
+                            Set Certificate Issue Date to Download
                         </>
                     ) : downloadSuccess ? (
                         <>
@@ -481,7 +499,7 @@ page.drawText(idNumber, {
                     </div>
                     <div className="bg-orange-50/70 p-3 rounded-lg border border-orange-100">
                         <span className="font-semibold text-gray-900 block">2. Course Name</span>
-                        <span className="text-gray-600">Montserrat Bold orange</span>
+                        <span className="text-gray-600">Montserrat Bold gold</span>
                     </div>
                     <div className="bg-orange-50/70 p-3 rounded-lg border border-orange-100">
                         <span className="font-semibold text-gray-900 block">3. Course Description</span>
@@ -493,11 +511,11 @@ page.drawText(idNumber, {
                     </div>
                     <div className="bg-orange-50/70 p-3 rounded-lg border border-orange-100">
                         <span className="font-semibold text-gray-900 block">5. Course Duration</span>
-                        <span className="text-gray-600">SemiBold label + Regular</span>
+                        <span className="text-gray-600">Official duration</span>
                     </div>
                     <div className="bg-orange-50/70 p-3 rounded-lg border border-orange-100">
                         <span className="font-semibold text-gray-900 block">6. Completion Date</span>
-                        <span className="text-gray-600">Official issue date</span>
+                        <span className="text-gray-600">Admin issued date</span>
                     </div>
                     <div className="bg-orange-50/70 p-3 rounded-lg border border-orange-100">
                         <span className="font-semibold text-gray-900 block">7. Student &amp; Cert ID</span>

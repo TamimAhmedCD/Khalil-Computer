@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Bell, Search, User, Settings, HelpCircle, LogOut } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -15,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarTrigger } from "@/components/ui/simple-sidebar";
 import { signOut, useSession } from "next-auth/react";
 
 export function SiteHeader() {
@@ -50,26 +49,19 @@ export function SiteHeader() {
             </div>
 
             {/* Mobile search bar */}
-            <AnimatePresence>
-                {showSearch && (
-                    <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        className="absolute inset-x-0 top-16 z-50 border-b border-gray-200 bg-white p-4 md:hidden"
-                    >
-                        <div className="relative">
-                            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                            <Input
-                                type="search"
-                                placeholder="ডকুমেন্ট অনুসন্ধান করুন..."
-                                className="w-full rounded-md border-gray-200 bg-gray-50 pl-10 focus-visible:ring-primary-500"
-                                autoFocus
-                            />
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            {showSearch && (
+                <div className="absolute inset-x-0 top-16 z-50 border-b border-gray-200 bg-white p-4 md:hidden transition-all duration-200">
+                    <div className="relative">
+                        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                        <Input
+                            type="search"
+                            placeholder="ডকুমেন্ট অনুসন্ধান করুন..."
+                            className="w-full rounded-md border-gray-200 bg-gray-50 pl-10 focus-visible:ring-primary-500"
+                            autoFocus
+                        />
+                    </div>
+                </div>
+            )}
 
             <div className="flex items-center gap-3">
                 {/* Notifications */}
