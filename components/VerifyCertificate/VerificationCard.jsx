@@ -1,10 +1,11 @@
 'use client'
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, CheckCircle, XCircle, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import axios from "axios";
+import { useSearchParams } from "next/navigation";
 
 const fetchStudent = async (id) => {
     const res = await axios.get(`/api/admin/students?idNumber=${id}`);
@@ -12,6 +13,7 @@ const fetchStudent = async (id) => {
 };
 
 const spring = { type: "spring", damping: 20, stiffness: 100 };
+
 function ResultRow({ label, value, delay }) {
     return (
         <motion.div
@@ -26,13 +28,47 @@ function ResultRow({ label, value, delay }) {
     );
 }
 
-export default function VerificationCard() {
+function VerificationContent() {
+    const searchParams = useSearchParams();
+    const qUrlId = searchParams.get('id');
+
     const [certId, setCertId] = useState("");
-    const [studentName, setStudentName] = useState("");
     const [result, setResult] = useState("idle");
     const [certData, setCertData] = useState(null);
     const [searchedId, setSearchedId] = useState("");
     const [hasError, setHasError] = useState(false);
+
+    // Auto-verify if ID is in the URL (e.g. from QR code scan)
+    useEffect(() => {
+        if (qUrlId) {
+            setCertId(qUrlId);
+            handleAutoVerify(qUrlId);
+        }
+    }, [qUrlId]);
+
+    const handleAutoVerify = async (id) => {
+        if (!id) return;
+        setResult("loading");
+        const formattedId = id.trim().toUpperCase();
+        setSearchedId(formattedId);
+
+        try {
+            const data = await fetchStudent(formattedId);
+            if (data && data.length > 0) {
+                setCertData(data[0]);
+                setResult("success");
+                setHasError(false);
+            } else {
+                setCertData(null);
+                setResult("error");
+                setHasError(true);
+                setTimeout(() => setHasError(false), 400);
+            }
+        } catch (error) {
+            setCertData(null);
+            setResult("error");
+        }
+    };
 
     const handleVerify = async (e) => {
         e.preventDefault();
@@ -44,7 +80,6 @@ export default function VerificationCard() {
 
         try {
             const data = await fetchStudent(formattedId);
-            console.log(data);
 
             if (data && data.length > 0) {
                 setCertData(data[0]); // because API returns array
@@ -80,7 +115,7 @@ export default function VerificationCard() {
                     transition={{ ...spring, delay: 0.1 }}
                     className="text-muted-foreground text-balance"
                 >
-                    আপনার সার্টিফিকেটের সত্যতা যাচাই করতে নিচে সার্টিফিকেট নম্বর লিখুন।
+                    আপনার সার্টিফিকেটের সত্যতা যাচাই করতে নিচে স্টুডেন্ট আইডি লিখুন।
                 </motion.p>
             </header>
 
@@ -89,113 +124,148 @@ export default function VerificationCard() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ ...spring, delay: 0.15 }}
-                className={`card-surface p-8 md:p-10 ${hasError ? "animate-shake" : ""}`}
+                className={`card-surface p-8 mx-auto max-w-md md:p-10 ${hasError ? "animate-shake" : ""}`}
             >
                 <form onSubmit={handleVerify} className="space-y-6">
                     <div className="space-y-2">
                         <Label
                             className="text-sm font-medium text-slate-700"
                         >
-                            {"সার্টিফিকেট নম্বর"}
+                            {"স্টুডেন্ট আইডি (Student ID)"}
                         </Label>
-                        <Input
-                            type='text'
-                            value={certId}
-                            onChange={(e) => setCertId(e.target.value)}
-                            placeholder="Ex: KC-2023-1024"
-                            className="h-11 border-slate-200 focus:border-blue-500 focus:ring-blue-500/20"
-                        />
+                        <div className="relative group">
+                            <Input
+                                id="certId"
+                                type="text"
+                                placeholder="যেমন: GD2024001"
+                                className="pl-4 pr-12 py-3 h-12 w-full text-lg uppercase transition-all"
+                                value={certId}
+                                onChange={(e) => {
+                                    setCertId(e.target.value.toUpperCase());
+                                    if (result === "error") setResult("idle");
+                                }}
+                            />
+                            <div className="absolute right-0 top-0 bottom-0 flex items-center pr-2">
+                                <button
+                                    type="submit"
+                                    disabled={!certId.trim() || result === "loading"}
+                                    className="h-8 w-8 rounded-full bg-primary-700 text-white flex items-center justify-center hover:bg-primary-600 disabled:opacity-50 disabled:hover:bg-primary-700 transition-colors"
+                                >
+                                    {result === "loading" ? (
+                                        <Loader2 className="h-4 w-4 animate-spin" />
+                                    ) : (
+                                        <ArrowRight className="h-4 w-4" />
+                                    )}
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div className="space-y-2">
-                        <Label
-                            className="text-sm font-medium text-slate-700"
-                        >
-                            {"শিক্ষার্থীর নাম (ঐচ্ছিক)"}
-                        </Label>
-                        <Input
-                            type='text'
-                            value={studentName}
-                            onChange={(e) => setStudentName(e.target.value)}
-                            placeholder="নাম লিখুন"
-                            className="h-11 border-slate-200 focus:border-blue-500 focus:ring-blue-500/20"
-                        />
-                    </div>
-
-                    <motion.button
-                        type="submit"
-                        disabled={result === "loading"}
-                        whileTap={{ scale: 0.98 }}
-                        className="btn-primary group disabled:opacity-70"
-                    >
-                        {result === "loading" ? (
-                            <Loader2 className="w-5 h-5 animate-spin" />
-                        ) : (
-                            <>
-                                যাচাই করুন
-                                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                            </>
-                        )}
-                    </motion.button>
                 </form>
             </motion.div>
 
-            {/* Result */}
-            <AnimatePresence mode="wait" >
-                {result === "success" && certData && (
-                    <motion.div
-                        key="success"
-                        initial={{ opacity: 0, y: 20, scale: 0.97 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={spring}
-                        className="mt-8 card-surface overflow-hidden border"
-                    >
-                        <div className="bg-gray-100 px-8 py-4 border-b border flex justify-between items-center">
-                            <span className="text-success font-medium flex items-center gap-2">
-                                <CheckCircle className="w-5 h-5" /> যাচাইকৃত (Verified)
-                            </span>
-                            <span className="text-xs text-success font-mono uppercase tracking-wider">ID: {searchedId}</span>
-                        </div>
-                        <div className="p-8 space-y-4">
-                            <ResultRow label="শিক্ষার্থীর নাম" value={certData.studentName} delay={0.1} />
-                            <ResultRow label="কোর্সের নাম" value={certData.course} delay={0.2} />
-                            <ResultRow label="সার্টিফিকেট নম্বর" value={searchedId} delay={0.3} />
-                            <ResultRow label="প্রদানের তারিখ" value={certData.certificate_issued
-                            } delay={0.4} />
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.5 }}
-                                className="pt-4 mt-4 border-t border-border flex justify-between items-center"
-                            >
-                                <span className="text-muted-foreground text-sm">স্ট্যাটাস</span>
-                                <span className="px-3 py-1 bg-success-muted text-success rounded-full text-xs font-bold">সক্রিয়</span>
-                            </motion.div>
-                        </div>
-                    </motion.div>
-                )}
+            {/* Results Area */}
+            <div className="mt-8 max-w-lg mx-auto">
+                <AnimatePresence mode="wait">
+                    {result === "success" && certData && (
+                        <motion.div
+                            key="success"
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            transition={spring}
+                            className="card-surface overflow-hidden border-2 border-emerald-100 dark:border-emerald-900 shadow-xl"
+                        >
+                            {/* Success Header */}
+                            <div className="bg-emerald-50 dark:bg-emerald-950/20 px-8 py-6 flex items-center gap-4 border-b border-emerald-100 dark:border-emerald-900">
+                                <motion.div
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    transition={{ type: "spring", delay: 0.1 }}
+                                    className="rounded-full bg-emerald-100 dark:bg-emerald-900 p-2 text-emerald-600 dark:text-emerald-400 shrink-0"
+                                >
+                                    <CheckCircle className="h-8 w-8" />
+                                </motion.div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-foreground">Verified Certificate</h3>
+                                    <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium mt-0.5">
+                                        Authentic record found for ID: {searchedId}
+                                    </p>
+                                </div>
+                            </div>
 
-                {result === "error" && (
-                    <motion.div
-                        key="error"
-                        initial={{ opacity: 0, y: 20, scale: 0.97 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={spring}
-                        className="mt-8 card-surface overflow-hidden border-error-border"
-                    >
-                        <div className="bg-error-muted px-8 py-5 flex items-center gap-3">
-                            <XCircle className="w-5 h-5 text-error" />
-                            <div>
-                                <p className="text-error font-semibold">অবৈধ সার্টিফিকেট</p>
-                                <p className="text-sm text-muted-foreground mt-0.5">
-                                    "{searchedId}" নম্বরের কোনো সার্টিফিকেট পাওয়া যায়নি।
+                            {/* Data Rows */}
+                            <div className="grid gap-6 p-8 relative">
+                                {/* Watermark */}
+                                <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none">
+                                    <CheckCircle className="h-64 w-64" />
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+                                    <ResultRow
+                                        label="Student Name"
+                                        value={certData.studentName}
+                                        delay={0.15}
+                                    />
+                                    <ResultRow
+                                        label="Course Name"
+                                        value={certData.course}
+                                        delay={0.2}
+                                    />
+                                    <ResultRow
+                                        label="Batch Number"
+                                        value={certData.batchNumber}
+                                        delay={0.25}
+                                    />
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+
+                    {result === "error" && (
+                        <motion.div
+                            key="error"
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            transition={spring}
+                            className="card-surface overflow-hidden border-2 border-red-100 dark:border-red-900"
+                        >
+                            <div className="bg-red-50 dark:bg-red-950/20 px-8 py-6 flex items-center gap-4 border-b border-red-100 dark:border-red-900">
+                                <motion.div
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    transition={{ type: "spring", delay: 0.1 }}
+                                    className="rounded-full bg-red-100 dark:bg-red-900 p-2 text-red-600 dark:text-red-400 shrink-0"
+                                >
+                                    <XCircle className="h-8 w-8" />
+                                </motion.div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-foreground">Verification Failed</h3>
+                                    <p className="text-sm text-red-600 dark:text-red-400 font-medium mt-0.5">
+                                        No authentic record found
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="p-8">
+                                <p className="text-muted-foreground text-center">
+                                    We couldn't find a valid student record matching ID{" "}
+                                    <span className="font-mono font-semibold text-foreground px-1">{searchedId}</span>.
+                                    <br />
+                                    Please verify the ID and try again, or contact administration.
                                 </p>
                             </div>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
         </div>
+    );
+}
+
+export default function VerificationCard() {
+    return (
+        <Suspense fallback={<div className="flex justify-center items-center min-h-[50vh]"><Loader2 className="w-8 h-8 animate-spin text-primary-600" /></div>}>
+            <VerificationContent />
+        </Suspense>
     );
 }
