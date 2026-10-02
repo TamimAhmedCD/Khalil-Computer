@@ -24,7 +24,9 @@ const categories = [
 export function BasicInfoForm() {
     const { control, setValue, watch } = useFormContext()
     const [tagInput, setTagInput] = useState("")
-    const tags = watch("tags") || []
+    // Parse tags from string if stored as string, otherwise use array
+    const tagsRaw = watch("tags")
+    const tags = Array.isArray(tagsRaw) ? tagsRaw : (typeof tagsRaw === "string" ? JSON.parse(tagsRaw) || [] : [])
 
     const handleAddTag = (e) => {
         if (e.key === "Enter" || e.key === ",") {

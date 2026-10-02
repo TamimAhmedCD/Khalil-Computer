@@ -41,25 +41,17 @@ const courseFormSchema = z.object({
     whatInside: z
         .string()
         .min(10, { message: "কোর্সের বিষয়বস্তু কমপক্ষে ১০ অক্ষর হতে হবে" }),
-    courseImagePreview: z.string().min(1, { message: "কোর্সের ছবি আপলোড করুন" }),
 
     // Step 3: Pricing & More
     isPaid: z.boolean(),
-    price: z
-        .number()
-        .refine((val) => !val || val >= 0, {
-            message: "মূল্য ঋণাত্মক হতে পারে না",
-        }),
+    price: z.union([z.string(), z.number()]).optional(),
     batchInfo: z.string().optional(),
     classTiming: z.string().optional(),
-    totalClasses: z
-        .number()
-        .int()
-        .nonnegative({ message: "ক্লাস সংখ্যা ঋণাত্মক হতে পারে না" }),
+    totalClasses: z.union([z.string(), z.number()]).optional(),
     supportInfo: z.string().optional(),
     courseDuration: z.string().optional(),
     instructorName: z.string().optional(),
-    discount: z.number().optional()
+    discount: z.union([z.string(), z.number()]).optional()
 });
 
 // Define step-specific validation schemas
@@ -74,7 +66,6 @@ const courseOverviewSchema = courseFormSchema.pick({
     fullDescription: true,
     courseThumbnail: true,
     whatInside: true,
-    courseImagePreview: true,
 });
 
 export default function AddCoursePage() {
@@ -88,22 +79,21 @@ export default function AddCoursePage() {
         resolver: zodResolver(courseFormSchema),
         defaultValues: {
             title: "",
-            category: "",
+            category: "IT & Computer Skills",
             description: "",
             tags: [],
             fullDescription: "",
             whatInside: "",
             courseThumbnail: null,
-            courseImagePreview: "",
             isPaid: false,
-            price: 0,
+            price: "",
             batchInfo: "",
             classTiming: "",
-            totalClasses: 0,
+            totalClasses: "",
             supportInfo: "",
             courseDuration: "",
-            instructorName: session?.user?.name,
-            discount: 0,
+            instructorName: session?.user?.name || "",
+            discount: "",
         },
         mode: "onChange",
     });
@@ -146,12 +136,11 @@ export default function AddCoursePage() {
                     fullDescription: data.fullDescription,
                     whatInside: data.whatInside,
                     courseThumbnail: data.courseThumbnail,
-                    courseImagePreview: data.courseImagePreview,
                 });
 
                 if (!result.success) {
-                    toast.error("ফর্ম পূরণে ত্রুটি", {
-                        description: "অনুগ্রহ করে কোর্সের বিবরণ সঠিকভাবে পূরণ করুন",
+                    toast.error("Form Validation Error", {
+                        description: "Please complete the course overview details correctly",
                         variant: "destructive",
                     });
                     return false;
@@ -178,39 +167,51 @@ export default function AddCoursePage() {
         setActiveTab(value);
     };
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (data, isPublished = false) => {
         setIsSubmitting(true);
 
         try {
             // Validate paid courses have a price
             if (data.isPaid && (!data.price || data.price <= 0)) {
-                toast.message("মূল্য নির্ধারণ করুন", {
-                    description: "পেইড কোর্সের জন্য মূল্য নির্ধারণ করা আবশ্যক",
+                toast.message("Price Required", {
+                    description: "Paid courses must have a price set",
                 });
                 setIsSubmitting(false);
                 return;
             }
 
-            // Upload image to Cloudinary if a file is selected
-            let imageUrl = data.courseImagePreview;
-            if (data.courseThumbnail && typeof data.courseThumbnail !== "string") {
-                imageUrl = await uploadToCloudinary(data.courseThumbnail);
-            }
+            // Build FormData for multipart/form-data submission
+            const formData = new FormData();
 
-            // // Prepare final payload
-            // const { courseImagePreview, ...rest } = data;
-            const payload = {
-                ...data,
-                courseThumbnail: imageUrl,
-                published: published,
-                createdAt: new Date().toISOString(),
-            };
-            // POST to your backend
-            await axios.post("/api/courses", payload);
+            // Add all form fields except courseImagePreview
+            Object.keys(data).forEach(key => {
+                if (key === 'courseThumbnail') {
+                    // Only add if it's a File object
+                    if (data[key] && data[key] instanceof File) {
+                        formData.append('courseThumbnail', data[key]);
+                    }
+                } else if (key === 'courseImagePreview') {
+                    // Skip - this is just a preview, not stored in DB
+                    return;
+                } else if (key === 'tags' && Array.isArray(data[key])) {
+                    // Handle array properly
+                    formData.append(key, JSON.stringify(data[key]));
+                } else if (data[key] !== null && data[key] !== undefined) {
+                    formData.append(key, data[key]);
+                }
+            });
+
+            // Add metadata - use the isPublished parameter
+            formData.append('published', isPublished);
+
+            // Send FormData to backend
+            await axios.post('/api/admin/courses', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
 
             setIsSuccess(true);
-            toast.success("কোর্স সফলভাবে যুক্ত হয়েছে", {
-                description: "আপনার নতুন কোর্স সিস্টেমে যুক্ত করা হয়েছে",
+            toast.success("Course Added Successfully", {
+                description: "Your new course has been added to the system",
             });
 
             // Reset after 3 seconds
@@ -221,8 +222,8 @@ export default function AddCoursePage() {
             }, 3000);
         } catch (error) {
             console.error("Submit error:", error);
-            toast.error("ত্রুটি", {
-                description: "কোর্স যুক্ত করতে সমস্যা হয়েছে, আবার চেষ্টা করুন",
+            toast.error("Error", {
+                description: error.response?.data?.error || "Failed to add course, please try again",
             });
         } finally {
             setIsSubmitting(false);
@@ -339,18 +340,18 @@ export default function AddCoursePage() {
 
                                             <div className="flex flex-col gap-2 sm:flex-row sm:gap-2 w-full sm:w-auto">
                                                 <Button
-                                                    type="submit"
+                                                    type="button"
                                                     disabled={isSubmitting}
-                                                    onClick={() => setPublished(false)}
+                                                    onClick={() => methods.handleSubmit((data) => onSubmit(data, false))()}
                                                     variant="outline"
                                                     className="w-full sm:w-auto"
                                                 >
                                                     {isSubmitting ? "অপেক্ষা করুন..." : "ড্রাফ্‌ট সংরক্ষণ করুন"}
                                                 </Button>
                                                 <Button
-                                                    type="submit"
+                                                    type="button"
                                                     disabled={isSubmitting}
-                                                    onClick={() => setPublished(true)}
+                                                    onClick={() => methods.handleSubmit((data) => onSubmit(data, true))()}
                                                     className="bg-primary-600 hover:bg-primary-700 w-full sm:w-auto"
                                                 >
                                                     {isSubmitting ? "অপেক্ষা করুন..." : "কোর্স যুক্ত করুন"}

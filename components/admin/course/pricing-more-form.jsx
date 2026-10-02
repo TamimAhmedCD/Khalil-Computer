@@ -1,98 +1,109 @@
 "use client"
 
+import React from "react"
 import { useFormContext } from "react-hook-form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { motion } from "framer-motion"
-import { useEffect } from "react"
+import { Label } from "@/components/ui/label"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { useSession } from "next-auth/react"
+import { Card, CardContent } from "@/components/ui/card"
 
 export function PricingMoreForm() {
     const { control, setValue, watch } = useFormContext()
     const isPaid = watch("isPaid")
     const { data: session } = useSession()
 
-    // Reset price to 0 when switching to free
-    useEffect(() => {
+    // Reset price to 5000 when switching to free (more sensible default)
+    React.useEffect(() => {
         if (!isPaid) {
-            setValue("price", 0)
+            setValue("price", 5000)
         }
     }, [isPaid, setValue])
 
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }} className="space-y-6">
-            <div className="space-y-4">
-                <FormField
-                    control={control}
-                    name="isPaid"
-                    render={({ field }) => (
-                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+            {/* Pricing Section */}
+            <Card>
+                <CardContent className="pt-6">
+                    <div className="space-y-4">
+                        <div className="flex items-center justify-between">
                             <div className="space-y-0.5">
-                                <FormLabel className="text-base">মূল্য নির্ধারণ করুন</FormLabel>
+                                <Label className="text-base">Course Pricing</Label>
+                                <p className="text-xs text-muted-foreground">Select if this course is free or paid</p>
                             </div>
-                            <FormControl>
-                                <div className="flex items-center space-x-2">
-                                    <span className={!field.value ? "font-medium" : "text-muted-foreground"}>ফ্রি</span>
-                                    <Switch checked={field.value} onCheckedChange={field.onChange} />
-                                    <span className={field.value ? "font-medium" : "text-muted-foreground"}>পেইড</span>
-                                </div>
-                            </FormControl>
-                        </FormItem>
-                    )}
-                />
+                            <FormField
+                                control={control}
+                                name="isPaid"
+                                render={({ field }) => (
+                                    <div className="flex items-center space-x-2">
+                                        <span className={!field.value ? "font-medium" : "text-muted-foreground text-sm"}>Free</span>
+                                        <Switch checked={field.value} onCheckedChange={field.onChange} />
+                                        <span className={field.value ? "font-medium" : "text-muted-foreground text-sm"}>Paid</span>
+                                    </div>
+                                )}
+                            />
+                        </div>
 
-                {isPaid && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6"><FormField
-                        control={control}
-                        name="price"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>কোর্সের মূল্য (টাকা)</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        type="number"
-                                        placeholder="0"
-                                        min={0}
-                                        {...field}
-                                        onChange={(e) => field.onChange(e.target.valueAsNumber || 0)}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
+                        {isPaid && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                <FormField
+                                    control={control}
+                                    name="price"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Course Price (BDT)</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="number"
+                                                    placeholder="5000"
+                                                    min={0}
+                                                    {...field}
+                                                    onChange={(e) => field.onChange(e.target.valueAsNumber || 0)}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={control}
+                                    name="discount"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Discount (%)</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="number"
+                                                    placeholder="10"
+                                                    min={0}
+                                                    max={100}
+                                                    {...field}
+                                                    onChange={(e) => field.onChange(e.target.valueAsNumber || 0)}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
                         )}
-                    /><FormField
-                            control={control}
-                            name="discount"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>ডিসকাউন্ট (%)</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            type="number"
-                                            placeholder="0"
-                                            min={0}
-                                            {...field}
-                                            onChange={(e) => field.onChange(e.target.valueAsNumber || 0)}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        /></div>
-                )}
-            </div>
+                    </div>
+                </CardContent>
+            </Card>
 
+            {/* Course Details Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField
                     control={control}
                     name="batchInfo"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>ব্যাচ তথ্য (ঐচ্ছিক)</FormLabel>
+                            <FormLabel>Batch Info</FormLabel>
                             <FormControl>
-                                <Input placeholder="উদাহরণ: ব্যাচ ১২" {...field} />
+                                <Input placeholder="e.g., Batch 12, Morning Batch" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -104,9 +115,9 @@ export function PricingMoreForm() {
                     name="classTiming"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>ক্লাস টাইমিং</FormLabel>
+                            <FormLabel>Class Timing</FormLabel>
                             <FormControl>
-                                <Input placeholder="উদাহরণ: সপ্তাহে ৩ দিন, বিকাল ৪টা" {...field} />
+                                <Input placeholder="e.g., 3 days/week, 4:00 PM" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -120,12 +131,12 @@ export function PricingMoreForm() {
                     name="totalClasses"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>মোট ক্লাস সংখ্যা</FormLabel>
+                            <FormLabel>Total Classes</FormLabel>
                             <FormControl>
                                 <Input
                                     type="number"
                                     min={0}
-                                    placeholder="0"
+                                    placeholder="12"
                                     {...field}
                                     onChange={(e) => field.onChange(e.target.valueAsNumber || 0)}
                                 />
@@ -140,9 +151,9 @@ export function PricingMoreForm() {
                     name="courseDuration"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>কোর্সের সময়কাল</FormLabel>
+                            <FormLabel>Course Duration</FormLabel>
                             <FormControl>
-                                <Input placeholder="উদাহরণ: ৩ মাস" {...field} />
+                                <Input placeholder="e.g., 3 months, 6 months" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -150,33 +161,44 @@ export function PricingMoreForm() {
                 />
             </div>
 
-            <FormField
-                control={control}
-                name="instructorName"
-                render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>ইনস্ট্রাক্টরের নাম</FormLabel>
-                        <FormControl>
-                            <Input placeholder="ইনস্ট্রাক্টরের নাম লিখুন" {...field} defaultValue={session.user.name} />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )}
-            />
+            {/* Instructor & Support */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormField
+                    control={control}
+                    name="instructorName"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Instructor Name</FormLabel>
+                            <FormControl>
+                                <Input
+                                    placeholder="Enter instructor name"
+                                    {...field}
+                                    defaultValue={session?.user?.name || ""}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
 
-            <FormField
-                control={control}
-                name="supportInfo"
-                render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>সাপোর্ট সম্পর্কিত তথ্য</FormLabel>
-                        <FormControl>
-                            <Textarea placeholder="কোর্স সাপোর্ট সম্পর্কিত তথ্য লিখুন" className="min-h-[100px]" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )}
-            />
+                <FormField
+                    control={control}
+                    name="supportInfo"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Support Information</FormLabel>
+                            <FormControl>
+                                <Textarea
+                                    placeholder="Course support details, contact info, etc."
+                                    className="min-h-[100px]"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+            </div>
         </motion.div>
     )
 }

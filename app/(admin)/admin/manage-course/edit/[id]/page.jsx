@@ -33,23 +33,18 @@ const courseFormSchema = z.object({
     whatInside: z
         .string()
         .min(10, { message: "কোর্সের বিষয়বস্তু কমপক্ষে ১০ অক্ষর হতে হবে" }),
-    courseImagePreview: z.string().min(1, { message: "কোর্সের ছবি আপলোড করুন" }),
+    courseImagePreview: z.string().optional(),
 
     // Step 3: Pricing & More
     isPaid: z.boolean(),
-    price: z.number().refine((val) => !val || val >= 0, {
-        message: "মূল্য ঋণাত্মক হতে পারে না",
-    }),
+    price: z.union([z.string(), z.number()]).optional(),
     batchInfo: z.string().optional(),
     classTiming: z.string().optional(),
-    totalClasses: z
-        .number()
-        .int()
-        .nonnegative({ message: "ক্লাস সংখ্যা ঋণাত্মক হতে পারে না" }),
+    totalClasses: z.union([z.string(), z.number()]).optional(),
     supportInfo: z.string().optional(),
     courseDuration: z.string().optional(),
     instructorName: z.string().optional(),
-    discount: z.number().optional(),
+    discount: z.union([z.string(), z.number()]).optional(),
 });
 
 // Define step-specific validation schemas
@@ -64,7 +59,6 @@ const courseOverviewSchema = courseFormSchema.pick({
     fullDescription: true,
     courseThumbnail: true,
     whatInside: true,
-    courseImagePreview: true,
 });
 
 const fetchCourse = async (id) => {
@@ -75,7 +69,6 @@ const fetchCourse = async (id) => {
 export default function EditCoursePage() {
     const params = useParams();
     const id = params.id;
-    const [published, setPublished] = useState(false);
     const [activeTab, setActiveTab] = useState("basic-info");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
@@ -90,16 +83,15 @@ export default function EditCoursePage() {
             fullDescription: "",
             whatInside: "",
             courseThumbnail: null,
-            courseImagePreview: "",
             isPaid: false,
-            price: 0,
+            price: "",
             batchInfo: "",
             classTiming: "",
-            totalClasses: 0,
+            totalClasses: "",
             supportInfo: "",
             courseDuration: "",
             instructorName: "",
-            discount: 0,
+            discount: "",
         },
         mode: "onChange",
     });
@@ -117,24 +109,37 @@ export default function EditCoursePage() {
     // Reset form with course data when it arrives
     useEffect(() => {
         if (course) {
+            // Parse tags from string if needed
+            let tagsArray = [];
+            if (Array.isArray(course.tags)) {
+                tagsArray = course.tags;
+            } else if (typeof course.tags === "string") {
+                try {
+                    tagsArray = JSON.parse(course.tags);
+                } catch {
+                    tagsArray = course.tags ? [course.tags] : [];
+                }
+            }
+
             reset({
                 title: course.title ?? "",
                 category: course.category ?? "",
                 description: course.description ?? "",
-                tags: course.tags ?? [],
+                tags: tagsArray,
                 fullDescription: course.fullDescription ?? "",
                 whatInside: course.whatInside ?? "",
                 courseThumbnail: course.courseThumbnail ?? null,
-                courseImagePreview: course.courseImagePreview ?? "",
+                // Set courseImagePreview to existing thumbnail for display
+                courseImagePreview: course.courseThumbnail ?? "",
                 isPaid: course.isPaid ?? false,
-                price: course.price ?? 0,
+                price: course.price ?? "",
                 batchInfo: course.batchInfo ?? "",
                 classTiming: course.classTiming ?? "",
-                totalClasses: course.totalClasses ?? 0,
+                totalClasses: course.totalClasses ?? "",
                 supportInfo: course.supportInfo ?? "",
                 courseDuration: course.courseDuration ?? "",
                 instructorName: course.instructorName ?? "",
-                discount: course.discount ?? 0,
+                discount: course.discount ?? "",
             });
         }
     }, [course, reset]);
@@ -175,7 +180,6 @@ export default function EditCoursePage() {
                     fullDescription: data.fullDescription,
                     whatInside: data.whatInside,
                     courseThumbnail: data.courseThumbnail,
-                    courseImagePreview: data.courseImagePreview,
                 });
 
                 if (!result.success) {
@@ -207,51 +211,72 @@ export default function EditCoursePage() {
         setActiveTab(value);
     };
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (data, isPublished = false) => {
         setIsSubmitting(true);
 
         try {
             // Validate paid courses have a price
             if (data.isPaid && (!data.price || data.price <= 0)) {
-                toast.message("মূল্য নির্ধারণ করুন", {
-                    description: "পেইড কোর্সের জন্য মূল্য নির্ধারণ করা আবশ্যক",
+                toast.message("Price Required", {
+                    description: "Paid courses must have a price set",
                 });
                 setIsSubmitting(false);
                 return;
             }
 
-            // Upload image to Cloudinary if a file is selected
-            let imageUrl = data.courseImagePreview;
-            if (data.courseThumbnail && typeof data.courseThumbnail !== "string") {
-                imageUrl = await uploadToCloudinary(data.courseThumbnail);
-            }
+            // Build FormData for multipart/form-data submission
+            const formData = new FormData();
 
-            // // Prepare final payload
-            // const { courseImagePreview, ...rest } = data;
-            const payload = {
-                ...data,
-                courseThumbnail: imageUrl,
-                published: published,
-                createdAt: new Date().toISOString(),
-            };
-            // POST to your backend
-            await axios.put(`/api/admin/courses/${id}`, payload);
-
-            setIsSuccess(true);
-            toast.success("কোর্স সফলভাবে যুক্ত হয়েছে", {
-                description: "আপনার নতুন কোর্স সিস্টেমে যুক্ত করা হয়েছে",
+            // Add all form fields except courseThumbnail and courseImagePreview
+            Object.keys(data).forEach(key => {
+                if (key === 'courseThumbnail') {
+                    // Only add if it's a new File object
+                    if (data[key] && data[key] instanceof File) {
+                        formData.append('courseThumbnail', data[key]);
+                        // Track old image URL for deletion
+                        if (course?.courseThumbnail && course.courseThumbnail.includes('cloudinary')) {
+                            formData.append('oldImageUrl', course.courseThumbnail);
+                        }
+                    } else if (typeof data[key] === 'string' && data[key]) {
+                        // Keep existing URL if no new file
+                        formData.append('courseThumbnail', data[key]);
+                    }
+                } else if (key === 'courseImagePreview') {
+                    // Skip - this is just a preview, not stored in DB
+                    return;
+                } else if (key === 'tags' && Array.isArray(data[key])) {
+                    // Handle array properly
+                    formData.append(key, JSON.stringify(data[key]));
+                } else if (data[key] !== null && data[key] !== undefined) {
+                    formData.append(key, data[key]);
+                }
             });
 
-            // Reset after 3 seconds
+            // Add course ID and metadata - use isPublished parameter
+            formData.append('_id', id);
+            formData.append('published', isPublished);
+
+            // Send FormData to backend
+            await axios.post('/api/admin/courses', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+
+            setIsSuccess(true);
+            toast.success("Course Updated Successfully", {
+                description: "Your course has been updated in the system",
+            });
+
+            // Refetch course data to show updated values
+            refetch();
+
+            // Reset success state after 3 seconds
             setTimeout(() => {
                 setIsSuccess(false);
-                methods.reset();
-                setActiveTab("basic-info");
             }, 3000);
         } catch (error) {
             console.error("Submit error:", error);
-            toast.error("ত্রুটি", {
-                description: "কোর্স যুক্ত করতে সমস্যা হয়েছে, আবার চেষ্টা করুন",
+            toast.error("Error", {
+                description: error.response?.data?.error || "Failed to update course, please try again",
             });
         } finally {
             setIsSubmitting(false);
@@ -329,9 +354,9 @@ export default function EditCoursePage() {
 
                                             <div className="flex flex-col gap-2 sm:flex-row sm:gap-2 w-full sm:w-auto">
                                                 <Button
-                                                    type="submit"
+                                                    type="button"
                                                     disabled={isSubmitting}
-                                                    onClick={() => setPublished(false)}
+                                                    onClick={() => methods.handleSubmit((data) => onSubmit(data, false))()}
                                                     variant="outline"
                                                     className="w-full sm:w-auto"
                                                 >
@@ -340,14 +365,14 @@ export default function EditCoursePage() {
                                                         : "ড্রাফ্‌ট সংরক্ষণ করুন"}
                                                 </Button>
                                                 <Button
-                                                    type="submit"
+                                                    type="button"
                                                     disabled={isSubmitting}
-                                                    onClick={() => setPublished(true)}
+                                                    onClick={() => methods.handleSubmit((data) => onSubmit(data, true))()}
                                                     className="bg-primary-600 hover:bg-primary-700 w-full sm:w-auto"
                                                 >
                                                     {isSubmitting
                                                         ? "অপেক্ষা করুন..."
-                                                        : "কোর্স যুক্ত করুন"}
+                                                        : "কোর্স আপডেট করুন"}
                                                 </Button>
                                             </div>
                                         </div>

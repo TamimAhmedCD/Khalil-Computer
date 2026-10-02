@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-export default function AllCourse({ course, handleDeleteCourse }) {
+export default function AllCourse({ course, openDeleteDialog }) {
     return (
         <tr key={course._id} className="border-t">
             <td className="px-4 py-3">
@@ -73,7 +73,7 @@ export default function AllCourse({ course, handleDeleteCourse }) {
                         </DropdownMenuItem>
                         <DropdownMenuItem
                             className="text-destructive focus:text-destructive"
-                            onClick={() => handleDeleteCourse(course._id)}
+                            onClick={() => openDeleteDialog(course)}
                         >
                             <Trash2 className="mr-2 h-4 w-4" />
                             <span>মুছুন</span>

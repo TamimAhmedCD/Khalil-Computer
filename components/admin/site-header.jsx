@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Bell, Search, User, Settings, HelpCircle, LogOut } from "lucide-react";
+import { Bell, Search, User, Settings, HelpCircle, LogOut, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -17,14 +17,26 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SidebarTrigger } from "@/components/ui/simple-sidebar";
 import { signOut, useSession } from "next-auth/react";
 
-export function SiteHeader() {
+export function SiteHeader({ onMobileMenuToggle }) {
     const [showSearch, setShowSearch] = useState(false);
     const { data: session } = useSession();
 
     return (
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4 md:px-6 lg:px-8">
             <div className="flex items-center gap-4">
-                <SidebarTrigger className="-ml-1" />
+                {/* Mobile menu toggle */}
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="md:hidden -ml-1"
+                    onClick={onMobileMenuToggle}
+                    aria-label="Toggle mobile menu"
+                >
+                    <Menu size={20} />
+                </Button>
+
+                {/* Desktop sidebar toggle */}
+                <SidebarTrigger className="-ml-1 hidden md:flex" />
 
                 {/* Search toggle for mobile */}
                 <Button

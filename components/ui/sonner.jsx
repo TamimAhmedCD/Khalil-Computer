@@ -11,14 +11,16 @@ const Toaster = ({
   return (
     (<Sonner
       theme={theme}
+      position="top-center"
+      richColors
       className="toaster group"
-      style={
-        {
-          "--normal-bg": "var(--popover)",
-          "--normal-text": "var(--popover-foreground)",
-          "--normal-border": "var(--border)"
-        }
-      }
+      toastOptions={{
+        style: {
+          background: 'var(--background)',
+          color: 'var(--foreground)',
+          border: '1px solid var(--border)',
+        },
+      }}
       {...props} />)
   );
 }

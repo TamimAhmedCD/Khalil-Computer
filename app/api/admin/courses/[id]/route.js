@@ -1,20 +1,36 @@
 import { collection } from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
+import { deleteFromCloudinary } from "@/lib/cloudinaryHelper";
 
 export async function DELETE(request, { params }) {
   try {
     const id = params.id;
-    const result = await (
-      await collection("courses")
-    ).deleteOne({ _id: new ObjectId(id) });
+
+    // Get course to check for image URL
+    const db = await collection("courses");
+    const course = await db.findOne({ _id: new ObjectId(id) });
+
+    // Delete course from MongoDB
+    const result = await db.deleteOne({ _id: new ObjectId(id) });
 
     if (result.deletedCount === 0) {
-      return NextResponse.json({ error: "course not found" }, { status: 404 });
+      return NextResponse.json({ error: "Course not found" }, { status: 404 });
     }
-    return NextResponse.json({ message: "Course Deleted Successfully" });
+
+    // Delete image from Cloudinary if exists
+    if (course?.courseThumbnail && course.courseThumbnail.includes("cloudinary")) {
+      try {
+        await deleteFromCloudinary(course.courseThumbnail);
+        console.log("Deleted course image from Cloudinary:", course.courseThumbnail);
+      } catch (deleteError) {
+        console.warn("Failed to delete course image from Cloudinary:", deleteError.message);
+      }
+    }
+
+    return NextResponse.json({ message: "Course deleted successfully" });
   } catch (error) {
-    console.log("error deleting course", error);
+    console.log("Error deleting course:", error);
     return NextResponse.json(
       { error: "Failed to delete course" },
       { status: 500 }

@@ -4,13 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { Book, Megaphone, Users } from "lucide-react";
-import {
-  SimpleSidebar,
-  SidebarHeader,
-  SidebarContent,
-  SidebarFooter,
-  useSidebar,
-} from "@/components/ui/simple-sidebar";
 import { SimpleNavMain } from "./simple-nav-main";
 import { SimpleNavUser } from "./simple-nav-user";
 
@@ -62,12 +55,13 @@ const navData = [
   },
 ];
 
-export function SimpleAppSidebar() {
+export function SimpleAppSidebarMobile() {
   const { data: session } = useSession();
 
   return (
-    <SimpleSidebar>
-      <SidebarHeader>
+    <aside className="flex flex-col h-full bg-white border-r">
+      {/* Header */}
+      <div className="p-4 border-b">
         <Link
           href="/admin/dashboard"
           className="flex items-center gap-3 w-full hover:opacity-80 transition-opacity"
@@ -87,15 +81,17 @@ export function SimpleAppSidebar() {
             <span className="text-xs text-primary-500">অ্যাডমিন</span>
           </div>
         </Link>
-      </SidebarHeader>
+      </div>
 
-      <SidebarContent>
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto p-2">
         <SimpleNavMain items={navData} />
-      </SidebarContent>
+      </div>
 
-      <SidebarFooter>
+      {/* Footer */}
+      <div className="p-2 border-t">
         <SimpleNavUser user={session?.user} />
-      </SidebarFooter>
-    </SimpleSidebar>
+      </div>
+    </aside>
   );
 }
