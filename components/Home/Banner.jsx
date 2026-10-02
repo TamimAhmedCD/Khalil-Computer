@@ -10,11 +10,11 @@ export default function Banner() {
       <div className="md:w-1/2">
         <div className="flex items-center gap-3 mb-3">
           <BookmarkCheck className="text-primary-600" />
-          <h6 className="text-lg text-primary-600">অগ্র যাত্রার ২৫ বৎসর</h6>
+          <h6 className="text-lg text-primary-600">অগ্র যাত্রার ২৬ বৎসর</h6>
         </div>
         <h1 className="font-hind-siliguri text-4xl md:text-4xl lg:text-5xl lg:leading-16 font-semibold text-primary-950">
           আপনার স্বপ্ন {" "}
-          <span className="text-primary-600">পূর্ণ করবে আমদের </span>
+          <span className="text-primary-600">পূর্ণ করবে আমাদের </span>
           বাস্তব প্রশিক্ষণ
         </h1>
         <p className="text-gray-600 leading-7 my-5 text-justify">
