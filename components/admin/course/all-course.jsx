@@ -15,7 +15,7 @@ export default function AllCourse({ course, openDeleteDialog }) {
                         className="h-10 w-10 rounded-md bg-cover bg-center bg-no-repeat"
                         style={{ backgroundImage: `url(${course.})` }}
                     /> */}
-                    <Image src={course.courseThumbnail} width={60} height={60} className="rounded-md" />
+                    <Image src={course.courseThumbnail} width={60} height={60} className="rounded-md" alt={course.title} />
                     <div>
                         <div className="font-medium">{course.title}</div>
                         <div className="text-sm text-muted-foreground truncate max-w-[250px]">

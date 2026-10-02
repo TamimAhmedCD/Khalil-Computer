@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     const client = await clientPromise;
-    const db = client.db(process.env.MONGODB_DB);
+    const db = client.db("khalil_computer");
 
     // Fetch counts concurrently for faster response
     const [

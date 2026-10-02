@@ -13,7 +13,6 @@ import {
   TrendingUp,
   UserPlus,
   ArrowRight,
-  WalletCards,
   Calendar
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -129,7 +128,7 @@ export function AdminWelcomeCard() {
       </Card>
 
       {/* 2. Key Statistics Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Total Students */}
         <Card className="hover:shadow-md transition-all border-l-4 border-l-blue-500">
           <CardContent className="p-6 flex items-center justify-between">
@@ -156,21 +155,6 @@ export function AdminWelcomeCard() {
             </div>
             <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-600">
               <CreditCard className="w-6 h-6" />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Total Collections */}
-        <Card className="hover:shadow-md transition-all border-l-4 border-l-emerald-500">
-          <CardContent className="p-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium leading-none text-muted-foreground uppercase tracking-wider mb-2">Total Collection</p>
-              <h2 className="text-3xl font-bold text-gray-900">
-                <span className="text-lg">৳</span>{isLoading ? "..." : formatCurrency(stats?.financial?.totalCollected)}
-              </h2>
-            </div>
-            <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
-              <WalletCards className="w-6 h-6" />
             </div>
           </CardContent>
         </Card>

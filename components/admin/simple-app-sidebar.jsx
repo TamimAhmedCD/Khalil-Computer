@@ -64,6 +64,7 @@ const navData = [
 
 export function SimpleAppSidebar() {
   const { data: session } = useSession();
+  const { isCollapsed } = useSidebar();
 
   return (
     <SimpleSidebar>
@@ -80,12 +81,14 @@ export function SimpleAppSidebar() {
             priority
             className="object-contain size-8 flex-shrink-0"
           />
-          <div className="flex flex-col gap-0.5 leading-none">
-            <span className="font-semibold text-primary-600 text-sm">
-              খলিল কম্পিউটার
-            </span>
-            <span className="text-xs text-primary-500">অ্যাডমিন</span>
-          </div>
+          {!isCollapsed && (
+            <div className="flex flex-col gap-0.5 leading-none">
+              <span className="font-semibold text-primary-600 text-sm">
+                খলিল কম্পিউটার
+              </span>
+              <span className="text-xs text-primary-500">অ্যাডমিন</span>
+            </div>
+          )}
         </Link>
       </SidebarHeader>
 
