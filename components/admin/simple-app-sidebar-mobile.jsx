@@ -67,7 +67,7 @@ export function SimpleAppSidebarMobile() {
           className="flex items-center gap-3 w-full hover:opacity-80 transition-opacity"
         >
           <Image
-            src="/icon2.svg"
+            src="/icon.svg"
             alt="Khalil Computer Icon"
             width={32}
             height={32}

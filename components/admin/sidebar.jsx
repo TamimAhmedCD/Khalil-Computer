@@ -8,7 +8,7 @@ export function AdminSidebar({ ...props }) {
         <Sidebar collapsible="icon" {...props}>
             <SidebarHeader>
                 <Image
-                    src="/icon2.svg"
+                    src="/icon.svg"
                     width={130}
                     height={160}
                     alt="Khalil Computer Logo"

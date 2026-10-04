@@ -7,10 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { LoginFormFields } from "./login-form-fields";
-import { SocialLoginButtons } from "./SocialLoginButton";
 import { signIn, useSession } from "next-auth/react";
 
 const loginFormSchema = z.object({
@@ -47,12 +45,25 @@ export function LoginForm({ onSwitchMode }) {
                 password: data.password
             })
 
-            if (result?.ok) {
-                toast.success('লগইন সফল হয়েছে!')
+            console.log('Login result:', result);
+
+            if (result?.error) {
+                // Show user-friendly error message
+                if (result.error === 'Configuration' || result.error === 'CredentialsSignin') {
+                    toast.error('ইমেইল বা পাসওয়ার্ড সঠিক নয়');
+                } else {
+                    toast.error(result.error);
+                }
+            } else if (result?.ok) {
+                // Successfully logged in
+                toast.success('লগইন সফল হয়েছে!');
+                // Session will be available after successful login
             } else {
-                toast.error(result.error || "লগইন করতে ব্যর্থ হয়েছে");
+                // Generic error
+                toast.error("লগইন করতে ব্যর্থ হয়েছে");
             }
-        } catch {
+        } catch (error) {
+            console.error('Login error:', error);
             toast.error("লগইন প্রক্রিয়ায় সমস্যা হয়েছে");
         } finally {
             setIsLoading(false);
@@ -87,15 +98,6 @@ export function LoginForm({ onSwitchMode }) {
                     </Button>
                 </form>
             </Form>
-
-            {/* Separator */}
-            <div className="relative flex items-center justify-center">
-                <Separator className="absolute w-full" />
-                <span className="relative bg-white px-2 text-xs text-gray-500">অথবা</span>
-            </div>
-
-            {/* Social login buttons */}
-            <SocialLoginButtons />
 
             {/* Registration link */}
             <div className="text-center text-sm">

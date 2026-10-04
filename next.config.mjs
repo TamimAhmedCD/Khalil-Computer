@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
- images: {
+  images: {
     remotePatterns: [
       {
         protocol: 'https',
@@ -8,6 +8,8 @@ const nextConfig = {
       },
     ],
   },
+  // External packages to exclude from server-side bundling
+  serverExternalPackages: ['jose'],
 };
 
 export default nextConfig;

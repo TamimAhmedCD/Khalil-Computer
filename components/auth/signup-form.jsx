@@ -12,7 +12,6 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Separator } from "@/components/ui/separator"
-import { SocialLoginButtons } from "./SocialLoginButton"
 import axios from "axios"
 import { toast } from "sonner"
 
@@ -251,13 +250,6 @@ export function SignupForm({ onSwitchMode }) {
                     </Button>
                 </form>
             </Form>
-
-            <div className="relative flex items-center justify-center">
-                <Separator className="absolute w-full" />
-                <span className="relative bg-white px-2 text-xs text-gray-500">অথবা</span>
-            </div>
-
-            <SocialLoginButtons />
 
             <div className="text-center text-sm">
                 <span className="text-gray-600">ইতিমধ্যে অ্যাকাউন্ট আছে? </span>

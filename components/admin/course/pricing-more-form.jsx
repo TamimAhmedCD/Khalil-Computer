@@ -153,9 +153,13 @@ export function PricingMoreForm() {
                         <FormItem>
                             <FormLabel>Course Duration</FormLabel>
                             <FormControl>
-                                <Input placeholder="e.g., 3 months, 6 months" {...field} />
+                                <Input
+                                    placeholder="e.g., 3 months, 6 months, 1 year"
+                                    {...field}
+                                />
                             </FormControl>
                             <FormMessage />
+                            <p className="text-xs text-muted-foreground mt-1">Enter duration in weeks, months, or years</p>
                         </FormItem>
                     )}
                 />
