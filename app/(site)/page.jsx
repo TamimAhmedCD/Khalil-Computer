@@ -15,7 +15,7 @@ export const metadata = {
 };
 export default async function Home() {
   return (
-    <div>
+    <div className="container mx-auto px-5 md:px-10 lg:px-20">
       <header>
         <Banner />
       </header>

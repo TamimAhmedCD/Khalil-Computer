@@ -13,14 +13,12 @@ export async function GET() {
       totalStudents,
       paidStudents,
       unpaidStudents,
-      totalCourses,
-      totalNotices
+      totalCourses
     ] = await Promise.all([
       db.collection("students").countDocuments(),
       db.collection("students").countDocuments({ outstandingAmount: { $in: [0, "0", null, ""] } }),
       db.collection("students").countDocuments({ outstandingAmount: { $nin: [0, "0", null, ""] } }),
-      db.collection("courses").countDocuments(),
-      db.collection("notices").countDocuments()
+      db.collection("courses").countDocuments()
     ]);
 
     // Fetch recent students
@@ -58,8 +56,7 @@ export async function GET() {
           totalStudents,
           paidStudents,
           unpaidStudents,
-          totalCourses,
-          totalNotices,
+          totalCourses
         },
         financial: revenue,
         recentStudents

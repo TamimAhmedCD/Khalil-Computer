@@ -1,7 +1,6 @@
 'use client'
 import { BookmarkCheck } from "lucide-react";
 import Image from "next/image";
-import React, { useState } from "react";
 import { Admission } from "../Admission/admission";
 
 export default function Banner() {
@@ -18,7 +17,7 @@ export default function Banner() {
           বাস্তব প্রশিক্ষণ
         </h1>
         <p className="text-gray-600 leading-7 my-5 text-justify">
-          খলিল কম্পিউটার — ২৫ বছরের অভিজ্ঞতায় প্রযুক্তি শিক্ষা ও দক্ষতা উন্নয়নে প্রতিশ্রুতিবদ্ধ।
+          খলিল কম্পিউটার — ২6 বছরের অভিজ্ঞতায় প্রযুক্তি শিক্ষা ও দক্ষতা উন্নয়নে প্রতিশ্রুতিবদ্ধ।
           আমরা শুধু তাত্ত্বিক নয়, বাস্তবভিত্তিক প্রশিক্ষণের মাধ্যমে তরুণদের আইটি খাতে দক্ষ করে গড়ে তুলি। আজই শুরু করুন আপনার সাফল্যের যাত্রা আমাদের যেকোনো কোর্স দিয়ে।
         </p>
         <div className="flex gap-3 font-hind-siliguri">

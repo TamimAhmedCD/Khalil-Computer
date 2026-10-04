@@ -8,9 +8,7 @@ import {
   Users,
   GraduationCap,
   BookOpen,
-  Megaphone,
   CreditCard,
-  TrendingUp,
   UserPlus,
   ArrowRight,
   Calendar
@@ -274,14 +272,6 @@ export function AdminWelcomeCard() {
               </Button>
             </Link>
 
-            <Link href="/admin/add-notice">
-              <Button variant="outline" className="w-full justify-start h-14 px-4 hover:bg-amber-50 hover:text-amber-700 hover:border-amber-200 transition-colors">
-                <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center mr-3">
-                  <Megaphone className="w-4 h-4 text-amber-600" />
-                </div>
-                <span className="font-medium text-base">Create New Notice</span>
-              </Button>
-            </Link>
 
             <Link href="/admin/manage-students">
               <Button variant="outline" className="w-full justify-start h-14 px-4 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-200 transition-colors">

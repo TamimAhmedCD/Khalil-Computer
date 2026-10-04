@@ -18,10 +18,6 @@ const navItems = [
     href: "/courses",
   },
   {
-    title: "নোটিশ বোর্ড",
-    href: "/noticeboard",
-  },
-  {
     title: "কমিউনিটি",
     href: "#",
     items: [
@@ -231,7 +227,7 @@ const Navbar = () => {
                 <div className="flex items-center justify-between border-b pb-4">
                   <Link href="/">
                     <Image
-                      src="/logo.png"
+                      src="/logoFull.svg"
                       width={100}
                       height={100}
                       alt="Khalil Computer Logo"

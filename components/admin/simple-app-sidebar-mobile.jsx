@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { Book, Megaphone, Users } from "lucide-react";
+import { Book, Users } from "lucide-react";
 import { SimpleNavMain } from "./simple-nav-main";
 import { SimpleNavUser } from "./simple-nav-user";
 
@@ -35,21 +35,6 @@ const navData = [
       {
         title: "Manage Students",
         url: "/admin/manage-students",
-      },
-    ],
-  },
-  {
-    title: "Notice Board",
-    url: "/admin/noticeboard",
-    icon: Megaphone,
-    items: [
-      {
-        title: "Add Notice",
-        url: "/admin/add-notice",
-      },
-      {
-        title: "Manage Notice",
-        url: "/admin/manage-notice",
       },
     ],
   },
