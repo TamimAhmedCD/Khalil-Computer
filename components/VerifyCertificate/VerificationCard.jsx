@@ -55,9 +55,23 @@ function VerificationContent() {
         try {
             const data = await fetchStudent(formattedId);
             if (data && data.length > 0) {
-                setCertData(data[0]);
-                setResult("success");
-                setHasError(false);
+                const student = data[0];
+
+                // Check if certificate has been issued
+                const hasCertificateIssued = student.certificate_issued &&
+                    student.certificate_issued.trim() !== "" &&
+                    student.certificate_issued !== "N/A";
+
+                if (hasCertificateIssued) {
+                    setCertData(student);
+                    setResult("success");
+                    setHasError(false);
+                } else {
+                    // Student exists but certificate not issued
+                    setCertData(student);
+                    setResult("not_issued");
+                    setHasError(false);
+                }
             } else {
                 setCertData(null);
                 setResult("error");
@@ -82,9 +96,23 @@ function VerificationContent() {
             const data = await fetchStudent(formattedId);
 
             if (data && data.length > 0) {
-                setCertData(data[0]); // because API returns array
-                setResult("success");
-                setHasError(false);
+                const student = data[0];
+
+                // Check if certificate has been issued
+                const hasCertificateIssued = student.certificate_issued &&
+                    student.certificate_issued.trim() !== "" &&
+                    student.certificate_issued !== "N/A";
+
+                if (hasCertificateIssued) {
+                    setCertData(student);
+                    setResult("success");
+                    setHasError(false);
+                } else {
+                    // Student exists but certificate not issued
+                    setCertData(student);
+                    setResult("not_issued");
+                    setHasError(false);
+                }
             } else {
                 setCertData(null);
                 setResult("error");
@@ -239,7 +267,7 @@ function VerificationContent() {
                                             <CheckCircle className="w-5 h-5 text-emerald-600 flex-shrink-0" />
                                             <div>
                                                 <p className="text-sm font-medium text-emerald-700">✓ সার্টিফিকেটের অবস্থা: সক্রিয় ও বৈধ</p>
-                                                <p className="text-xs text-emerald-600 mt-1">এই সার্টিফিকেটটি খালিল কম্পিউটার দ্বারা আনুষ্ঠানিকভাবে ইস্যু করা হয়েছে</p>
+                                                <p className="text-xs text-emerald-600 mt-1">এই সার্টিফিকেটটি খলিল কম্পিউটার দ্বারা আনুষ্ঠানিকভাবে ইস্যু করা হয়েছে</p>
                                             </div>
                                         </div>
                                     </div>
