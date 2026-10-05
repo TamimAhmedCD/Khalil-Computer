@@ -17,7 +17,8 @@ import axios from "axios";
 import StudentsCard from "@/components/admin/ManageStudent/StudentsCard";
 import LoadingSkeleton, { StudentCardSkeleton } from "../../../../components/admin/ManageStudent/Loader";
 import Link from "next/link";
-import { useState, useEffect, useTransition } from "react";
+import { useState, useEffect } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const fetchStudents = async (params) => {
     const { page = 1, limit = 10, search = "", course = "all", status = "all" } = params;
@@ -34,45 +35,95 @@ const fetchStudents = async (params) => {
 };
 
 export default function StudentList() {
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const pathname = usePathname();
+
     const [searchInput, setSearchInput] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState("");
     const [selectedCourse, setSelectedCourse] = useState("all");
     const [selectedStatus, setSelectedStatus] = useState("all");
-    const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
-    const [isPending, startTransition] = useTransition();
+
+    // Parse pagination state from URL params on mount
+    useEffect(() => {
+        const page = searchParams.get("page") ? parseInt(searchParams.get("page"), 10) : 1;
+        const limit = searchParams.get("limit") ? parseInt(searchParams.get("limit"), 10) : 10;
+        const search = searchParams.get("search") || "";
+        const course = searchParams.get("course") || "all";
+        const status = searchParams.get("status") || "all";
+
+        setSearchInput(search);
+        setSelectedCourse(course);
+        setSelectedStatus(status);
+        setItemsPerPage(limit);
+        setDebouncedSearch(search);
+    }, [searchParams]);
 
     // Debounce search input by 300ms
     useEffect(() => {
         const timer = setTimeout(() => {
             setDebouncedSearch(searchInput);
-            setCurrentPage(1); // Reset page on new search term
         }, 300);
 
         return () => clearTimeout(timer);
     }, [searchInput]);
 
+    const currentPage = searchParams.get("page") ? parseInt(searchParams.get("page"), 10) : 1;
+    const currentLimit = searchParams.get("limit") ? parseInt(searchParams.get("limit"), 10) : 10;
+    const currentSearch = searchParams.get("search") || "";
+    const currentCourse = searchParams.get("course") || "all";
+    const currentStatus = searchParams.get("status") || "all";
+
     const { data, isLoading, isError, isFetching } = useQuery({
-        queryKey: ["students", currentPage, itemsPerPage, debouncedSearch, selectedCourse, selectedStatus],
+        queryKey: ["students", currentPage, currentLimit, currentSearch, currentCourse, currentStatus],
         queryFn: () =>
             fetchStudents({
                 page: currentPage,
-                limit: itemsPerPage,
-                search: debouncedSearch,
-                course: selectedCourse,
-                status: selectedStatus,
+                limit: currentLimit,
+                search: currentSearch,
+                course: currentCourse,
+                status: currentStatus,
             }),
-        placeholderData: keepPreviousData, // React Query v5 proper keepPreviousData!
+        placeholderData: keepPreviousData,
     });
+
+    // Helper to update URL params without page reload
+    const updateUrlParams = (params) => {
+        const newParams = new URLSearchParams(searchParams.toString());
+        Object.entries(params).forEach(([key, value]) => {
+            if (value === "" || value === "all" || value === 1 || value === 10) {
+                newParams.delete(key);
+            } else {
+                newParams.set(key, value.toString());
+            }
+        });
+        router.push(`${pathname}?${newParams.toString()}`);
+    };
 
     const handleCourseChange = (value) => {
         setSelectedCourse(value);
-        setCurrentPage(1);
+        updateUrlParams({ course: value, page: 1 });
     };
 
     const handleStatusChange = (value) => {
         setSelectedStatus(value);
-        setCurrentPage(1);
+        updateUrlParams({ status: value, page: 1 });
+    };
+
+    const handleItemsPerPageChange = (value) => {
+        const newLimit = Number(value);
+        setItemsPerPage(newLimit);
+        updateUrlParams({ limit: newLimit, page: 1 });
+    };
+
+    const handleSearchChange = (value) => {
+        setSearchInput(value);
+        updateUrlParams({ search: value, page: 1 });
+    };
+
+    const handlePageChange = (newPage) => {
+        updateUrlParams({ page: newPage });
     };
 
     const handleClearFilters = () => {
@@ -80,13 +131,8 @@ export default function StudentList() {
         setDebouncedSearch("");
         setSelectedCourse("all");
         setSelectedStatus("all");
-        setCurrentPage(1);
-    };
-
-    const handlePageChange = (newPage) => {
-        startTransition(() => {
-            setCurrentPage(newPage);
-        });
+        setItemsPerPage(10);
+        router.push(pathname);
     };
 
     const students = data?.students || [];
@@ -119,6 +165,8 @@ export default function StudentList() {
                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                             <Input
                                 placeholder="Search by name, ID number, email, or mobile..."
+                                value=""
+                                onChange={() => {}}
                                 className="pl-10 pr-10 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                             />
                         </div>
@@ -163,6 +211,15 @@ export default function StudentList() {
         );
     }
 
+    console.log("Pagination Data:", {
+        pagination,
+        currentPage: currentPage,
+        hasPrev: pagination?.hasPrev,
+        hasNext: pagination?.hasNext,
+        pages: pagination?.pages,
+        total: pagination?.total,
+    });
+
     return (
         <Card className="m-6 md:m-8">
             {/* Header Section */}
@@ -188,12 +245,12 @@ export default function StudentList() {
                         <Input
                             placeholder="Search by name, ID number, email, or mobile..."
                             value={searchInput}
-                            onChange={(e) => setSearchInput(e.target.value)}
+                            onChange={(e) => handleSearchChange(e.target.value)}
                             className="pl-10 pr-10 border-gray-200 focus:border-blue-500 focus:ring-blue-500"
                         />
                         {searchInput && (
                             <button
-                                onClick={() => setSearchInput("")}
+                                onClick={() => handleSearchChange("")}
                                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                             >
                                 <X className="w-4 h-4" />
@@ -226,10 +283,7 @@ export default function StudentList() {
                         </Select>
                         <Select
                             value={itemsPerPage.toString()}
-                            onValueChange={(val) => {
-                                setItemsPerPage(Number(val));
-                                setCurrentPage(1);
-                            }}
+                            onValueChange={handleItemsPerPageChange}
                         >
                             <SelectTrigger className="w-28">
                                 <SelectValue placeholder="Per page" />
@@ -328,7 +382,7 @@ export default function StudentList() {
                                 variant="outline"
                                 size="icon"
                                 onClick={() => handlePageChange(1)}
-                                disabled={currentPage === 1 || isPending}
+                                disabled={pagination.page === 1}
                                 className="h-9 w-9"
                             >
                                 <ChevronsLeft className="h-4 w-4" />
@@ -338,8 +392,8 @@ export default function StudentList() {
                             <Button
                                 variant="outline"
                                 size="icon"
-                                onClick={() => handlePageChange(currentPage - 1)}
-                                disabled={!pagination.hasPrev || isPending}
+                                onClick={() => handlePageChange(pagination.page - 1)}
+                                disabled={!pagination.hasPrev}
                                 className="h-9 w-9"
                             >
                                 <ChevronLeft className="h-4 w-4" />
@@ -351,23 +405,22 @@ export default function StudentList() {
                                     let pageNum;
                                     if (pagination.pages <= 5) {
                                         pageNum = i + 1;
-                                    } else if (currentPage <= 3) {
+                                    } else if (pagination.page <= 3) {
                                         pageNum = i + 1;
-                                    } else if (currentPage >= pagination.pages - 2) {
+                                    } else if (pagination.page >= pagination.pages - 2) {
                                         pageNum = pagination.pages - 4 + i;
                                     } else {
-                                        pageNum = currentPage - 2 + i;
+                                        pageNum = pagination.page - 2 + i;
                                     }
 
                                     return (
                                         <Button
                                             key={pageNum}
-                                            variant={currentPage === pageNum ? "default" : "outline"}
+                                            variant={pagination.page === pageNum ? "default" : "outline"}
                                             size="sm"
                                             onClick={() => handlePageChange(pageNum)}
-                                            disabled={isPending}
                                             className={`h-9 w-9 ${
-                                                currentPage === pageNum
+                                                pagination.page === pageNum
                                                     ? "bg-primary-700 hover:bg-primary-800 text-white"
                                                     : ""
                                             }`}
@@ -382,8 +435,8 @@ export default function StudentList() {
                             <Button
                                 variant="outline"
                                 size="icon"
-                                onClick={() => handlePageChange(currentPage + 1)}
-                                disabled={!pagination.hasNext || isPending}
+                                onClick={() => handlePageChange(pagination.page + 1)}
+                                disabled={!pagination.hasNext}
                                 className="h-9 w-9"
                             >
                                 <ChevronRight className="h-4 w-4" />
@@ -394,7 +447,7 @@ export default function StudentList() {
                                 variant="outline"
                                 size="icon"
                                 onClick={() => handlePageChange(pagination.pages)}
-                                disabled={currentPage === pagination.pages || isPending}
+                                disabled={pagination.page === pagination.pages}
                                 className="h-9 w-9"
                             >
                                 <ChevronsRight className="h-4 w-4" />

@@ -117,15 +117,14 @@ export default function StudentDetails() {
             <div className="space-y-6">
                 {/* Header with Back Button */}
                 <div className="flex items-center justify-between">
-                    <Link href="/admin/manage-students">
-                        <Button
-                            variant="outline"
-                            className="flex items-center gap-2 hover:bg-primary-100 border-primary-200 bg-transparent"
-                        >
-                            <ArrowLeft className="w-4 h-4" />
-                            Back to Students
-                        </Button>
-                    </Link>
+                    <Button
+                        variant="outline"
+                        className="flex items-center gap-2 hover:bg-primary-100 border-primary-200 bg-transparent"
+                        onClick={() => router.back()}
+                    >
+                        <ArrowLeft className="w-4 h-4" />
+                        Back to Students
+                    </Button>
                     <div className="flex items-center gap-2">
                         <Link href={`/admin/manage-students/${student._id}/edit`}>
                             <Button

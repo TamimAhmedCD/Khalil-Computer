@@ -8,7 +8,7 @@ const Slogan = () => {
 
       {/* Text Content */}
       <h2 className="relative md:text-4xl text-2xl md:mx-24 p-2 md:leading-12 leading-8 font-hind-siliguri">
-        লাখ টাকা আয়ের স্বপ্ন বিভোর না হয়ে স্কিল ডেভেলপ করে নিজের স্বপ্ন সত্যি
+        লাখ টাকা আয়ের স্বপ্ন বিভোর না হয়ে স্কিল ডেভেলপ করে নিজের স্বপ্ন সত্যি
         করুন
       </h2>
     </section>

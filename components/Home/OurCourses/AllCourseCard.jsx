@@ -7,8 +7,6 @@ import Link from 'next/link'
 import React from 'react'
 
 export default function AllCourseCard({ courses, isLoading }) {
-    console.log(courses);
-
     if (isLoading) {
         return <CourseCardSkeleton />
     }

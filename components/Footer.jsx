@@ -146,7 +146,7 @@ export function Footer() {
                         </div>
                         <div className="ml-3">
                             <h4 className="text-xs font-medium text-gray-500">ঠিকানা</h4>
-                            <p className="text-sm font-medium text-gray-800">মুক্তিযোদ্ধা কমপ্লেক্স, বড়লেখা, মৌলভীবাজার।</p>
+                            <p className="text-sm font-medium text-gray-800">মুক্তিযোদ্ধা কমপ্লেক্স, বড়লেখা, মৌলভীবাজার।</p>
                         </div>
                     </div>
                 </div>
