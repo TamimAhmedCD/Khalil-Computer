@@ -334,6 +334,98 @@ function VerificationContent() {
                             </div>
                         </motion.div>
                     )}
+
+                    {result === "not_issued" && certData && (
+                        <motion.div
+                            key="not_issued"
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            transition={spring}
+                            className="bg-white overflow-hidden rounded-2xl border-2 border-amber-500 shadow-xl"
+                        >
+                            <div className="bg-gradient-to-r from-amber-500 to-amber-600 px-8 py-6 flex items-center gap-4">
+                                <motion.div
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    transition={{ type: "spring", delay: 0.1 }}
+                                    className="rounded-full bg-white p-2 text-amber-600 shrink-0"
+                                >
+                                    <svg className="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </motion.div>
+                                <div className="text-white">
+                                    <h3 className="text-2xl font-bold">সার্টিফিকেট এখনও ইস্যু হয়নি</h3>
+                                    <p className="text-amber-100 text-sm font-medium mt-0.5">
+                                        এই শিক্ষার্থীর সার্টিফিকেট এখনও আনুষ্ঠানিকভাবে ইস্যু করা হয়নি
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="p-8">
+                                <div className="bg-amber-50 rounded-lg p-6 border border-amber-200">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                        <ResultRow
+                                            label="শিক্ষার্থীর নাম"
+                                            value={certData.studentName}
+                                            delay={0.15}
+                                        />
+                                        <ResultRow
+                                            label="কোর্সের নাম"
+                                            value={certData.course}
+                                            delay={0.2}
+                                        />
+                                        <ResultRow
+                                            label="ব্যাচ নাম্বার"
+                                            value={certData.batchNumber || "N/A"}
+                                            delay={0.25}
+                                        />
+                                        <ResultRow
+                                            label="ফোন নাম্বার"
+                                            value={certData.phoneNumber || "N/A"}
+                                            delay={0.3}
+                                        />
+                                    </div>
+
+                                    <div className="bg-blue-50 rounded-lg p-4 border border-blue-200 mb-4">
+                                        <div className="flex items-start gap-3">
+                                            <svg className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            <div>
+                                                <p className="text-sm font-medium text-blue-700 mb-1">সার্টিফিকেটের অবস্থা: বিলম্বিত</p>
+                                                <p className="text-xs text-blue-600">
+                                                    এই শিক্ষার্থীর সার্টিফিকেট এখনও ইস্যু করা হয়নি। সঠিক সময়ে কোর্স সম্পন্ন করার পর সার্টিফিকেট ইস্যু করা হবে।
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                        <p className="text-sm text-gray-600 mb-2">
+                                            সার্টিফিকেট ইস্যু সম্পর্কে তথ্য:
+                                        </p>
+                                        <ul className="text-sm text-gray-600 space-y-1 list-disc pl-5">
+                                            <li>কোর্স সম্পন্নের পর সার্টিফিকেট ইস্যু করা হয়</li>
+                                            <li>সাধারণত কোর্স শেষ হওয়ার ১৫-২০ দিনের মধ্যে ইস্যু হয়</li>
+                                            <li>সার্টিফিকেট ইস্যু সম্পর্কে প্রশ্ন থাকলে অফিসে যোগাযোগ করুন</li>
+                                        </ul>
+                                        <div className="mt-4 pt-3 border-t border-gray-200">
+                                            <a
+                                                href="tel:+8801715409109"
+                                                className="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 font-medium text-sm"
+                                            >
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                                                </svg>
+                                                সার্টিফিকেট সম্পর্কে তথ্য: +৮৮০১৭১৫৪০৯১০৯
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
                 </AnimatePresence>
             </div>
         </div>

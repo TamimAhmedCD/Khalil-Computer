@@ -41,7 +41,7 @@ export default function CourseDetails() {
   if (isError) return (<CourseNotFound />);
 
   return (
-    <div className="p-4">
+    <div className="container mx-auto px-5 md:px-10 lg:px-20">
       <main className="flex-1">
         <div className="py-10">
           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center mb-6 gap-2">
@@ -96,7 +96,7 @@ export default function CourseDetails() {
                         অফার মূল্য: ৳ {course.price - (course.price * course.discount) / 100}
                       </h3>
                       <p className="text-sm text-green-600">
-                        {course.discount}% ছাড়ে আপনি সাশ্রয় করছেন ৳ {(course.price * course.discount) / 100}
+                        {course.discount}% ছাড়ে আপনি সাশ্রয় করছেন ৳ {(course.price * course.discount) / 100}
                       </p>
                     </>
                   ) : (

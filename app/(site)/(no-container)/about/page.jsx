@@ -85,7 +85,7 @@ const AboutPage = () => {
             </section>
 
             {/* Stats Section */}
-            <section className="py-12 bg-white">
+            <section className="py-12 mt-20 bg-white">
                 <div className="container mx-auto px-4">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto -mt-20">
                         {stats.map((stat, index) => {
@@ -125,7 +125,7 @@ const AboutPage = () => {
                                         আমরা বিশ্বাস করি শুধুমাত্র তাত্ত্বিক জ্ঞান নয়, বাস্তব দক্ষতাই ক্যারিয়ার সফলতার চাবিকাঠি।
                                     </p>
                                     <p>
-                                        আমাদের প্রতিষ্ঠাতা <strong>মো. খালিল</strong> এর স্বপ্ন ছিল স্থানীয় তরুণদের
+                                        আমাদের প্রতিষ্ঠাতা <strong>মো: খলিল উদ্দিন </strong> এর স্বপ্ন ছিল স্থানীয় তরুণদের
                                         আন্তর্জাতিক মানের প্রশিক্ষণ দেওয়া। সেই স্বপ্ন থেকেই আজকের খলিল কম্পিউটার -
                                         যেখানে <strong className="text-secondary-600">৫০০০+ শিক্ষার্থী</strong> সফলতার সাথে
                                         তাদের ক্যারিয়ার গড়েছেন।
