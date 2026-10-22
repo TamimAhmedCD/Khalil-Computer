@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { Book, Users } from "lucide-react";
+import { Book, Users, PenTool, Hash, FolderTree, Sparkles } from "lucide-react";
 import {
   SimpleSidebar,
   SidebarHeader,
@@ -42,6 +42,44 @@ const navData = [
       {
         title: "Manage Students",
         url: "/admin/manage-students",
+      },
+    ],
+  },
+  {
+    title: "Blog Management",
+    url: "#",
+    icon: PenTool,
+    items: [
+      {
+        title: "Add Blog",
+        url: "/admin/manage-blogs/add",
+      },
+      {
+        title: "Manage Blogs",
+        url: "/admin/manage-blogs",
+      },
+      {
+        title: "Categories",
+        url: "/admin/manage-blogs/categories",
+      },
+      {
+        title: "Tags",
+        url: "/admin/manage-blogs/tags",
+      },
+    ],
+  },
+  {
+    title: "AI Provider Settings",
+    url: "/admin/ai-providers",
+    icon: Sparkles,
+    items: [
+      {
+        title: "Manage Providers",
+        url: "/admin/ai-providers",
+      },
+      {
+        title: "How It Works",
+        url: "/admin/ai-providers",
       },
     ],
   },

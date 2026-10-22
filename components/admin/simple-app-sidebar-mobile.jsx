@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { Book, Users } from "lucide-react";
+import { Book, Users, PenTool } from "lucide-react";
 import { SimpleNavMain } from "./simple-nav-main";
 import { SimpleNavUser } from "./simple-nav-user";
 
@@ -35,6 +35,29 @@ const navData = [
       {
         title: "Manage Students",
         url: "/admin/manage-students",
+      },
+    ],
+  },
+  {
+    title: "Blog Management",
+    url: "#",
+    icon: PenTool,
+    items: [
+      {
+        title: "Add Blog",
+        url: "/admin/manage-blogs/add",
+      },
+      {
+        title: "Manage Blogs",
+        url: "/admin/manage-blogs",
+      },
+      {
+        title: "Categories",
+        url: "/admin/manage-blogs/categories",
+      },
+      {
+        title: "Tags",
+        url: "/admin/manage-blogs/tags",
       },
     ],
   },

@@ -8,7 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { ArrowLeft, Calendar, CreditCard, Edit, GraduationCap, Heart, Mail, MapPin, Phone, Trash2, User, Users, FileText, IdCard, Loader2 } from "lucide-react";
+import { ArrowLeft, Calendar, CreditCard, Edit, GraduationCap, Heart, Mail, MapPin, Phone, Trash2, User, Users, FileText, IdCard, Loader2, Download } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -126,6 +126,14 @@ export default function StudentDetails() {
                         Back to Students
                     </Button>
                     <div className="flex items-center gap-2">
+                        <Button
+                            variant="outline"
+                            onClick={() => router.push(`/admin/manage-students/${student._id}/id-card`)}
+                            className="text-green-600 border-green-200 hover:bg-green-50 bg-transparent"
+                        >
+                            <Download className="w-4 h-4 mr-2" />
+                            Generate ID Card
+                        </Button>
                         <Link href={`/admin/manage-students/${student._id}/edit`}>
                             <Button
                                 variant="outline"

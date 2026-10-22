@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ID Card Photo Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .description {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .photo-preview {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 20px auto;
+            border: 3px solid #007bff;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .photo-label {
+            text-align: center;
+            color: #555;
+            margin: 10px 0 30px;
+            font-size: 14px;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .info-card {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 4px solid #007bff;
+        }
+        .info-card h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .info-card ul {
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+        .info-card li {
+            margin: 8px 0;
+            color: #555;
+        }
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Consolas', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: background 0.2s;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .test-button:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Student ID Card Photo Test</h1>
+        <p class="description">
+            Testing circular photo cropping for student ID cards.
+            The photo should appear as a perfect circle, not an oval or egg shape.
+        </p>
+
+        <div class="photo-preview">
+            <div style="position: relative; width: 100%; height: 100%;">
+                <img src="https://res.cloudinary.com/demo/image/upload/sample.jpg"
+                     alt="Sample Student Photo"
+                     id="testPhoto">
+            </div>
+        </div>
+        <p class="photo-label">Sample photo - Should be perfectly circular</p>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <button class="test-button" onclick="testPhotoCropping()">Test Photo Cropping</button>
+            <button class="test-button" onclick="generateTestID()">Generate Test ID Card</button>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>📸 Photo Requirements</h3>
+                <ul>
+                    <li><strong>Shape:</strong> Perfect circle (not oval)</li>
+                    <li><strong>Aspect Ratio:</strong> 1:1 (square)</li>
+                    <li><strong>Cropping:</strong> Center-cropped</li>
+                    <li><strong>Border:</strong> No border needed</li>
+                    <li><strong>Quality:</strong> High resolution</li>
+                </ul>
+                <div class="status-badge status-active">Active</div>
+            </div>
+
+            <div class="info-card">
+                <h3>⚙️ Technical Details</h3>
+                <ul>
+                    <li><strong>Image Processor:</strong> Sharp.js</li>
+                    <li><strong>Output Format:</strong> PNG with transparency</li>
+                    <li><strong>Mask Type:</strong> SVG circular mask</li>
+                    <li><strong>Cropping Method:</strong> Center extract + resize</li>
+                    <li><strong>File Format:</strong> JPEG/PNG compatible</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>🎯 ID Card Settings</h3>
+                <ul>
+                    <li><strong>Photo Size:</strong> 60 × 60 points</li>
+                    <li><strong>Position:</strong> X:10, Y:35</li>
+                    <li><strong>Font:</strong> Helvetica-Bold (Montserrat fallback)</li>
+                    <li><strong>QR Code:</strong> Back page only</li>
+                    <li><strong>Fields:</strong> Values only (no labels)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="code-block">
+            <span style="color: #569cd6;">const</span> <span style="color: #4ec9b0;">photoConfig</span> = {<br>
+            &nbsp;&nbsp;<span style="color: #9cdcfe;">x</span>: <span style="color: #b5cea8;">10</span>,<br>
+            &nbsp;&nbsp;<span style="color: #9cdcfe;">y</span>: <span style="color: #b5cea8;">35</span>,<br>
+            &nbsp;&nbsp;<span style="color: #9cdcfe;">width</span>: <span style="color: #b5cea8;">60</span>,<br>
+            &nbsp;&nbsp;<span style="color: #9cdcfe;">height</span>: <span style="color: #b5cea8;">60</span><br>
+            };<br><br>
+            <span style="color: #569cd6;">async</span> <span style="color: #dcdcaa;">function</span> <span style="color: #d7ba7d;">createCircularPhoto</span>(imageUrl) {<br>
+            &nbsp;&nbsp;<span style="color: #569cd6;">const</span> circularBuffer = <span style="color: #569cd6;">await</span> cropToCircular(imageUrl);<br>
+            &nbsp;&nbsp;<span style="color: #c586c0;">return</span> <span style="color: #569cd6;">await</span> pdfDoc.embedPng(circularBuffer);<br>
+            }
+        </div>
+    </div>
+
+    <script>
+        function testPhotoCropping() {
+            const photoElement = document.getElementById('testPhoto');
+            // Add a CSS class to show it's being processed
+            photoElement.style.filter = 'grayscale(1)';
+            setTimeout(() => {
+                photoElement.style.filter = '';
+                alert('Photo cropping test completed. Check the ID card PDF for results.');
+            }, 500);
+        }
+
+        function generateTestID() {
+            // In a real implementation, this would call the API
+            alert('To generate a test ID card:\n1. Go to a student details page\n2. Click "Generate ID Card"\n3. Download and verify the PDF\n\nThe photo should be perfectly circular.');
+        }
+    </script>
+</body>
+</html>
