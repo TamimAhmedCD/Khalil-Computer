@@ -56,7 +56,8 @@ export async function GET(req, { params }) {
     // Add student name (true center on page)
     if (fields.name) {
       const nameWidth = montserratFont.widthOfTextAtSize(fields.name, FRONT.STUDENT_NAME.fontSize);
-      const nameCenterX = (pageWidth - nameWidth) / 2;
+      const nameCenterX = (pageWidth - nameWidth) / 2; 
+      
 
       frontPage.drawText(fields.name, {
         x: nameCenterX,
