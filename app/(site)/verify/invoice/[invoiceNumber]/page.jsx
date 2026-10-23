@@ -21,7 +21,7 @@ export default function VerifyInvoicePage() {
       try {
         setLoading(true);
         const res = await axios.get(
-          `http://localhost:3001/api/public/invoice/${params.invoiceNumber}`
+          `https://admin.khalilcomputer.com/api/public/invoice/${params.invoiceNumber}`
         );
 
         if (res.data.success) {
